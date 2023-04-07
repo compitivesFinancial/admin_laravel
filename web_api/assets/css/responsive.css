@@ -1,0 +1,397 @@
+@media only screen and (max-width:576px) {
+    .sec5-det span,
+    .line img,
+    .dots {
+        display: none;
+    }
+    .header {
+        background: #00000020;
+        /* padding: 5px 10px !important; */
+        padding: 20px 10px !important;
+        padding-bottom: 5px !important
+    }
+    .version img {
+        width: 100px !important;
+        height: 23px !important;
+    }
+    .navbar-toggler {
+        padding: 0;
+    }
+    .header .navbar-brand img {
+        height: 28px;
+    }
+    .black {
+        width: 94%;
+    }
+    .close {
+        display: block;
+    }
+    .sec1 h2 {
+        font-size: 38px;
+        line-height: 41px;
+        letter-spacing: -0.8px;
+        padding-bottom: 23px;
+    }
+    .sec1 p {
+        font-size: 14px;
+        width: 70%;
+        margin: auto;
+        padding-bottom: 33px;
+        padding-top: 0;
+    }
+    .sec1-cont .login {
+        font-size: 12px;
+        padding: 15px 30px;
+    }
+    .sec2 {
+        padding: 22px 15px 50px;
+    }
+    .comp {
+        padding: 47px 13px 39px;
+    }
+    .comp img {
+        width: 69px;
+        height: 69px;
+    }
+    .comp h6 {
+        font-size: 20px;
+        padding: 26px 0 5px;
+    }
+    .comp-row {
+        grid-row-gap: 23px;
+    }
+    .comp p {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .sec3 {
+        padding: 76px 36px 64px;
+    }
+    .product {
+        letter-spacing: 1.56px;
+        font-size: 12px;
+        padding-bottom: 19px;
+    }
+    .sec3-left h5 {
+        line-height: 36px;
+        padding-bottom: 10px;
+        letter-spacing: -1.28px;
+    }
+    .font-42 {
+        font-size: 32px;
+    }
+    .sec3-left p {
+        font-size: 14px;
+        line-height: 17px;
+        padding-right: 0;
+        padding-bottom: 67px;
+    }
+    .icons span {
+        width: 100px;
+        height: 100px;
+        border-radius: 36px;
+    }
+    .icons span img {
+        width: 48px;
+        height: 50px;
+    }
+    .icons h6 {
+        font-size: 15px;
+        padding: 18px 0 0px;
+    }
+    .icon-row {
+        grid-row-gap: 45px;
+        justify-content: center;
+    }
+    .sec4 {
+        padding-top: 60px;
+    }
+    .sec4 .font-42 {
+        line-height: normal;
+        padding-right: 0;
+        font-size: 22px;
+    }
+    .sec4 .product {
+        padding-left: 0;
+    }
+    .sec4-row {
+        padding: 0px 15px 72px !important;
+    }
+    .sec4-left h6 {
+        font-size: 16px;
+        padding-top: 15px;
+        padding-bottom: 51px;
+    }
+    .sec4-row p {
+        font-size: 16px;
+        padding-left: 0;
+    }
+    .sec4-row p span {
+        padding: 10px 0;
+    }
+    .sec5 {
+        padding: 60px 15px 0px;
+    }
+    .sec5 .font-42 {
+        padding-bottom: 42px;
+    }
+    .sec5-det img {
+        margin: 0;
+        width: 30px;
+        margin-right: 34px;
+    }
+    .details h5 {
+        font-size: 18px;
+        padding-bottom: 7px;
+    }
+    .details p {
+        font-size: 14px;
+        padding-right: 0;
+    }
+    .sec5-det {
+        margin-bottom: 40px;
+    }
+    .man-row-left h6 {
+        top: 9px;
+        width: 34px;
+        font-size: 8px;
+        left: 40px;
+    }
+    .sec6-center {
+        padding: 10px 43px;
+    }
+    .line {
+        justify-content: center;
+        text-align: center;
+    }
+    .sec6-center p {
+        font-size: 18px;
+        padding: 7px 0 33px;
+    }
+    .murabhak-row {
+        flex-wrap: nowrap;
+        overflow: auto;
+    }
+    .murabhak {
+        padding: 70px 37px 45px;
+        border-radius: 35px;
+    }
+    .murabhak.active {
+        transform: unset;
+    }
+    .sec7 {
+        padding: 57px 15px;
+    }
+    .sec8 {
+        background: transparent linear-gradient(332deg, #DBF8EE 0%, #EAE3F1 100%) 0% 0% no-repeat padding-box;
+        padding: 77px 15px 83px;
+    }
+    .sec8 .fund {
+        font-size: 30px;
+    }
+    .sec8-first p {
+        font-size: 14px;
+        padding: 11px 0 43px;
+    }
+    .count {
+        padding: 49px 0;
+    }
+    .project-row {
+        grid-row-gap: 19px;
+    }
+    .sec9 {
+        padding: 75px 15px;
+    }
+    .sec9 h3 {
+        font-size: 32px;
+    }
+    .sec9-first p {
+        padding: 18px 0px 25px;
+        font-size: 16px;
+        width: 100%;
+    }
+    .sec9-1 {
+        padding: 0px 0 0 36px;
+    }
+    .sec9-row {
+        grid-row-gap: 20px;
+    }
+    .sec10 h3 {
+        font-size: 32px;
+        padding-bottom: 24px;
+    }
+    .sec10 {
+        padding: 0 15px 50px;
+    }
+    .sec10 .card-header {
+        padding: 0;
+        margin-top: 10px;
+    }
+    .sec10 .card-header a {
+        font-size: 18px;
+    }
+    .collapse {
+        padding: 10px 0;
+    }
+    .sec10 .collapse p {
+        font-size: 16px;
+        line-height: 16px;
+        width: 100%;
+    }
+    .form-sec {
+        margin: 80px auto 38px;
+        padding: 20px;
+    }
+    .form-sec h2 {
+        font-size: 32px;
+    }
+    .form-sec input {
+        padding: 10px 11px;
+        height: 42px;
+    }
+    .form-sec textarea {
+        height: 70px !important;
+    }
+    .form-sec .start {
+        padding: 7px 50px;
+        margin-top: 12px;
+    }
+    .footer {
+        padding: 40px 15px;
+    }
+    .footer h5 {
+        font-size: 14px;
+        padding-bottom: 13px;
+    }
+    .footer a {
+        font-size: 10px;
+    }
+    .footer-link {
+        grid-row-gap: 15px;
+    }
+    .footer-row1 {
+        padding: 27px 0 14px;
+        margin: 22px 0 18px;
+    }
+    .footer-row1 p {
+        font-size: 9px;
+        padding-bottom: 8px;
+    }
+    .footer-row1 h6 {
+        font-size: 12px;
+        padding-bottom: 6px;
+    }
+    .footer-logo {
+        margin-top: 7px;
+    }
+    .footer-row2 {
+        font-size: 7px;
+    }
+    .navbar-toggler-icon {
+        width: 44px;
+        height: 44px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+    }
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #310075;
+        width: 100%;
+        height: 100%;
+        padding-top: 44px;
+        z-index: 99;
+        opacity: 0;
+        display: block !important;
+        transition: 0.5s all;
+        transform: translateY(-100%);
+        visibility: hidden;
+    }
+    .header .navbar-nav li:nth-child(2) a {
+        margin: 26px 0;
+    }
+    .login {
+        padding: 6px 14px;
+    }
+    .close {
+        color: #fff;
+        opacity: 1;
+        position: absolute;
+        top: 49px;
+        right: 20px;
+    }
+    .navbar-collapse.show {
+        transform: translateY(0%);
+        opacity: 1;
+        visibility: visible;
+    }
+    .sec6-center .font-42 {
+        text-align: center;
+    }
+    .header .navbar-nav li {
+        margin-left: 0;
+    }
+    .header .dropdown-toggle {
+        margin-bottom: 18px;
+    }
+    .navbar-nav .dropdown-menu {
+        position: absolute;
+        left: -50%;
+    }
+    .sec9-dtl {
+        align-items: center;
+        margin-top: 15px;
+    }
+    .sec9-dtl img {
+        width: 20px;
+    }
+    .sec9-1 h6 {
+        padding: 0;
+    }
+    #navbarSupportedContent ul {
+        width: auto !important;
+        margin-left: auto;
+    }
+    .form-sec {
+        width: 100% !important;
+        margin: 35px auto 25px;
+        padding: 15px;
+    }
+    .login {
+        padding: 0;
+    }
+    .login-pad {
+        padding: 6px 14px;
+    }
+    .sec4 {
+        padding-top: 60px;
+    }
+    .sec4-left {
+        padding: 0;
+    }
+    .sec4 .font-42 {
+        line-height: 28px !important;
+        font-size: 24px !important;
+        padding: 0 0px 36px 0 !important;
+    }
+    .contact {
+        padding: 56px 0 44px;
+    }
+    .header .dropdown-toggle {
+        margin: 0px auto 18px;
+    }
+    .step span {
+        width: 26px;
+        height: 26px;
+        font-size: 14px;
+        margin-right: 6px;
+    }
+    .step p {
+        font-size: 10px;
+    }
+}

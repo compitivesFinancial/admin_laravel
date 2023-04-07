@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="692" height="568" viewBox="0 0 692 568">
+  <defs>
+    <filter id="Rectangle_8276" x="44" y="0" width="648" height="523" filterUnits="userSpaceOnUse">
+      <feOffset dy="20" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feFlood flood-color="#353d79" flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_8277" x="0" y="57" width="473" height="511" filterUnits="userSpaceOnUse">
+      <feOffset dy="20" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="20" result="blur-2"/>
+      <feFlood flood-color="#353d79" flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_8257" data-name="Rectangle 8257" width="27.51" height="33.026" fill="#310075" stroke="#e9e4f0" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Group_148673" data-name="Group 148673" transform="translate(-667 -1152)">
+    <g transform="matrix(1, 0, 0, 1, 667, 1152)" filter="url(#Rectangle_8276)">
+      <rect id="Rectangle_8276-2" data-name="Rectangle 8276" width="528" height="403" rx="12" transform="translate(104 40)" fill="#fcfcfe"/>
+    </g>
+    <line id="Line_127" data-name="Line 127" x2="528" transform="translate(771.5 1253.5)" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+    <text id="Great_things_need_funds_We_know_you_do_too." data-name="Great things need funds,
+We know you do too." transform="translate(931 1324)" fill="#484964" font-size="28" font-family="MaisonNeue-Bold, Maison Neue" font-weight="700"><tspan x="0" y="0">Great things need funds,</tspan><tspan x="0" y="30">We know you do too.</tspan></text>
+    <g id="Group_148435" data-name="Group 148435">
+      <g id="Ellipse_2942" data-name="Ellipse 2942" transform="translate(881 1389)" fill="none" stroke="#484964" stroke-width="2">
+        <ellipse cx="125.5" cy="44" rx="125.5" ry="44" stroke="none"/>
+        <ellipse cx="125.5" cy="44" rx="124.5" ry="43" fill="none"/>
+      </g>
+      <g id="Ellipse_2943" data-name="Ellipse 2943" transform="translate(844 1435)" fill="none" stroke="#484964" stroke-width="2">
+        <ellipse cx="125.5" cy="44" rx="125.5" ry="44" stroke="none"/>
+        <ellipse cx="125.5" cy="44" rx="124.5" ry="43" fill="none"/>
+      </g>
+      <g id="Ellipse_2944" data-name="Ellipse 2944" transform="translate(972 1494)" fill="none" stroke="#484964" stroke-width="2">
+        <ellipse cx="92.5" cy="32" rx="92.5" ry="32" stroke="none"/>
+        <ellipse cx="92.5" cy="32" rx="91.5" ry="31" fill="none"/>
+      </g>
+    </g>
+    <g id="Group_148434" data-name="Group 148434" transform="matrix(0.946, 0.326, -0.326, 0.946, 652.689, -907.995)">
+      <path id="Path_159810" data-name="Path 159810" d="M15446.984,488.5h65.086" transform="translate(-14185.999 1576.085)" fill="none" stroke="#f5ff00" stroke-width="2"/>
+      <path id="Path_159811" data-name="Path 159811" d="M15446.984,497.074l28.076-16.963" transform="translate(-14185.999 1548.694)" fill="none" stroke="#f5ff00" stroke-width="2"/>
+      <path id="Path_159812" data-name="Path 159812" d="M15446.984,482.111l28.076,16.963" transform="translate(-14185.999 1601.29)" fill="none" stroke="#f5ff00" stroke-width="2"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 667, 1152)" filter="url(#Rectangle_8277)">
+      <rect id="Rectangle_8277-2" data-name="Rectangle 8277" width="353" height="391" rx="12" transform="translate(60 97)" fill="#fff"/>
+    </g>
+    <g id="Rectangle_8278" data-name="Rectangle 8278" transform="translate(802.583 1401.814)" fill="#fff" stroke="#d0d0d0" stroke-width="1">
+      <rect width="215" height="38" rx="9" stroke="none"/>
+      <rect x="0.5" y="0.5" width="214" height="37" rx="8.5" fill="none"/>
+    </g>
+    <g id="Rectangle_8279" data-name="Rectangle 8279" transform="translate(802.583 1448.814)" fill="#fff" stroke="#d0d0d0" stroke-width="1">
+      <rect width="215" height="38" rx="9" stroke="none"/>
+      <rect x="0.5" y="0.5" width="214" height="37" rx="8.5" fill="none"/>
+    </g>
+    <g id="Rectangle_8280" data-name="Rectangle 8280" transform="translate(802.583 1499.814)" fill="#fff" stroke="#d0d0d0" stroke-width="1">
+      <rect width="215" height="38" rx="9" stroke="none"/>
+      <rect x="0.5" y="0.5" width="214" height="37" rx="8.5" fill="none"/>
+    </g>
+    <text id="Please_tell_us_about_yourself." data-name="Please tell us about yourself." transform="translate(826.5 1386.755)" fill="#656565" font-size="12" font-family="MaisonNeue-Medium, Maison Neue" font-weight="500"><tspan x="0" y="0">Please tell us about yourself.</tspan></text>
+    <g id="Group_148431" data-name="Group 148431" transform="translate(0 -9)">
+      <g id="Rectangle_8281" data-name="Rectangle 8281" transform="translate(803 1562)" fill="#fff" stroke="#3b007a" stroke-width="2">
+        <rect width="215" height="38" rx="9" stroke="none"/>
+        <rect x="1" y="1" width="213" height="36" rx="8" fill="none"/>
+      </g>
+      <text id="Continue" transform="translate(910 1585)" fill="#160034" font-size="14" font-family="MaisonNeue-Bold, Maison Neue" font-weight="700" letter-spacing="0.04em"><tspan x="-35" y="0">CONTINUE</tspan></text>
+    </g>
+    <text id="Get_approval_in_5_mins." data-name="Get approval in 5 mins." transform="translate(903 1365.06)" fill="#4e4e4e" font-size="18" font-family="MaisonNeue-Medium, Maison Neue" font-weight="500" letter-spacing="0.02em"><tspan x="-97" y="0">Get Approval In 5 Mins.</tspan></text>
+    <g id="Group_148432" data-name="Group 148432" transform="translate(91 25.144)">
+      <path id="Path_163858" data-name="Path 163858" d="M27,0A27,27,0,1,1,0,27,27,27,0,0,1,27,0Z" transform="translate(785 1258.856)" fill="#e9e4f0"/>
+      <g id="Group_148430" data-name="Group 148430" transform="translate(798.174 1269.416)">
+        <g id="Group_148415" data-name="Group 148415" clip-path="url(#clip-path)">
+          <path id="Path_159801" data-name="Path 159801" d="M6.017,0h9.455a5.857,5.857,0,0,1,.789.566Q21.6,5.888,26.931,11.222a1.864,1.864,0,0,1,.579,1.415c-.009,4.527,0,9.053-.007,13.58a6.854,6.854,0,0,1-6.814,6.8q-6.937.01-13.874,0A6.886,6.886,0,0,1,.2,27.828C.128,27.554.065,27.279,0,27V6.02a.966.966,0,0,0,.079-.193A6.777,6.777,0,0,1,4.383.469,13.9,13.9,0,0,1,6.017,0m7.738,2.75c-2.287,0-4.506-.006-6.725,0A4.142,4.142,0,0,0,2.751,7.039q-.009,9.478,0,18.957a4.141,4.141,0,0,0,4.29,4.276q6.7.01,13.4,0a4.888,4.888,0,0,0,1.187-.141,4.09,4.09,0,0,0,3.119-4.069c.012-4,0-8,0-11.993a2.8,2.8,0,0,0-.035-.305H20.577a6.491,6.491,0,0,1-3.9-1.25,6.7,6.7,0,0,1-2.924-5.638c-.011-1.358,0-2.716,0-4.12m2.76,2.041c0,.8-.045,1.579.009,2.346a4.012,4.012,0,0,0,3.227,3.745,18.384,18.384,0,0,0,2.651.125,1.922,1.922,0,0,0,.291-.031L16.515,4.792" fill="#310075" stroke="#e9e4f0" stroke-width="1"/>
+          <path id="Path_159802" data-name="Path 159802" d="M86.642,210.223q-2.686,0-5.372,0a1.379,1.379,0,1,1,.01-2.748q5.372,0,10.744,0a1.38,1.38,0,1,1-.01,2.748q-2.686,0-5.372,0" transform="translate(-72.894 -189.585)" fill="#310075" stroke="#e9e4f0" stroke-width="1"/>
+          <path id="Path_159803" data-name="Path 159803" d="M86.635,271.308q2.686,0,5.372,0a1.38,1.38,0,1,1,.023,2.748q-5.394,0-10.787,0a1.378,1.378,0,1,1,.02-2.747q2.686,0,5.372,0" transform="translate(-72.894 -247.914)" fill="#310075" stroke="#e9e4f0" stroke-width="1"/>
+          <path id="Path_159804" data-name="Path 159804" d="M82.536,146.344c-.473,0-.946.008-1.418,0a1.372,1.372,0,0,1,.015-2.744q1.4-.013,2.793,0a1.372,1.372,0,0,1-.015,2.744c-.458.008-.917,0-1.375,0" transform="translate(-72.895 -131.21)" fill="#310075" stroke="#e9e4f0" stroke-width="1"/>
+        </g>
+      </g>
+    </g>
+    <path id="Path_159813" data-name="Path 159813" d="M5.58-.047A4.381,4.381,0,0,0,10.035-3.21L8.319-3.634A2.907,2.907,0,0,1,5.58-1.705c-1.7,0-2.951-1.312-2.951-4.07S3.883-9.864,5.58-9.864A2.907,2.907,0,0,1,8.319-7.935l1.717-.424A4.365,4.365,0,0,0,5.58-11.5,4.664,4.664,0,0,0,2.05-10.1,6.013,6.013,0,0,0,.7-5.775,6.013,6.013,0,0,0,2.05-1.455,4.664,4.664,0,0,0,5.58-.047Zm14.138-1.5a5.934,5.934,0,0,0,1.389-4.321,5.934,5.934,0,0,0-1.389-4.321A4.722,4.722,0,0,0,16.15-11.6a4.8,4.8,0,0,0-3.588,1.408,6.016,6.016,0,0,0-1.369,4.321,6.016,6.016,0,0,0,1.369,4.321A4.8,4.8,0,0,0,16.15-.143,4.722,4.722,0,0,0,19.718-1.551ZM13.951-2.785a4.756,4.756,0,0,1-.829-3.086,4.756,4.756,0,0,1,.829-3.086,2.709,2.709,0,0,1,2.2-1,2.672,2.672,0,0,1,2.18,1,4.753,4.753,0,0,1,.849,3.086,4.753,4.753,0,0,1-.849,3.086,2.712,2.712,0,0,1-2.18.984A2.751,2.751,0,0,1,13.951-2.785Zm17.2-8.525L28.4-4.791l-2.758-6.519h-2.7v10.9H24.81V-8.861l2.855,6.905h1.447l2.855-6.905V-.413h1.871v-10.9Zm13.6,0L42-4.791l-2.758-6.519h-2.7v10.9h1.871V-8.861l2.855,6.905h1.447l2.855-6.905V-.413h1.871v-10.9Zm5.381,0v10.9h1.987v-3.24h2.3c2.99,0,4.494-1.273,4.494-3.819a3.358,3.358,0,0,0-2.334-3.472,5.9,5.9,0,0,0-2.16-.366Zm1.987,6.018V-9.671h2.334c1.678,0,2.527.733,2.527,2.2,0,1.447-.849,2.18-2.527,2.18ZM61.206-.1a1.114,1.114,0,0,0,1.157-1.157A1.078,1.078,0,0,0,61.206-2.4a1.106,1.106,0,0,0-.829.309,1.31,1.31,0,0,0,0,1.678A1.106,1.106,0,0,0,61.206-.1Z" transform="translate(828.3 1235.034)" fill="#484964"/>
+    <text id="Start_Fundraise" data-name="Start Fundraise" transform="translate(930 1232)" fill="#484964" font-size="10" font-family="MaisonNeue-Medium, Maison Neue" font-weight="500"><tspan x="0" y="0">Start Fundraise</tspan></text>
+    <text id="For_investor" data-name="For investor" transform="translate(1036 1232)" fill="#484964" font-size="10" font-family="MaisonNeue-Medium, Maison Neue" font-weight="500"><tspan x="0" y="0">For investor</tspan></text>
+    <g id="Group_148433" data-name="Group 148433" transform="translate(1143.034 1205.477)">
+      <rect id="Rectangle_8161" data-name="Rectangle 8161" width="79" height="28" rx="14" transform="translate(23.966 7.524)" fill="#160034"/>
+      <text id="Login" transform="translate(63.966 25.524)" fill="#fff" font-size="10" font-family="MaisonNeue-Bold, Maison Neue" font-weight="700" letter-spacing="0.08em"><tspan x="-15" y="0">LOGIN</tspan></text>
+    </g>
+  </g>
+</svg>
