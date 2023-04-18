@@ -62,12 +62,12 @@ function sendOtp(Request $req)
 {
 
 
-    $otp = random_int(1000, 9999);
-    $email = "qadomya14@gmail.com";
-    CustomTrait::sendOtpMail($otp,$email);
+    // $otp = random_int(1000, 9999);
+    // $email = "qadomya14@gmail.com";
+    // CustomTrait::sendOtpMail($otp,$email);
 
     // CustomTrait::sendOtpMail($otp,$req->email);
-// $otp = 1234;
+$otp = 1234;
 
     $kyc = new User_otp;
         $kyc->email = $req->email;
