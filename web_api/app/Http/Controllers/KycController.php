@@ -19,11 +19,33 @@ use App\Models\user_kyc_role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use Illuminate\Support\Facades\Http;
 
 class KycController extends Controller
 {
 
+    public function commercialregistration($id){
 
+        $curl = curl_init("https://api.wathq.sa/v5/commercialregistration/fullinfo/$id");
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL=>"https://api.wathq.sa/v5/commercialregistration/fullinfo/$id",
+          CURLOPT_RETURNTRANSFER=>TRUE,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          CURLOPT_HTTPHEADER => array(
+            'apiKey: Mpchn72PkxNaHBxUDmLQZlRHXxz4100M',
+            'accept: application/json'
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $res= json_decode($response);
+        return CustomTrait::SuccessJson($res);
+
+
+
+    }
     function __construct(Request $request){
 
         $this->lang = $request->header('Accept-Language');
@@ -32,7 +54,7 @@ class KycController extends Controller
 
 
 
-    
+
 
     function showAddUserKyc() {
 
@@ -40,10 +62,10 @@ class KycController extends Controller
         $id = auth('sanctum')->user()->id;
         $data=User::select('role_type','kyc_approved_status','kyc_note')->where('id',$id)->first();
         $role_type =  $data['role_type'];
-        
+
 
         $detail=UserKycRole::select('id','user_type_id','kyc_id')->where('id',$role_type)->get()->toArray();
-      
+
 
         foreach($detail as $key1=>$val1){
 
@@ -54,7 +76,7 @@ class KycController extends Controller
 
 
                     $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
-                    
+
                     $detail[$key] = Kyc::select('id',$sql_var,'status','position')->where(['id' => $val])->first()->toArray();
 
 
@@ -75,7 +97,7 @@ class KycController extends Controller
                                     if($kycdetail[$key3]['length'] == 0){
                                         $kycdetail[$key3]['length'] = '';
                                     }
-                                   
+
 
                                     $kyc_detail_id = $val3['id'];
 
@@ -93,7 +115,7 @@ class KycController extends Controller
 
                                  }
 
-                         
+
 
 
                                 $detail[$key]['info_type'][$key2]['detail'] = $kycdetail;
@@ -104,7 +126,7 @@ class KycController extends Controller
 
 
 
-                
+
         }
 
 
@@ -125,7 +147,7 @@ public function ModifyUserKyc(Request $req)
     if($count['kyc_approved_status'] == 1){
         $data = [
             'message' => "Kyc already accepted Cannot do changes"
-        ];           
+        ];
         return  CustomTrait::ErrorJson($data);
     }
 
@@ -143,20 +165,20 @@ public function ModifyUserKyc(Request $req)
                     $kyc->value = $val['value'];
                     $kyc->status = 1;
                     $kyc->save();
-                    
+
                     }catch(Exception $e) {
-                  
+
                         Log::channel('kyc')->info($e->getMessage());
                         $data = [
                             'message' => "something went wronge"
-                        ];           
+                        ];
                         return  CustomTrait::ErrorJson($data);
-              
-                 
+
+
                     }
 
 
-                
+
             }else{
 
 
@@ -169,24 +191,24 @@ public function ModifyUserKyc(Request $req)
                         $kyc->value = $val['value'];
                         $kyc->status = 1;
                         $kyc->save();
-    
+
                         }catch(Exception $e) {
-                      
+
                             Log::channel('kyc')->info($e->getMessage());
                             $data = [
                                 'message' => "something went wronge"
-                            ];           
+                            ];
                             return  CustomTrait::ErrorJson($data);
-                     
-                     
+
+
                         }
-    
 
 
-         
+
+
 
             }
-     
+
 
         }
 
@@ -206,7 +228,7 @@ public function ModifyUserKyc(Request $req)
 
     $data = [
         'message' => 'Kyc User Modified'
-    ];      
+    ];
 
     return  CustomTrait::SuccessJson($data);
 
@@ -219,7 +241,7 @@ public function ModifyUserKyc(Request $req)
 
 
 
-    
 
-        
+
+
 }

@@ -15,14 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\exampleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageConttroller;
-
-
-
-
-
-
-
-
+use App\Models\Kyc;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +67,15 @@ use App\Http\Controllers\PageConttroller;
         Route::post('/borrower_profile',[BorrowerController::class,'userdetail']);
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
+// ali api
+
+
+
+Route::get('commercialregistration/{id}', [KycController::class,'commercialregistration']);
+
+
+
+
 
 
 //invester

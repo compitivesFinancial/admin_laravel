@@ -3,7 +3,7 @@
  	return [
 		'welcome' => [
 			'SITE_URL'=>'http://35.154.195.186/admin/',
-			'sendermail'=>'rahulghatwal@imcrinox.com',
+			'sendermail'=>'notifications@cfc.sa',
 			'mailsender'=>'Competitiveness Financial',
 			'from'=>'Competitiveness Financial',
 			'smsurl'=>'http://examplesmsurl/',

@@ -11,6 +11,7 @@ use App\Models\User_otp;
 use App\Traits\CustomTrait;
 
 use App\Exceptions\MyValidationException;
+use App\Models\user_type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator ;
 
@@ -61,10 +62,12 @@ function sendOtp(Request $req)
 {
 
 
-    // $otp = random_int(100000, 999999);
+    $otp = random_int(1000, 9999);
+    $email = "qadomya14@gmail.com";
+    CustomTrait::sendOtpMail($otp,$email);
 
     // CustomTrait::sendOtpMail($otp,$req->email);
-$otp = 123456;
+// $otp = 1234;
 
     $kyc = new User_otp;
         $kyc->email = $req->email;

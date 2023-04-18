@@ -1,8 +1,8 @@
-Hi <strong>{{ $name }}</strong>,
+Hi <strong> ali</strong>,
 <p>Thank you for Registering with us.</p>
 <br>
 From
 <br>
-<strong>{{ $from }}</strong>
+<strong></strong>
 
 
