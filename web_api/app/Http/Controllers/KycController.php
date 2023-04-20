@@ -33,7 +33,8 @@ class KycController extends Controller
           CURLOPT_RETURNTRANSFER=>TRUE,
           CURLOPT_CUSTOMREQUEST => 'GET',
           CURLOPT_HTTPHEADER => array(
-            'apiKey: Mpchn72PkxNaHBxUDmLQZlRHXxz4100M',
+            // 'apiKey: Mpchn72PkxNaHBxUDmLQZlRHXxz4100M',
+            'apiKey: 5edLF9FLpuMWWMgPTvwSezSg8TFQGe74',
             'accept: application/json'
           ),
         ));
