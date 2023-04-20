@@ -580,7 +580,7 @@ public function sendMailHtml($id,$type,$otherid='')
 
 
     
-    public function SuccessJson($data){
+    static public function SuccessJson($data){
 
  
 
@@ -613,7 +613,7 @@ public function sendMailHtml($id,$type,$otherid='')
 
     
   
-    public function ErrorJson($data)
+    static public function ErrorJson($data)
     {
      
 

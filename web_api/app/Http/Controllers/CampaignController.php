@@ -144,7 +144,7 @@ $section11 = $total_raisaed;
     $sql_descp = $this->lang == 'en' ? 'description' : 'ar_description as description';
 
 
-    $data = Page::select('id', $sql_var,$sql_descp,
+    $data = Page::select('id', $sql_var,$sql_descp,'pages_type_id as type',
     'status','position')->where('status', 1)->orderBy('position', 'ASC')->get()->toArray();
 
 
