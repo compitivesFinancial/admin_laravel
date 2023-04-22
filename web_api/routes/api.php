@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\exampleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageConttroller;
+use App\Http\Controllers\YaqeenController;
 use App\Models\Kyc;
 
 /*
@@ -41,8 +42,9 @@ use App\Models\Kyc;
     Route::post('/login',[UserController::class,'login']);
     Route::post('/register',[UserController::class,'register']);
 
-
-
+    Route::get('yaqeenlogin',[YaqeenController::class,'YageenAuth']);
+    Route::get('yaqenIqama', [YaqeenController::class,'yaqenIqamaSaudi']);
+    Route::get('yaqeensaudi', [YaqeenController::class,'yaqeensaudi']);
     //product
     Route::get('/list_product',[ProductConttroller::class,'list']);
 
@@ -68,14 +70,11 @@ use App\Models\Kyc;
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
 // ali api
-
+// yaqeen
+//wathq
 
 
 Route::get('commercialregistration/{id}', [KycController::class,'commercialregistration']);
-
-
-
-
 
 
 //invester
@@ -122,7 +121,6 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
       // });
 
     });
-
 
     Route::post('/contact_us',[CampaignController::class,'contactUs']);
     Route::get('/home_page_api',[CampaignController::class,'homePageApi']);
