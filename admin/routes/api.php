@@ -46,7 +46,7 @@ use App\Http\Controllers\CmsConttroller;
 
 
 
-    Route::group(['middleware' => ['auth:sanctum','cors']], function() {
+    //Route::group(['middleware' => ['auth:sanctum','cors']], function() {
 
           Route::get('logout', [AdminController::class, 'logout']);
           Route::get('user', [AdminController::class, 'user']);
@@ -248,13 +248,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::get('/get_user_detail/{id}',[UserController::class,'getUserDetail']);
 
 
-
-
-
-
-
-
-
 //campaign
 
 
@@ -294,7 +287,7 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
 
 
 
-});
+//});
 
 
 
