@@ -33,7 +33,7 @@ use App\Models\investor_statement;
 use App\Models\kyc_log;
 use App\Models\Campaign_log;
 use App\Models\anb_accounts;
-
+use URL;
 
 
 
@@ -50,6 +50,33 @@ use Illuminate\Support\Facades\Auth;
 class CampaignController extends Controller
 {
 
+        function getcampaignattachment(Request $request){
+
+                $id = $request->id;
+                $url = URL::to("/");
+                $product = DB::table('campaign_attachment')->select('attachment AS attachments','id','ext')->where("campaign_id",$id)->get();
+                return  CustomTrait::SuccessJson($product);
+        
+        }
+        function deleteCampaignattachment(Request $request){
+                $id = $request->id;
+                $url = URL::to("/");
+                $product = DB::table('campaign_attachment')->where('id',$id)->delete();
+                $data = array("message"=>"deleted successfully");
+                return  CustomTrait::SuccessJson($data);
+
+        }
+        function addcampaignattachment(Request $request){
+
+              
+                $data=array('campaign_id'=> $request->id,"attachment"=>$request->attachment,"ext"=>$request->ext);
+                DB::table('campaign_attachment')->insert($data);
+             
+              $data = [
+                'message' => "Successfully inserted data."
+        ];
+        return  CustomTrait::SuccessJson($data);
+        }
 
         function insertOpportunitySetup(Request $req)
         {
@@ -2146,6 +2173,9 @@ if(isset($account_number_debit)){
 
 
                 $dataoppo = [];
+                if(empty($va['steps'])){
+                        $va['steps']=0;
+                }
                 $dataoppo = OpportunitySetup::where(['opportunity_id' => $campaign_id])->Where('steps', '<=', $va['steps'])->get()->toArray();
                 $count = count($dataoppo);
 

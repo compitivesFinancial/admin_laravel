@@ -575,14 +575,7 @@ public function sendMailHtml($id,$type,$otherid='')
  
 
 }
-
-
-
-
-    
-    static public function SuccessJson($data){
-
- 
+public static function  SuccessJson($data){
 
         return response()->json([
             'status' => true,
