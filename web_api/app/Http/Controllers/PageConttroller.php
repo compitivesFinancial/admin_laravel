@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
 use App\Models\Page;
@@ -63,11 +63,19 @@ function __construct(Request $request){
     {
 
         $sql_title = $this->lang == 'en' ? 'title' : 'ar_title as title';
-        $sql_description = $this->lang == 'en' ? 'description' : 'ar_description as description';
-
-        $product = Page::select('id',$sql_title,$sql_description,
+         $sql_description = $this->lang == 'en' ? 'description' : 'ar_description as description';
+        $allpagesparams = DB::table('pages_parameters')->get();
+       
+        $product = Page::select('id',$sql_title,$sql_description,'image',
         'status','position')->where(['id' => $id, 'status' => 1])->orderBy('position', 'ASC')->first()->toArray();
+     
+        foreach($allpagesparams as $parm){
+        $product['description'] = str_replace($parm->keyword,$parm->replace_with,$product['description']);
+        
 
+       }
+        
+       $product['description1'] =$product['description']; 
         return  CustomTrait::SuccessJson($product);
     }
 

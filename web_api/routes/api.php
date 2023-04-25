@@ -46,7 +46,7 @@ use App\Models\Kyc;
     //product
     Route::get('/list_product',[ProductConttroller::class,'list']);
 
-    Route::group(['middleware' => ['auth:sanctum']], function() {
+    //Route::group(['middleware' => ['auth:sanctum']], function() {
     // Route::group(['middleware' => ['isauth']], function () {
 
         Route::get('/examplefunc',[exampleController::class,'examplefunc']);
@@ -121,7 +121,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
 
       // });
 
-    });
+    //});
 
 
     Route::post('/contact_us',[CampaignController::class,'contactUs']);

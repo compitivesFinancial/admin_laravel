@@ -37,16 +37,12 @@ use App\Http\Controllers\CmsConttroller;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 
     Route::post('login', [AdminController::class, 'login']);
 
 
-
     //Route::group(['middleware' => ['auth:sanctum','cors']], function() {
+
 
           Route::get('logout', [AdminController::class, 'logout']);
           Route::get('user', [AdminController::class, 'user']);
@@ -275,19 +271,22 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/update_page',[PageConttroller::class,'update']);
     Route::get('/get_page_list',[PageConttroller::class,'list']);
     Route::get('/get_page_by_id/{id}',[PageConttroller::class,'GetById']);
+    
 
-
-
-
+    Route::post('/add_PagesParameters',[PageConttroller::class,'add_pagesparam']);
+    
+    Route::post('/deleteparams',[PageConttroller::class,'deleteparams']);
+    Route::get('/getPagesParameters',[PageConttroller::class,'getPagesParameters']);
     //oppornity setup
-
-
+    
+    Route::post('/deleteCampaignattachment',[CampaignController::class,'deleteCampaignattachment']);
+    Route::post('/getcampaignattachment',[CampaignController::class,'getcampaignattachment']);
+    Route::post('/addcampaignattachment',[CampaignController::class,'addcampaignattachment']);
     Route::post('/insert_opportunity_setup',[CampaignController::class,'insertOpportunitySetup']);
+    
 
 
-
-
-//});
+    //});
 
 
 

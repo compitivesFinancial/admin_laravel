@@ -16,6 +16,7 @@ class Page extends Model
         'description',
         'ar_description',
         'status',
+        'image',
         'position'
     ];
 

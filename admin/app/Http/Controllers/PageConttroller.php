@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
 use App\Models\Page;
@@ -28,6 +28,7 @@ class PageConttroller extends Controller
             $page->ar_description = $req->ar_description;
             $page->status = $req->status;
             $page->position = $req->position;
+            $page->image = $req->image;
             $page->save();
 
         // } catch (Exception $e) {
@@ -59,13 +60,19 @@ class PageConttroller extends Controller
     public function GetById($id)
     {
 
-        $product = Page::select('id', 'title', 'ar_title','description','ar_description',
+        $product = Page::select('id', 'title', 'ar_title','description','ar_description','image',
         'status','position')->where(['id' => $id, 'status' => 1])->orderBy('position', 'ASC')->first()->toArray();
 
 
         return  CustomTrait::SuccessJson($product);
     }
+    public function getPagesParameters(){
 
+        $product = DB::table('pages_parameters')->get();
+
+
+        return  CustomTrait::SuccessJson($product);
+    }
 
 
 
@@ -80,11 +87,40 @@ class PageConttroller extends Controller
 
         return  CustomTrait::SuccessJson($data);
     }
+    public function add_pagesparam(Request $req){
+        if(empty($req->id)){
+            
+        $data=array('keyword'=>$req->keyword,"replace_with"=>$req->replace_keyword);
+        DB::table('pages_parameters')->insert($data);
+        }else {
+         //   echo $req->id;
+            $data=array('keyword'=>$req->keyword,"replace_with"=>$req->replace_keyword);
+            DB::table('pages_parameters')->where('id',(int)$req->id)->update($data);
+
+        }
 
 
+        $data = [
+            'message' => "Page Updated"
+        ];
 
 
+        return  CustomTrait::SuccessJson($data);
+    }
+    
+    public function deleteparams(Request $req){
+        if(!empty($req->id)){
+        
+        DB::table('pages_parameters')->where("id",$req->id)->delete();
+        }
 
+        $data = [
+            'message' => "Params deleted"
+        ];
+
+
+        return  CustomTrait::SuccessJson($data);
+    }
     public function update(Request $req)
     {
 
@@ -99,6 +135,7 @@ class PageConttroller extends Controller
             $page->ar_description = $req->ar_description;
             $page->status = $req->status;
             $page->position = $req->position;
+            $page->image = $req->image;
             $page->save();
 
 
