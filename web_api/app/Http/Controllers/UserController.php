@@ -11,6 +11,7 @@ use App\Models\User_otp;
 use App\Traits\CustomTrait;
 
 use App\Exceptions\MyValidationException;
+use App\Models\anb_accounts;
 use App\Models\user_type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator ;
@@ -394,4 +395,12 @@ public function logout(Request $request)
     ]);
 }
 
+public function userAccoutnumber(Request $request)
+{
+$user_id=$request->user()->id;
+
+$user_account_number=anb_accounts::where('user_id',$request->user()->id)->first();
+
+return CustomTrait::SuccessJson($user_account_number);
+}
 }

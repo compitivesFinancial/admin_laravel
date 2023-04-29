@@ -8,6 +8,7 @@ use App\Models\campaign;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
 use App\Models\borrower_statement;
+use App\Models\Borrower_wallet;
 use App\Models\investor_statement;
 use App\Models\User;
 use App\Models\UserKycRole;
@@ -21,7 +22,7 @@ use App\Models\Campaign_evaluation;
 
 
 use Illuminate\Support\Facades\Auth;
-
+use PHPUnit\Framework\Constraint\Count;
 
 class BorrowerController extends Controller
 {
@@ -30,11 +31,49 @@ class BorrowerController extends Controller
         function __construct(Request $request){
 
                 $this->lang = $request->header('Accept-Language');
-        
+
         }
-        
 
 
+        public function borrowerStatment(Request $request)
+        {
+        $borrower_id= $request->user()->id;
+        $campaign=campaign::where('user_id',$borrower_id)->get();
+        $campaign_count=Count($campaign);
+        if($campaign_count == 0 )
+        {
+            $data=['message'=>'there is no campagin for this user'];
+        }else{
+            $campaign_id=[];
+            for($i=0;$i<$campaign_count;$i++)
+            {
+            $campaign=campaign::where('user_id',$borrower_id)->get();
+            $campaign_id[]=$campaign[$i]['id'];
+            $borrow_statment=borrower_statement::whereIn('campaign_id',$campaign_id)->get();
+
+            }
+
+            return CustomTrait::SuccessJson($borrow_statment);
+
+        }
+
+
+        }
+
+        function borroweWallet(Request $request)
+        {
+        $borrower_id= $request->user()->id;
+        $wallet=Borrower_wallet::where('borrower_id',$borrower_id)->get();
+      $count=Count($wallet);
+      if($count==0)
+      {
+        $data=['data'=>'there is no wallet '];
+        return CustomTrait::ErrorJson($data);
+      }else
+      {
+        return CustomTrait::SuccessJson($wallet);
+      }
+        }
 
 
         function borrowerdashboard(Request $req)
@@ -103,7 +142,7 @@ class BorrowerController extends Controller
 
                 $dd = explode(' ', $data['name']);
 
-            
+
 
                 $lastname = '';
                 if(isset($dd[1])){
@@ -168,7 +207,7 @@ class BorrowerController extends Controller
                         $arrKyc_id = explode(',', $val1['kyc_id']);
                         foreach ($arrKyc_id as $key => $val) {
 
-                             
+
 
                                 $detail[$key] = Kyc::select('id', $sql_var , 'status', 'position')->where(['id' => $val])->first()->toArray();
 
@@ -302,7 +341,7 @@ class BorrowerController extends Controller
 
                 // echo '<pre>';
                 // print_r($data->toArra);
-                // die; 
+                // die;
 
                 ///////////////////////////////////loan management//////////////////////////////////////////////
 

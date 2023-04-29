@@ -48,7 +48,7 @@ use App\Models\Kyc;
     //product
     Route::get('/list_product',[ProductConttroller::class,'list']);
 
-    //Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::group(['middleware' => ['auth:sanctum']], function() {
     // Route::group(['middleware' => ['isauth']], function () {
 
         Route::get('/examplefunc',[exampleController::class,'examplefunc']);
@@ -70,6 +70,13 @@ use App\Models\Kyc;
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
 // ali api
+Route::get('/account_number',[UserController::class,'userAccoutnumber']);
+Route::get('investor_statment',[InvesterController::class,'investorStatment']);
+Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
+Route::get('investor_borrower',[BorrowerController::class,'borrowerStatment']);
+Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
+
+//borroweWallet
 // yaqeen
 //wathq
 
@@ -118,7 +125,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::get('/cmsget_by_id/{id}',[CampaignController::class,'cmsGetById']);
         Route::get('/cmsget_by_type/{id}',[CampaignController::class,'cmsGetByType']);
 
-      // });
+      });
 
     //});
 

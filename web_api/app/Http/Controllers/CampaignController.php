@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\CustomTrait;
-use Illuminate\Http\Request;
-use App\Models\campaign;
+use DB;
 use App\Models\Cms;
-use App\Models\campaign_inverter;
+use App\Models\loan;
+use App\Models\Page;
+use App\Models\Product;
+use App\Models\campaign;
+use App\Traits\CustomTrait;
+use App\Models\Campaign_log;
+use Illuminate\Http\Request;
 use App\Models\campaign_team;
 use App\Models\campaign_image ;
-use App\Models\Campaign_log;
+use App\Models\campaign_inverter;
 use App\Models\borrower_statement;
+
 use App\Models\investor_statement;
-use App\Models\Product;
-use App\Models\ProductAttributeDetail;
-use App\Models\loan;
-
-use App\Models\Page;
-use DB;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\ProductAttributeDetail;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class CampaignController extends Controller
 {
@@ -30,6 +32,8 @@ class CampaignController extends Controller
     $this->lang = $request->header('Accept-Language');
 
 }
+
+
 
 
 
@@ -548,10 +552,10 @@ try{
 
   function userCampaign($id)
   {
-  
+
     $investerCount=campaign_inverter::select('id','campaign_id','invester_id','amount as invested_amount','created_at as invested_date')->where(['invester_id'=>$id])->first();
-  
-    
+
+
     $data=campaign::select("id","user_id","tagline","share_price","total_valuation","min_investment","max_investment","fundriser_investment","company_bio","reason_to_invest","investment_planning","terms","introduce_team","status")->where('id',$investerCount['campaign_id'])->get()->toArray();
     return  CustomTrait::SuccessJson($data);
 
@@ -661,7 +665,7 @@ try{
 
 
 
-    function list()
+    function list(Request $req)
       {
         $data=campaign::select("id","user_id","tagline","share_price","total_valuation","min_investment","max_investment","fundriser_investment","company_bio","reason_to_invest","investment_planning","terms","introduce_team","status")->where(['status'=>1,'approved_status'=>1])->get()->toArray();
         return  CustomTrait::SuccessJson($data);
