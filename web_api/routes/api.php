@@ -69,12 +69,12 @@ use App\Models\Kyc;
         Route::post('/borrower_profile',[BorrowerController::class,'userdetail']);
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
-// ali api
-Route::get('/account_number',[UserController::class,'userAccoutnumber']);
-Route::get('investor_statment',[InvesterController::class,'investorStatment']);
-Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
-Route::get('investor_borrower',[BorrowerController::class,'borrowerStatment']);
-Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
+        // ali api
+        Route::get('/account_number',[UserController::class,'userAccoutnumber']);
+        Route::get('investor_statment',[InvesterController::class,'investorStatment']);
+        Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
+        Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
+        Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
 
 //borroweWallet
 // yaqeen
