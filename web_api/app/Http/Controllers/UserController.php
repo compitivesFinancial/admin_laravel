@@ -15,6 +15,8 @@ use App\Models\anb_accounts;
 use App\Models\user_type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator ;
+use PHPUnit\Framework\Constraint\Count;
+
 
 class UserController extends Controller
 {
@@ -23,7 +25,6 @@ class UserController extends Controller
 
     function checkMobile(Request $req)
     {
-
         $data=User::select('id')->where('email',$req->email)->first();
 
 
@@ -397,10 +398,16 @@ public function logout(Request $request)
 
 public function userAccoutnumber(Request $request)
 {
-$user_id=$request->user()->id;
+    $user_id=$request->user()->id;
+    $user_account_number=anb_accounts::where('user_id',$request->user()->id)->first();
 
-$user_account_number=anb_accounts::where('user_id',$request->user()->id)->first();
+    if($user_account_number == null || $user_account_number == ''){
+        $data = ["message" => "no details for this user"];
+            return CustomTrait::ErrorJson($data);
+    } else {
+            return CustomTrait::SuccessJson($user_account_number);
+    }
 
-return CustomTrait::SuccessJson($user_account_number);
 }
 }
+

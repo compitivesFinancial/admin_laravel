@@ -248,7 +248,7 @@ static public function sendOtpMail($otp,$email)
 
 
 
-public function sendMailHtml($id,$type)
+public static function sendMailHtml($id,$type)
 {
 
 
@@ -494,7 +494,7 @@ public function sendMailHtml($id,$type)
     public static function SuccessJson($data){
 
 
- 
+
 
 
 
@@ -525,8 +525,8 @@ public function sendMailHtml($id,$type)
     }
 
 
-    
-  
+
+
     public static function ErrorJson($data)
 
     {

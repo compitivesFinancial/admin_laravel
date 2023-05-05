@@ -33,7 +33,9 @@ use App\Models\Kyc;
 //     return $request->user();
 // });
 
-
+    //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
+    Route::get('/get_page_by_id_outside/{id}',[PageConttroller::class,'GetById']);
+    
     Route::post('login', [AdminController::class, 'login']);
     Route::post('/check_mobile',[UserController::class,'checkMobile']);
     Route::post('/send_otp',[UserController::class,'sendOtp']);
@@ -47,6 +49,8 @@ use App\Models\Kyc;
     Route::get('yaqeensaudi', [YaqeenController::class,'yaqeensaudi']);
     //product
     Route::get('/list_product',[ProductConttroller::class,'list']);
+
+
 
     Route::group(['middleware' => ['auth:sanctum']], function() {
     // Route::group(['middleware' => ['isauth']], function () {
@@ -69,12 +73,12 @@ use App\Models\Kyc;
         Route::post('/borrower_profile',[BorrowerController::class,'userdetail']);
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
-        // ali api
-        Route::get('/account_number',[UserController::class,'userAccoutnumber']);
-        Route::get('investor_statment',[InvesterController::class,'investorStatment']);
-        Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
-        Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
-        Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
+// ali api
+Route::get('/account_number',[UserController::class,'userAccoutnumber']);
+Route::get('investor_statment',[InvesterController::class,'investorStatment']);
+Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
+Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
+Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
 
 //borroweWallet
 // yaqeen
@@ -132,3 +136,4 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
     Route::post('/contact_us',[CampaignController::class,'contactUs']);
     Route::get('/home_page_api',[CampaignController::class,'homePageApi']);
     Route::get('/footer',[CampaignController::class,'footer']);
+

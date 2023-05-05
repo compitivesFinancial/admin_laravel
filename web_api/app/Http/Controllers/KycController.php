@@ -33,9 +33,8 @@ class KycController extends Controller
           CURLOPT_RETURNTRANSFER=>TRUE,
           CURLOPT_CUSTOMREQUEST => 'GET',
           CURLOPT_HTTPHEADER => array(
-            // 'apiKey: Mpchn72PkxNaHBxUDmLQZlRHXxz4100M',
-            'apiKey: 5edLF9FLpuMWWMgPTvwSezSg8TFQGe74',
-            'accept: application/json'
+            'accept: application/json',
+            'apiKey: 5edLF9FLpuMWWMgPTvwSezSg8TFQGe74'
           ),
         ));
 
@@ -47,6 +46,8 @@ class KycController extends Controller
 
 
     }
+
+
     function __construct(Request $request){
 
         $this->lang = $request->header('Accept-Language');
@@ -246,3 +247,4 @@ public function ModifyUserKyc(Request $req)
 
 
 }
+
