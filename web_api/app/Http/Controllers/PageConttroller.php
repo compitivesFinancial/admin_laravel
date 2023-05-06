@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use DB;
+
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use Exception;
+use Illuminate\Support\Facades\DB ;
 use Illuminate\Support\Facades\Log;
 
 class PageConttroller extends Controller
@@ -18,7 +19,7 @@ function __construct(Request $request){
 
 }
 
-    
+
     public function insert(Request $req)
     {
 
@@ -46,7 +47,7 @@ function __construct(Request $request){
         // }
 
 
-   
+
 
 
         $data = [
@@ -67,6 +68,7 @@ function __construct(Request $request){
          $sql_description = $this->lang == 'en' ? 'description' : 'ar_description as description';
          $sql_description = 'description';
         $allpagesparams = DB::table('pages_parameters')->get();
+
         $product = Page::select('id',$sql_title,$sql_description,'image',
         'status','position')->where(['id' => $id, 'status' => 1])->orderBy('position', 'ASC')->first()->toArray();
        // $product['description'] = strip_tags($product['description']);
@@ -111,6 +113,19 @@ function __construct(Request $request){
      
        $product['description'] =$message; 
 }
+
+
+        $product = Page::select('id',$sql_title,$sql_description,'image',
+        'status','position')->where(['id' => $id, 'status' => 1])->orderBy('position', 'ASC')->first()->toArray();
+
+        foreach($allpagesparams as $parm){
+        $product['description'] = str_replace($parm->keyword,$parm->replace_with,$product['description']);
+
+
+       }
+
+       $product['description1'] =$product['description'];
+
         return  CustomTrait::SuccessJson($product);
     }
 
@@ -138,7 +153,7 @@ function __construct(Request $request){
     public function update(Request $req)
     {
 
-    
+
 
         // try {
 
@@ -162,7 +177,7 @@ function __construct(Request $request){
         //     return  CustomTrait::ErrorJson($data);
         // }
 
- 
+
         $data = [
             'message' => "Page Updated"
         ];
