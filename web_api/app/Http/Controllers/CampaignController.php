@@ -256,16 +256,7 @@ class CampaignController extends Controller
     function borrowerStatement(Request $req)
     {
 
-        // echo $req->user_id;
-        // die;
-
-
         $campaign = campaign::select("id", "user_id", "product_id", "total_valuation")->where('user_id', $req->user_id)->first()->toArray();
-
-        // echo '<pre>';
-        // print_r($campaign);
-        // die;
-
 
         if (!$campaign) {
 
@@ -277,12 +268,6 @@ class CampaignController extends Controller
 
         }
 
-        // echo '<pre>';
-        // print_r($campaign);
-        // die;
-
-
-
         $campaign_id = $campaign['id'];
 
 
@@ -291,10 +276,7 @@ class CampaignController extends Controller
 
         $data = borrower_statement::select("id", "campaign_id", "due_date", "principle_expected", "interest_expected", "fees_expected", "total_expected", "principle_paid", "interest_paid", "fees_paid", "total_paid", "paid_date", "principle_due", "interest_due", "fees_due", "total_due", "status")->where('campaign_id', $campaign_id)->get()->toArray();
 
-        // echo '<pre>';
-        // print_r($data);
-        // die;
-
+    
 
 
         if (empty($data)) {
@@ -565,8 +547,10 @@ class CampaignController extends Controller
 
 
 
-    function userCampaign($id)
-    {
+
+  function userCampaign($id)
+  {
+  
 
         $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
 
