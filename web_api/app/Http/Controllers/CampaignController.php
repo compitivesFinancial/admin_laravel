@@ -551,8 +551,10 @@ try{
   
     $investerCount=campaign_inverter::select('id','campaign_id','invester_id','amount as invested_amount','created_at as invested_date')->where(['invester_id'=>$id])->first();
   
-    
+    $data=array();
+    if(empty($investerCount)){
     $data=campaign::select("id","user_id","tagline","share_price","total_valuation","min_investment","max_investment","fundriser_investment","company_bio","reason_to_invest","investment_planning","terms","introduce_team","status")->where('id',$investerCount['campaign_id'])->get()->toArray();
+    }
     return  CustomTrait::SuccessJson($data);
 
   }
