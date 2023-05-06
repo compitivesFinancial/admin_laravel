@@ -465,14 +465,21 @@ class CampaignController extends Controller
     {
 
 
-        $session_user_id = $req->user_id;
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where('id', $req->campaign_id)->first()->toArray();
+        $session_user_id = $req->user()->id;
+        $amount=$req->header('amount');
+        $investor=$req->header('invester');
+        $campaign=$req->header('campaign');
+        // $data = [
+        //     'message' => "Investor is = " . $investor . " / invest amount of  " .  $amount . " /in the campain Id  " . $campaign
+        // ];
+        // return CustomTrait::ErrorJson($data);
+
+        // return "Investor is = "+$investor + " / invest amount of  "+ $amount + " /in the campain Id  "+ $campaign;
+        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where('id', $campaign)->first()->toArray();
 
 
 
-
-
-        if ($req->amount < $data['min_investment'] || $req->amount > $data['max_investment']) {
+        if ($amount < $data['min_investment'] || $amount > $data['max_investment']) {
 
             $data = [
                 'message' => "Please insert Amount between " . $data['min_investment'] . " to " . $data['max_investment']
@@ -482,9 +489,9 @@ class CampaignController extends Controller
         }
 
 
-        $investerCount = campaign_inverter::where(['campaign_id' => $req->campaign_id, 'invester_id' => $session_user_id])->get()->count();
+        $investerCount = campaign_inverter::where(['campaign_id' => $campaign, 'invester_id' => $session_user_id])->get()->count();
 
-        $sumamount = campaign_inverter::where(['campaign_id' => $req->campaign_id])->get()->sum('amount');
+        $sumamount = campaign_inverter::where(['campaign_id' => $campaign])->get()->sum('amount');
 
 
 
@@ -501,7 +508,7 @@ class CampaignController extends Controller
 
 
 
-        $checkAmount = $req->amount + $sumamount;
+        $checkAmount = $amount + $sumamount;
 
 
 
@@ -518,11 +525,11 @@ class CampaignController extends Controller
 
         try {
 
-            $campaign = new campaign_inverter;
-            $campaign->campaign_id = $req->campaign_id;
-            $campaign->invester_id = $session_user_id;
-            $campaign->amount = $req->amount;
-            $campaign->save();
+            $campaignObj = new campaign_inverter;
+            $campaignObj->campaign_id = $campaign;
+            $campaignObj->invester_id = $session_user_id;
+            $campaignObj->amount = $amount;
+            $campaignObj->save();
 
 
         } catch (Exception $e) {

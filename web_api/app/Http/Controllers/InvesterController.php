@@ -28,6 +28,7 @@ use App\Models\EvaluationDetail;
 use App\Models\Evaluation_category;
 use App\Models\Campaign_evaluation;
 use App\Models\Investor_wallet;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Constraint\Count;
 
@@ -38,7 +39,7 @@ class InvesterController extends Controller
     function __construct(Request $request)
     {
 
-        $this->lang = $request->header('Accept-Language');
+        App::setLocale( $request->header('Accept-Language'));
     }
 
 
