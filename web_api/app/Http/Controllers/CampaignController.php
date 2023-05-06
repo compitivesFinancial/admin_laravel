@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+
 use App\Models\Cms;
 use App\Models\loan;
 use App\Models\Page;
@@ -14,14 +14,17 @@ use Illuminate\Http\Request;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
 use App\Models\campaign_inverter;
-use App\Models\borrower_statement;
 
+use App\Models\borrower_statement;
+use App\Models\Contact_us;
 use App\Models\investor_statement;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductAttributeDetail;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -30,22 +33,25 @@ class CampaignController extends Controller
     function __construct(Request $request)
     {
 
-        $this->lang = $request->header('Accept-Language');
+        App::setlocale($request->header('Accept-Language'));
 
     }
 
 
 
 
-
+    public function campaginOutSide(){
+        $outside=campaign::get();
+        return CustomTrait::SuccessJson($outside);
+    }
 
     public function homePageApi()
     {
 
 
-        $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
-        $sql_descp = $this->lang == 'en' ? 'description' : 'ar_description as description';
-        $sql_image = $this->lang == 'en' ? 'image' : 'ar_image as image';
+        $sql_var = App::isLocal() == 'en' ? 'title' : 'ar_title as title';
+        $sql_descp = App::isLocal() == 'en' ? 'description' : 'ar_description as description';
+        $sql_image = App::isLocal() == 'en' ? 'image' : 'ar_image as image';
 
 
         $section0 = Cms::select('id', $sql_var, $sql_descp, 'status', 'type', $sql_image, 'flag')->where(['type' => 0, 'status' => 1])->orderBy('id', 'ASC')->get()->toArray();
@@ -79,7 +85,7 @@ class CampaignController extends Controller
 
         $section11 = $total_raisaed;
 
-        $sql_title = $this->lang == 'en' ? 'title' : 'ar_title';
+        $sql_title = App::isLocal()== 'en' ? 'title' : 'ar_title';
 
         $product = Product::select('id', $sql_title)->where('status', 1)->orderBy('position', 'ASC')->get()->toArray();
 
@@ -146,8 +152,8 @@ class CampaignController extends Controller
     public function footer()
     {
 
-        $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
-        $sql_descp = $this->lang == 'en' ? 'description' : 'ar_description as description';
+        $sql_var = App::isLocal() == 'en' ? 'title' : 'ar_title as title';
+        $sql_descp = App::isLocal() == 'en' ? 'description' : 'ar_description as description';
 
 
         $data = Page::select(
@@ -174,7 +180,7 @@ class CampaignController extends Controller
 
         // try {
 
-        $page = new Contact_us;
+        $page = new Contact_us();
         $page->first_name = $req->first_name;
         $page->last_name = $req->last_name;
         $page->email = $req->email;
@@ -276,7 +282,7 @@ class CampaignController extends Controller
 
         $data = borrower_statement::select("id", "campaign_id", "due_date", "principle_expected", "interest_expected", "fees_expected", "total_expected", "principle_paid", "interest_paid", "fees_paid", "total_paid", "paid_date", "principle_due", "interest_due", "fees_due", "total_due", "status")->where('campaign_id', $campaign_id)->get()->toArray();
 
-    
+
 
 
         if (empty($data)) {
@@ -543,7 +549,7 @@ class CampaignController extends Controller
 
   function userCampaign($id)
   {
-  
+
 
         $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
 
