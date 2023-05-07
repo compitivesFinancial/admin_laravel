@@ -39,7 +39,28 @@ class CampaignController extends Controller
 
 
 
+    public function updateVersionProgram(Request $req,$id)
+    {
+        $result=campaign::find($id);
+        $program_number=$req->header('program_number');
+        $version_number=$req->header('version_number');
+        if($result != "")
+        {
+            $result->program_number=$program_number;
+            $result->version_number=$version_number;
+            $result->save();
+            $data=['message'=>'success update'];
+            return CustomTrait::SuccessJson($data);
+        }else
+        {
+            $data=[
+                'message'=>'there is something wrong'
+            ];
+            return CustomTrait::ErrorJson($data);
+        }
 
+
+    }
     public function campaginOutSide(){
         $outside=campaign::get();
         return CustomTrait::SuccessJson($outside);

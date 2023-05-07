@@ -66,8 +66,6 @@ class CampaignController extends Controller
 
         }
         function addcampaignattachment(Request $request){
-
-
                 $data=array('campaign_id'=> $request->id,"attachment"=>$request->attachment,"ext"=>$request->ext);
                 DB::table('campaign_attachment')->insert($data);
 
@@ -84,11 +82,14 @@ class CampaignController extends Controller
             if($result != ""){
              $result->close_date=$date;
              $result->save();
+             $data=['message'=>'success update date'];
+             return CustomTrait::SuccessJson($data);
             }else
             {
-                return 'error';
+                $data=['message'=>'Failed update date'];
+                return CustomTrait::ErrorJson($data);
             }
-            return $result;
+
         }
 
         function insertOpportunitySetup(Request $req)
