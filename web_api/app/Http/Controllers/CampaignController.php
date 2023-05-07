@@ -46,8 +46,9 @@ class CampaignController extends Controller
         $version_number=$req->header('version_number');
         if($result != "")
         {
-            $result->program_number=$program_number;
-            $result->version_number=$version_number;
+
+            $result->program_number=$program_number == ""?$result->program_number:$program_number;
+            $result->version_number=$version_number == ""?$result->version_number:$version_number;
             $result->save();
             $data=['message'=>'success update'];
             return CustomTrait::SuccessJson($data);

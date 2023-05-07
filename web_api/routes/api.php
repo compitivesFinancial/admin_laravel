@@ -32,7 +32,7 @@ use App\Models\Kyc;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
+
     //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
     Route::get('/get_page_by_id_outside/{id}',[PageConttroller::class,'GetById']);
     Route::get('/get_campagin_outside',[CampaignController::class,'campaginOutSide']);
@@ -104,7 +104,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::post('/update_campaign',[CampaignController::class,'update']);
         Route::get('/list_campaign',[CampaignController::class,'list']);
         Route::get('/get_campaign_by_id/{id}',[CampaignController::class,'getById']);
-
+        Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
 
         Route::get('/user_campaign/{id}',[CampaignController::class,'userCampaign']);
         Route::get('/user_campaign_borrower/{id}',[CampaignController::class,'userCampaignborrower']);
