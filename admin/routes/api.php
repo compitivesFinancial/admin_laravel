@@ -40,10 +40,7 @@ use App\Http\Controllers\CmsConttroller;
 
     Route::post('login', [AdminController::class, 'login']);
 
-
-    //Route::group(['middleware' => ['auth:sanctum','cors']], function() {
-
-
+    Route::group(['middleware' => ['auth:sanctum','cors']], function() {
           Route::get('logout', [AdminController::class, 'logout']);
           Route::get('user', [AdminController::class, 'user']);
           Route::get('/get_admin_byid/{id}',[AdminController::class,'getUserById']);
@@ -51,7 +48,6 @@ use App\Http\Controllers\CmsConttroller;
           Route::post('/get_department',[AdminController::class,'getDepartment']);
           Route::get('/admin_list',[AdminController::class,'showuser']);
           Route::post('/update_admin',[AdminController::class,'updateuser']);
-
           Route::get('/admin_ip_list',[AdminController::class,'listAdminIp']);
           Route::post('/add_admin_ip',[AdminController::class,'addAdminIp']);
           Route::get('/list_adminiplogs',[AdminController::class,'adminLogs']);
@@ -81,8 +77,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     //EvaluationConttroller
     Route::post('/add_evaluation',[EvaluationConttroller::class,'insert']);
     Route::post('/add_evaluation_detail',[EvaluationConttroller::class,'insertEvaluationDetail']);
-
-
     Route::get('/list_evaluation',[EvaluationConttroller::class,'list']);
     Route::get('/get_evaluation_by_id/{id}',[EvaluationConttroller::class,'GetById']);
     Route::post('/update_evaluation',[EvaluationConttroller::class,'Update']);
@@ -115,9 +109,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_kyc_detail',[KycController::class,'deleteProductDetail']);
     Route::get('/kyc_infotype_list',[KycController::class,'infotype_list']);
     Route::get('/kyc_type_list',[KycController::class,'type_list']);
-
-
-
     Route::post('/delete_infotype',[KycController::class,'deleteInfoType']);
     Route::post('/add_infotype',[KycController::class,'addInfotype']);
     Route::post('/update_infotype',[KycController::class,'updateInfotype']);
@@ -125,13 +116,8 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
 
 
         //user type
-
         Route::get('/show_user_type',[KycController::class,'showUserType']);
         Route::post('/update_user_type',[KycController::class,'updateUserType']);
-
-
-
-
 
         /////////////loan/////////////////////////////
 
@@ -159,28 +145,18 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
         Route::get('/loan_list',[LoanManagementController::class,'loanList']);
 
 
-        //repayment
-        Route::get('/graceperiod_list',[LoanManagementController::class,'gracePeriodList']);
-        Route::get('/payamentintervalmethod_list',[LoanManagementController::class,'payamentIntervalMethodList']);
-
-        Route::post('/repaymentscheduling_insert',[LoanManagementController::class,'repaymentSchedulingInsert']);
-
-
-
-        Route::post('/applyloan',[CampaignController::class,'applyLoan']);
-        Route::post('/get_statements',[CampaignController::class,'getStatements']);
+    //repayment
+    Route::get('/graceperiod_list',[LoanManagementController::class,'gracePeriodList']);
+    Route::get('/payamentintervalmethod_list',[LoanManagementController::class,'payamentIntervalMethodList']);
+    Route::post('/repaymentscheduling_insert',[LoanManagementController::class,'repaymentSchedulingInsert']);
+    Route::post('/applyloan',[CampaignController::class,'applyLoan']);
+    Route::post('/get_statements',[CampaignController::class,'getStatements']);
 
 
-
-
-        //invester list
-        Route::post('/get_invester_list',[CampaignController::class,'getInvesterList']);
-
-
-
-
-        Route::get('/get_country_list',[KycController::class,'countryList']);
-        Route::get('/get_city_list/{id}',[KycController::class,'cityList']);
+    //invester list
+    Route::post('/get_invester_list',[CampaignController::class,'getInvesterList']);
+    Route::get('/get_country_list',[KycController::class,'countryList']);
+    Route::get('/get_city_list/{id}',[KycController::class,'cityList']);
 
 
     //cms
@@ -191,36 +167,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_cms',[CmsConttroller::class,'delete']);
     Route::get('/get_by_type/{id}',[CmsConttroller::class,'GetByType']);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //userKyc
     Route::get('/show_userkyc',[KycController::class,'showAddUserKyc']);
     Route::post('/add_userkyc',[KycController::class,'insertUserKyc']);
@@ -230,38 +176,18 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
 
     //user
     Route::get('/usertype_list/{id}',[UserController::class,'showUserType']);
-
     Route::get('/admin_department',[UserController::class,'adminDepartment']);
-
-
-
-
     Route::get('/getUserList/{role_type}',[UserController::class,'getUserList']);
-
-
-
     Route::get('/get_user/{id}',[UserController::class,'getUser']);
     Route::get('/get_user_detail/{id}',[UserController::class,'getUserDetail']);
 
-
 //campaign
-
-
     Route::get('/list_campaign/{id}',[CampaignController::class,'list']);
     Route::get('/listing_campaign',[CampaignController::class,'listing']);
-
-
-
-
-
     Route::get('/get_campaign_by_id/{id}/{role}',[CampaignController::class,'getById']);
     // Route::get('/get_campaign_by_id/{id}/{role}',[CampaignController::class,'getByIdnew']);
-
-
-
     Route::post('/kyc_approvestatus',[CampaignController::class,'kycApproveStatus']);
     Route::post('/delete_campaign',[CampaignController::class,'deleteCampaign']);
-
     Route::post('/campaign_approvestatus',[CampaignController::class,'CampaignApproveStatus']);
     Route::post('/modify_evaluation_campaign',[CampaignController::class,'modifyEvaluationCampaign']);
 
@@ -271,30 +197,16 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/update_page',[PageConttroller::class,'update']);
     Route::get('/get_page_list',[PageConttroller::class,'list']);
     Route::get('/get_page_by_id/{id}',[PageConttroller::class,'GetById']);
-    
-
     Route::post('/add_PagesParameters',[PageConttroller::class,'add_pagesparam']);
-    
     Route::post('/deleteparams',[PageConttroller::class,'deleteparams']);
     Route::get('/getPagesParameters',[PageConttroller::class,'getPagesParameters']);
+
     //oppornity setup
-    
     Route::post('/deleteCampaignattachment',[CampaignController::class,'deleteCampaignattachment']);
     Route::post('/getcampaignattachment',[CampaignController::class,'getcampaignattachment']);
     Route::post('/addcampaignattachment',[CampaignController::class,'addcampaignattachment']);
     Route::post('/insert_opportunity_setup',[CampaignController::class,'insertOpportunitySetup']);
-    
+    Route::post('campaign_update_closedate/{id}',[CampaignController::class,'updateDateCampagin']);
 
 
-    //});
-
-
-
-
-
-
-
-
-
-
-
+});
