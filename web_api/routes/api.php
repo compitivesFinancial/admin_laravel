@@ -105,7 +105,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::post('/update_campaign',[CampaignController::class,'update']);
         Route::get('/list_campaign',[CampaignController::class,'list']);
         Route::get('/get_campaign_by_id/{id}',[CampaignController::class,'getById']);
-
+        Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
 
         Route::get('/user_campaign/{id}',[CampaignController::class,'userCampaign']);
         Route::get('/user_campaign_borrower/{id}',[CampaignController::class,'userCampaignborrower']);

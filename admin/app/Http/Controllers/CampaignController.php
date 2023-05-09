@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
+
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
 use App\Models\campaign;
@@ -33,19 +33,18 @@ use App\Models\investor_statement;
 use App\Models\kyc_log;
 use App\Models\Campaign_log;
 use App\Models\anb_accounts;
-use URL;
+
 
 
 
 use App\Models\OpportunitySetup;
-
-
-
+use DateTime;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-
-
-
-
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class CampaignController extends Controller
 {
@@ -56,7 +55,7 @@ class CampaignController extends Controller
                 $url = URL::to("/");
                 $product = DB::table('campaign_attachment')->select('attachment AS attachments','id','ext')->where("campaign_id",$id)->get();
                 return  CustomTrait::SuccessJson($product);
-        
+
         }
         function deleteCampaignattachment(Request $request){
                 $id = $request->id;
@@ -67,15 +66,30 @@ class CampaignController extends Controller
 
         }
         function addcampaignattachment(Request $request){
-
-              
                 $data=array('campaign_id'=> $request->id,"attachment"=>$request->attachment,"ext"=>$request->ext);
                 DB::table('campaign_attachment')->insert($data);
-             
+
               $data = [
                 'message' => "Successfully inserted data."
         ];
         return  CustomTrait::SuccessJson($data);
+        }
+
+
+        public function updateDateCampagin(Request $req,$id){
+            $result=campaign::find($id);
+            $date=$req->header('date');
+            if($result != ""){
+             $result->close_date=$date;
+             $result->save();
+             $data=['message'=>'success update date'];
+             return CustomTrait::SuccessJson($data);
+            }else
+            {
+                $data=['message'=>'Failed update date'];
+                return CustomTrait::ErrorJson($data);
+            }
+
         }
 
         function insertOpportunitySetup(Request $req)
@@ -607,7 +621,7 @@ class CampaignController extends Controller
 
         //                 $data = [
         //                         'message' => "Product not found for campaign."
-        //                 ];           
+        //                 ];
         //                 return  CustomTrait::ErrorJson($data);
 
         //           }
@@ -841,7 +855,7 @@ class CampaignController extends Controller
 
         // 				   }
 
-        // 				   if($grace_done==1){  
+        // 				   if($grace_done==1){
         // 					 echo $i=-1;
         // 				   }
 
@@ -858,7 +872,7 @@ class CampaignController extends Controller
 
         //         $data = [
         //                 'message' => "Successfully applied for loan."
-        //         ];           
+        //         ];
         //         return  CustomTrait::SuccessJson($data);
 
         //         }
@@ -915,22 +929,22 @@ class CampaignController extends Controller
                         foreach($data as $key=>$val){
 
                                 $account_number_credit = anb_accounts::select('account_number')->where(['opportunity_id'=>$val['id'],'type'=>3])->first();
-                        
+
                                 $account_number_debit = anb_accounts::select('account_number')->where(['opportunity_id'=>$val['id'],'type'=>4])->first();
-                                
+
                                 if(isset($account_number_credit)){
                                     $data[$key]['account_number_credit'] = $account_number_credit['account_number'];
                                 }else{
                                     $data[$key]['account_number_credit'] = null;
                                 }
-                
+
                                 if(isset($account_number_debit)){
                                 $data[$key]['account_number_debit'] = $account_number_debit['account_number'];
                                 }else{
                                     $data[$key]['account_number_debit'] = null;
                                 }
-                
-                        
+
+
                         }
 
 
@@ -970,7 +984,7 @@ class CampaignController extends Controller
 
 
                        $count = count($dataoppo);
-                   
+
 
 
                         $data = [];
@@ -1221,7 +1235,6 @@ class CampaignController extends Controller
         function kycApproveStatus(Request $req)
         {
 
-
                 if (empty($req->approved_status)) {
 
                         $req->approved_status = 0;
@@ -1266,7 +1279,7 @@ class CampaignController extends Controller
 
 
 
-                        
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1292,12 +1305,12 @@ class CampaignController extends Controller
         //       echo $user_id;
         //       echo 'ghh';
 
-     
+
 
                $countanbaccount = anb_accounts::where(['user_id'=>$user_id])->count('id');
 
                 if($countanbaccount < 1){
-                        
+
                 $account_number = CustomTrait::createAccountNumber($user_id,$prefixnumber,$opportunity='');
 
                 try {
@@ -1307,11 +1320,11 @@ class CampaignController extends Controller
                         $anb->type = $anb_type;
                         $anb->account_number = $account_number;
                         $anb->created_by = $session_user_id;
-                        
+
                         $anb->save();
-    
+
                     } catch (Exception $e) {
-    
+
                         Log::channel('loan')->info($e->getMessage());
                         $data = [
                             'message' => "something went wrong"
@@ -1323,9 +1336,9 @@ class CampaignController extends Controller
 
                 }
 
-               
 
-          
+
+
 
 
 
@@ -1420,7 +1433,7 @@ class CampaignController extends Controller
                         if ($req->approved_status == 1) {
 
                                 campaign::where('id', $req->campaign_id)->update(array('approved_status' => $req->approved_status, 'note' => $req->note));
-   
+
                                 $sctivity_type = 2;
 
 
@@ -1428,11 +1441,11 @@ class CampaignController extends Controller
 
 
                                 $getstep = OpportunitySetup::select('steps')->where(["master_id" => 2, "opportunity_id" => $req->campaign_id])->first()->toArray();
-        
-        
+
+
                                 $step = $getstep['steps'] + 1;
-        
-        
+
+
                                 $campp = OpportunitySetup::where(["opportunity_id" => $req->campaign_id, "steps" => $step])->update(array('activity' => 1));
 
 
@@ -1444,7 +1457,7 @@ class CampaignController extends Controller
 
 
 
-                                
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1456,7 +1469,7 @@ class CampaignController extends Controller
                       if($countanbaccount < 1){
 
 
-      
+
                       for($i = 3;$i<=4;$i++){
 
 
@@ -1464,16 +1477,16 @@ class CampaignController extends Controller
 
 
                       try {
-      
+
                           $anb = new anb_accounts;
                           $anb->opportunity_id = $req->campaign_id;
                           $anb->type = $i;
                           $anb->account_number = $account_number;
                           $anb->created_by = $session_user_id;
                           $anb->save();
-      
+
                       } catch (Exception $e) {
-      
+
                           Log::channel('loan')->info($e->getMessage());
                           $data = [
                               'message' => "something went wrong"
@@ -1482,7 +1495,7 @@ class CampaignController extends Controller
 
                       }
 
-                    
+
                     }
 
                 }
@@ -1516,7 +1529,7 @@ class CampaignController extends Controller
 
                 if ($req->campaign_approve_type == 2) {
 
-                       
+
                 if ($req->product_id) {
 
 
@@ -1546,7 +1559,7 @@ class CampaignController extends Controller
 
 
 
-                     
+
 
                         $type = 9;
                         CustomTrait::sendMailHtml($user_id, $type);
@@ -1576,7 +1589,7 @@ class CampaignController extends Controller
 
         $getstep = OpportunitySetup::select('steps')->where(["master_id" => 2, "opportunity_id" => $campaign_id])->first()->toArray();
 
- 
+
         // $step = $getstep['steps'] + 1;
 
 
@@ -1683,7 +1696,7 @@ class CampaignController extends Controller
                         return  CustomTrait::SuccessJson($data);
                 }
 
-                // echo $role;  
+                // echo $role;
 
                 // echo '<pre>';
                 // print_r($opportunity_setup);

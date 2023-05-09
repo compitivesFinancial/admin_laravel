@@ -32,14 +32,36 @@ class CampaignController extends Controller
 
     function __construct(Request $request)
     {
-
+        $this->lang = $request->header('Accept-Language');
         App::setlocale($request->header('Accept-Language'));
 
     }
 
 
 
+    public function updateVersionProgram(Request $req,$id)
+    {
+        $result=campaign::find($id);
+        $program_number=$req->header('program_number');
+        $version_number=$req->header('version_number');
+        if($result != "")
+        {
 
+            $result->program_number=$program_number == ""?$result->program_number:$program_number;
+            $result->version_number=$version_number == ""?$result->version_number:$version_number;
+            $result->save();
+            $data=['message'=>'success update'];
+            return CustomTrait::SuccessJson($data);
+        }else
+        {
+            $data=[
+                'message'=>'there is something wrong'
+            ];
+            return CustomTrait::ErrorJson($data);
+        }
+
+
+    }
     public function campaginOutSide(){
         $outside=campaign::get();
         return CustomTrait::SuccessJson($outside);
@@ -49,9 +71,13 @@ class CampaignController extends Controller
     {
 
 
-        $sql_var = App::isLocal() == 'en' ? 'title' : 'ar_title as title';
-        $sql_descp = App::isLocal() == 'en' ? 'description' : 'ar_description as description';
-        $sql_image = App::isLocal() == 'en' ? 'image' : 'ar_image as image';
+        // $sql_var = App::isLocal() == 'en' ? 'title' : 'ar_title as title';
+        // $sql_descp = App::isLocal() == 'en' ? 'description' : 'ar_description as description';
+        // $sql_image = App::isLocal() == 'en' ? 'image' : 'ar_image as image';
+
+        $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
+        $sql_descp = $this->lang == 'en' ? 'description' : 'ar_description as description';
+        $sql_image = $this->lang == 'en' ? 'image' : 'ar_image as image';
 
 
         $section0 = Cms::select('id', $sql_var, $sql_descp, 'status', 'type', $sql_image, 'flag')->where(['type' => 0, 'status' => 1])->orderBy('id', 'ASC')->get()->toArray();
@@ -670,7 +696,7 @@ class CampaignController extends Controller
 
     function list(Request $req)
     {
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where(['status' => 1, 'approved_status' => 1])->get()->toArray();
+        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status","close_date")->where(['status' => 1, 'approved_status' => 1])->get()->toArray();
         return CustomTrait::SuccessJson($data);
     }
 
