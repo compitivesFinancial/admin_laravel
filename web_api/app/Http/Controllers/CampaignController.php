@@ -22,15 +22,12 @@ use App\Models\investor_statement;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Auth;
-use App\Models\ProductAttributeDetail;
+
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
-
-
     function __construct(Request $request)
     {
         $this->lang = $request->header('Accept-Language');
@@ -40,27 +37,10 @@ class CampaignController extends Controller
 
 
 
-    public function updateVersionProgram(Request $req, $id)
-    {
-        $result = campaign::find($id);
-        $program_number = $req->header('program_number');
-        $version_number = $req->header('version_number');
-        if ($result != "") {
-
-            $result->program_number = $program_number == "" ? $result->program_number : $program_number;
-            $result->version_number = $version_number == "" ? $result->version_number : $version_number;
-            $result->save();
-            $data = ['message' => 'success update'];
-            return CustomTrait::SuccessJson($data);
-        } else {
-            $data = [
-                'message' => 'there is something wrong'
-            ];
-            return CustomTrait::ErrorJson($data);
-        }
 
 
-    }
+
+
     public function campaginOutSide()
     {
         $outside = campaign::get();
@@ -288,7 +268,7 @@ class CampaignController extends Controller
     function borrowerStatement(Request $req)
     {
 
-        $campaign = campaign::select("id", "user_id", "product_id", "total_valuation")->where('user_id', $req->user_id)->first()->toArray();
+        $campaign = campaign::where('user_id', $req->user_id)->first()->toArray();
 
         if (!$campaign) {
 
@@ -331,7 +311,7 @@ class CampaignController extends Controller
     function borrowerpayLoan(Request $req)
     {
 
-        $campaign = campaign::select("id", "user_id", "product_id", "total_valuation")->where('user_id', $req->user_id)->first()->toArray();
+        $campaign = campaign::where('user_id', $req->user_id)->first()->toArray();
 
 
         if (!$campaign) {
@@ -489,7 +469,7 @@ class CampaignController extends Controller
         // return CustomTrait::ErrorJson($data);
 
         // return "Investor is = "+$investor + " / invest amount of  "+ $amount + " /in the campain Id  "+ $campaign;
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where('id', $campaign)->first()->toArray();
+        $data = campaign::where('id', $campaign)->first()->toArray();
 
 
 
@@ -586,7 +566,7 @@ class CampaignController extends Controller
 
         // $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
         // $investerCount = campaign_inverter::select('campaign_id')->where(['invester_id' => $id]);
-        $investerCount = campaign_inverter::select('campaign_id')->where('invester_id', $id)->get()->toArray();
+        $investerCount = campaign_inverter::where('invester_id', $id)->get()->toArray();
 
 // return $investerCount;
 // return CustomTrait::SuccessJson($investerCount);
@@ -599,7 +579,7 @@ class CampaignController extends Controller
     {
 
 
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where('user_id', $id)->get()->toArray();
+        $data = campaign::where('user_id', $id)->get()->toArray();
         return CustomTrait::SuccessJson($data);
 
 
@@ -699,7 +679,7 @@ class CampaignController extends Controller
 
     function list(Request $req)
     {
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "close_date")->where(['status' => 1, 'approved_status' => 1])->get()->toArray();
+        $data = campaign::where(['status' => 1, 'approved_status' => 1])->get()->toArray();
         return CustomTrait::SuccessJson($data);
     }
 
@@ -720,13 +700,13 @@ class CampaignController extends Controller
         // echo 'gdggddg';
         // die;
 
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where(['id' => $id, 'status' => 1])->first();
+        $data = campaign::where(['id' => $id, 'status' => 1])->first();
 
         if ($data) {
 
 
-            $data['campaign_images'] = campaign_image::select("id", "image")->where(['campaign_id' => $id])->get();
-            $data['team'] = campaign_team::select("id", "name", "designation", "image")->where(['campaign_id' => $id])->get();
+            $data['campaign_images'] = campaign_image::where(['campaign_id' => $id])->get();
+            $data['team'] = campaign_team::where(['campaign_id' => $id])->get();
 
             return CustomTrait::SuccessJson($data);
 
@@ -846,7 +826,7 @@ class CampaignController extends Controller
     //Added By Qaysar To retrieve the list of campain attachement to display in the page campain details the function has rout campain_attachements
     function campainAttachements($id)
     {
-        $data = campaign_attachment::select('id', 'campaign_id', 'attachment', 'ext', 'status')->where(['status' => 1, 'campaign_id' => $id])->get()->toArray();
+        $data = campaign_attachment::where(['status' => 1, 'campaign_id' => $id])->get()->toArray();
 
         if ($data) {
             return CustomTrait::SuccessJson($data);
