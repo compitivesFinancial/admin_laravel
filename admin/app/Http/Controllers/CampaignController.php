@@ -49,6 +49,68 @@ use Illuminate\Support\Facades\URL;
 class CampaignController extends Controller
 {
 
+    public function updateVersionProgram(Request $req, $id)
+    {
+        $result = campaign::find($id);
+        $program_number = $req->header('program_number');
+        $version_number = $req->header('version_number');
+        $open_date =$req->header('open_date');
+        $net_sales=$req->header('net_sales');
+        $net_sales_years =$req->header('net_sales_years');
+        $net_profit=$req->header('net_profit');
+        $net_profit_years =$req->header('net_profit_years');
+        $cash_flow =$req->header('cash_flow');
+        $return_on_assets=$req->header('return_on_assets');
+        $debt_of_assets=$req->header('debt_of_assets');
+        $fin_statement_year=$req->header('fin_statement_year');
+        $due_date=$req->header('due_date');
+        $APR=$req->header('APR');
+        $info_Statement_date_h=$req->header('info_Statement_date_h');
+        $info_Statement_date_G=$req->header('info_Statement_date_G');
+
+;        if ($result != "") {
+
+            $result->program_number = $program_number == "" ? $result->program_number : $program_number;
+
+            $result->version_number = $version_number == "" ? $result->version_number : $version_number;
+
+            $result->open_date = $open_date == "2002-05-03" ? $result->open_date : $open_date;
+
+            $result->net_sales = $net_sales == "" ? $result->net_sales : $net_sales;
+
+            $result->net_sales_years = $net_sales_years == "2002-05-03" ? $result->net_sales_years : $net_sales_years;
+
+            $result->net_profit = $net_profit == "" ? $result->net_profit : $net_profit;
+
+            $result->net_profit_years = $net_profit_years == "2002-05-03" ? $result->net_profit_years : $net_profit_years;
+
+            $result->cash_flow = $cash_flow == "" ? $result->cash_flow : $cash_flow;
+
+            $result->return_on_assets = $return_on_assets == "" ? $result->return_on_assets : $return_on_assets;
+
+            $result->debt_of_assets = $debt_of_assets == "2002-05-03" ? $result->debt_of_assets : $debt_of_assets;
+
+            $result->fin_statement_year = $fin_statement_year == "2002-05-03" ? $result->fin_statement_year : $fin_statement_year;
+
+            $result->due_date = $due_date == "2002-05-03" ? $result->due_date : $due_date;
+
+            $result->APR = $APR == "" ? $result->APR : $APR;
+
+            $result->info_Statement_date_h = $info_Statement_date_h == "2002-05-03" ? $result->info_Statement_date_h : $info_Statement_date_h;
+
+            $result->info_Statement_date_G = $info_Statement_date_G == "2002-05-03" ? $result->info_Statement_date_G : $info_Statement_date_G;
+            $result->save();
+            $data = ['message' => 'success update'];
+            return CustomTrait::SuccessJson($data);
+        } else {
+            $data = [
+                'message' => 'there is something wrong'
+            ];
+            return CustomTrait::ErrorJson($data);
+        }
+
+
+    }
         function getcampaignattachment(Request $request){
 
                 $id = $request->id;

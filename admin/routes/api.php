@@ -151,7 +151,7 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/repaymentscheduling_insert',[LoanManagementController::class,'repaymentSchedulingInsert']);
     Route::post('/applyloan',[CampaignController::class,'applyLoan']);
     Route::post('/get_statements',[CampaignController::class,'getStatements']);
-
+    Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
 
     //invester list
     Route::post('/get_invester_list',[CampaignController::class,'getInvesterList']);
