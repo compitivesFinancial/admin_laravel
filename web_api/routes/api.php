@@ -80,6 +80,8 @@ Route::get('investor_statment',[InvesterController::class,'investorStatment']);
 Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
 Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
 Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
+// Qaysar API for campain attachement
+Route::get('get_campaign_attachements/{id}',[CampaignController::class,'campainAttachements']);
 
 //borroweWallet
 // yaqeen

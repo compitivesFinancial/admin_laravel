@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
 use App\Models\campaign_inverter;
+use App\Models\campaign_attachment;
 
 use App\Models\borrower_statement;
 use App\Models\Contact_us;
@@ -39,31 +40,30 @@ class CampaignController extends Controller
 
 
 
-    public function updateVersionProgram(Request $req,$id)
+    public function updateVersionProgram(Request $req, $id)
     {
-        $result=campaign::find($id);
-        $program_number=$req->header('program_number');
-        $version_number=$req->header('version_number');
-        if($result != "")
-        {
+        $result = campaign::find($id);
+        $program_number = $req->header('program_number');
+        $version_number = $req->header('version_number');
+        if ($result != "") {
 
-            $result->program_number=$program_number == ""?$result->program_number:$program_number;
-            $result->version_number=$version_number == ""?$result->version_number:$version_number;
+            $result->program_number = $program_number == "" ? $result->program_number : $program_number;
+            $result->version_number = $version_number == "" ? $result->version_number : $version_number;
             $result->save();
-            $data=['message'=>'success update'];
+            $data = ['message' => 'success update'];
             return CustomTrait::SuccessJson($data);
-        }else
-        {
-            $data=[
-                'message'=>'there is something wrong'
+        } else {
+            $data = [
+                'message' => 'there is something wrong'
             ];
             return CustomTrait::ErrorJson($data);
         }
 
 
     }
-    public function campaginOutSide(){
-        $outside=campaign::get();
+    public function campaginOutSide()
+    {
+        $outside = campaign::get();
         return CustomTrait::SuccessJson($outside);
     }
 
@@ -111,7 +111,7 @@ class CampaignController extends Controller
 
         $section11 = $total_raisaed;
 
-        $sql_title = App::isLocal()== 'en' ? 'title' : 'ar_title';
+        $sql_title = App::isLocal() == 'en' ? 'title' : 'ar_title';
 
         $product = Product::select('id', $sql_title)->where('status', 1)->orderBy('position', 'ASC')->get()->toArray();
 
@@ -480,9 +480,9 @@ class CampaignController extends Controller
 
 
         $session_user_id = $req->user()->id;
-        $amount=$req->header('amount');
-        $investor=$req->header('invester');
-        $campaign=$req->header('campaign');
+        $amount = $req->header('amount');
+        $investor = $req->header('invester');
+        $campaign = $req->header('campaign');
         // $data = [
         //     'message' => "Investor is = " . $investor . " / invest amount of  " .  $amount . " /in the campain Id  " . $campaign
         // ];
@@ -580,14 +580,17 @@ class CampaignController extends Controller
 
 
 
-  function userCampaign($id)
-  {
+    function userCampaign($id)
+    {
 
 
-        $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
+        // $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
+        // $investerCount = campaign_inverter::select('campaign_id')->where(['invester_id' => $id]);
+        $investerCount = campaign_inverter::select('campaign_id')->where('invester_id', $id)->get()->toArray();
 
-
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->where('id', $investerCount['campaign_id'])->get()->toArray();
+// return $investerCount;
+// return CustomTrait::SuccessJson($investerCount);
+        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->whereIn('id', $investerCount)->get()->toArray();
         return CustomTrait::SuccessJson($data);
 
     }
@@ -696,7 +699,7 @@ class CampaignController extends Controller
 
     function list(Request $req)
     {
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status","close_date")->where(['status' => 1, 'approved_status' => 1])->get()->toArray();
+        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "close_date")->where(['status' => 1, 'approved_status' => 1])->get()->toArray();
         return CustomTrait::SuccessJson($data);
     }
 
@@ -840,6 +843,20 @@ class CampaignController extends Controller
     }
 
 
+    //Added By Qaysar To retrieve the list of campain attachement to display in the page campain details the function has rout campain_attachements
+    function campainAttachements($id)
+    {
+        $data = campaign_attachment::select('id', 'campaign_id', 'attachment', 'ext', 'status')->where(['status' => 1, 'campaign_id' => $id])->get()->toArray();
+
+        if ($data) {
+            return CustomTrait::SuccessJson($data);
+        } else {
+            $data = [
+                'message' => "No Attachement File For This Campain"
+            ];
+            return CustomTrait::ErrorJson($data);
+        }
+    }
 
 //    function  Deletecampaign($id)
 //    {
