@@ -8,6 +8,7 @@ use App\Models\loan;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\campaign;
+use App\Models\UserKyc;
 use App\Traits\CustomTrait;
 use App\Models\Campaign_log;
 use Illuminate\Http\Request;
@@ -837,6 +838,21 @@ class CampaignController extends Controller
             return CustomTrait::ErrorJson($data);
         }
     }
+
+    public function campaginWithKyc(Request $req){
+        $kyc_id_details=$req->header('kyc_id');
+        $campagin_id=$req->header('campagin_id');
+        $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',17)->first();
+        $campagin_details=campaign::where('id',$campagin_id)->first();
+        $kyc_json=json_decode($kyc,true);
+        $campagin_json=json_decode($campagin_details,true);
+        $data=array_merge($kyc_json,$campagin_json);
+        return CustomTrait::SuccessJson($data);
+        // return $data;
+
+
+    }
+
 
 //    function  Deletecampaign($id)
 //    {

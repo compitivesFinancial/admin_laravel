@@ -64,6 +64,7 @@ use App\Models\Kyc;
           Route::get('user', [AdminController::class, 'user']);
 
 
+
           //userkyc show with value
         Route::get('/show_userkyc',[KycController::class,'showAddUserKyc']);
         Route::post('/modify_userkyc',[KycController::class,'ModifyUserKyc']);
@@ -82,6 +83,8 @@ Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
 Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
 // Qaysar API for campain attachement
 Route::get('get_campaign_attachements/{id}',[CampaignController::class,'campainAttachements']);
+//added By Qaysar For retrieve User Data
+Route::get('get_user_detail/{id}',[UserController::class,'getUserDetails']);
 
 //borroweWallet
 // yaqeen
@@ -131,6 +134,8 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::get('/get_cms_list',[CampaignController::class,'cmsList']);
         Route::get('/cmsget_by_id/{id}',[CampaignController::class,'cmsGetById']);
         Route::get('/cmsget_by_type/{id}',[CampaignController::class,'cmsGetByType']);
+        Route::post('campaginWithKyc',[CampaignController::class,'campaginWithKyc']);
+
 
       });
 

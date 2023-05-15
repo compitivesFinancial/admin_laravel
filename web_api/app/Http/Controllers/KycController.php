@@ -145,7 +145,7 @@ public function ModifyUserKyc(Request $req)
 
     $userid = auth('sanctum')->user()->id;
     $count = User::select('kyc_approved_status')->where(['id' => $userid])->first()->toArray();
-
+    // $user = User::select()->where(['id' => $userid])->first();
     if($count['kyc_approved_status'] == 1){
         $data = [
             'message' => "Kyc already accepted Cannot do changes"
@@ -205,10 +205,6 @@ public function ModifyUserKyc(Request $req)
 
                         }
 
-
-
-
-
             }
 
 
@@ -223,13 +219,16 @@ public function ModifyUserKyc(Request $req)
         $kyc_log->activity_by = $userid;
         $kyc_log->activity_type = 1;
         $kyc_log->save();
-
+        //added by qaysar to save watheq data on user table
+        $user=User::find($userid);
+        $user->cr_number_response = $req->crnumber;
+        $user->save();
 
 
 
 
     $data = [
-        'message' => 'Kyc User Modified'
+        'message' => 'Kyc User Modified '
     ];
 
     return  CustomTrait::SuccessJson($data);

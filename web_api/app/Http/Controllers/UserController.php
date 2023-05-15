@@ -206,6 +206,7 @@ $otp = 1234;
         $arr['status']=$data['status'];
         $arr['token']=$token;
         $arr['kyc_approved_status']=$data['kyc_approved_status'];
+        $arr['cr_number_response']=$data['cr_number_response'];
 
 
         return  CustomTrait::SuccessJson($arr);
@@ -379,6 +380,7 @@ public function register(Request $req){
     $arr['mobile_number']=$data['mobile_number'];
     $arr['status']=$data['status'];
     $arr['token']=$token;
+    $arr['cr_number_response']=$data['cr_number_response'];
 
 
     return  CustomTrait::SuccessJson($arr);
@@ -406,6 +408,18 @@ public function userAccoutnumber(Request $request)
             return CustomTrait::ErrorJson($data);
     } else {
             return CustomTrait::SuccessJson($user_account_number);
+    }
+
+}
+
+public function getUserDetails($user_id){
+    // $user_id=$request->user()->id;
+    if($user_id == null || $user_id == ''){
+        $data = ["message" => "no details for this user"];
+            return CustomTrait::ErrorJson($data);
+    } else {
+        $data=User::find($user_id);
+            return CustomTrait::SuccessJson($data);
     }
 
 }
