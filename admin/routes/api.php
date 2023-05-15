@@ -37,7 +37,6 @@ use App\Http\Controllers\CmsConttroller;
 |
 */
 
-
     Route::post('login', [AdminController::class, 'login']);
 
     Route::group(['middleware' => ['auth:sanctum','cors']], function() {
@@ -151,7 +150,7 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/repaymentscheduling_insert',[LoanManagementController::class,'repaymentSchedulingInsert']);
     Route::post('/applyloan',[CampaignController::class,'applyLoan']);
     Route::post('/get_statements',[CampaignController::class,'getStatements']);
-    Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
+
 
     //invester list
     Route::post('/get_invester_list',[CampaignController::class,'getInvesterList']);
@@ -190,6 +189,8 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_campaign',[CampaignController::class,'deleteCampaign']);
     Route::post('/campaign_approvestatus',[CampaignController::class,'CampaignApproveStatus']);
     Route::post('/modify_evaluation_campaign',[CampaignController::class,'modifyEvaluationCampaign']);
+    Route::post('campaginWithKyc',[CampaignController::class,'campaginWithKyc']);
+    Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
 
 
     //page

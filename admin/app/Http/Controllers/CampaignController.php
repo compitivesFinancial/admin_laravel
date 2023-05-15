@@ -33,10 +33,6 @@ use App\Models\investor_statement;
 use App\Models\kyc_log;
 use App\Models\Campaign_log;
 use App\Models\anb_accounts;
-
-
-
-
 use App\Models\OpportunitySetup;
 use DateTime;
 use Exception;
@@ -48,6 +44,20 @@ use Illuminate\Support\Facades\URL;
 
 class CampaignController extends Controller
 {
+
+    public function campaginWithKyc(Request $req){
+        $kyc_id_details=$req->header('kyc_id');
+        $campagin_id=$req->header('campagin_id');
+        $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',17)->first();
+        $campagin_details=campaign::where('id',$campagin_id)->first();
+        $kyc_json=json_decode($kyc,true);
+        $campagin_json=json_decode($campagin_details,true);
+        $data=array_merge($kyc_json,$campagin_json);
+        return $data;
+
+
+    }
+
 
     public function updateVersionProgram(Request $req, $id)
     {
