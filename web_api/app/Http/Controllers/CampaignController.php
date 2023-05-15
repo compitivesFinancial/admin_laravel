@@ -844,10 +844,18 @@ class CampaignController extends Controller
         $campagin_id=$req->header('campagin_id');
         $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',17)->first();
         $campagin_details=campaign::where('id',$campagin_id)->first();
-        $kyc_json=json_decode($kyc,true);
-        $campagin_json=json_decode($campagin_details,true);
-        $data=array_merge($kyc_json,$campagin_json);
-        return CustomTrait::SuccessJson($data);
+        if($kyc == null || $campagin_details == null)
+        {
+            $data=['message'=>'no data to retrive'];
+            return CustomTrait::ErrorJson($data);
+        }else
+        {
+            $kyc_json=json_decode($kyc,true);
+            $campagin_json=json_decode($campagin_details,true);
+            $data=array_merge($kyc_json,$campagin_json);
+            return CustomTrait::SuccessJson($data);
+        }
+
         // return $data;
 
 
