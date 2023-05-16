@@ -843,8 +843,8 @@ class CampaignController extends Controller
     {
          $kyc_id_details=$user_id;
          $campagin_id=$camp_id;
-        $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
-        $kyc_national=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
+        $kyc=UserKyc::select('value AS company_name')->where('user_id',$kyc_id_details)->where('kyc_detail_id',112)->first();
+        $kyc_national=UserKyc::select('value AS national_id')->where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
         $campagin_details=campaign::where('id',$campagin_id)->first();
         if($kyc == null || $campagin_details == null || $kyc_national== null)
         {
@@ -853,7 +853,7 @@ class CampaignController extends Controller
         }else
         {
             $kyc_json=json_decode($kyc,true);
-            $kyc_json_national=json_decode($$kyc_national,true);
+            $kyc_json_national=json_decode($kyc_national,true);
             $campagin_json=json_decode($campagin_details,true);
             $data=array_merge($kyc_json,$campagin_json,$kyc_json_national);
             return CustomTrait::SuccessJson($data);
