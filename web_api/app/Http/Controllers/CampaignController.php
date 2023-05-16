@@ -839,20 +839,23 @@ class CampaignController extends Controller
         }
     }
 
-    public function campaginWithKyc(Request $req){
-        $kyc_id_details=$req->header('kyc_id');
-        $campagin_id=$req->header('campagin_id');
-        $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',17)->first();
+    public function campaginWithKyc(Request $req,$user_id,$camp_id)
+    {
+         $kyc_id_details=$user_id;
+         $campagin_id=$camp_id;
+        $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
+        $kyc_national=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
         $campagin_details=campaign::where('id',$campagin_id)->first();
-        if($kyc == null || $campagin_details == null)
+        if($kyc == null || $campagin_details == null || $kyc_national== null)
         {
             $data=['message'=>'no data to retrive'];
             return CustomTrait::ErrorJson($data);
         }else
         {
             $kyc_json=json_decode($kyc,true);
+            $kyc_json_national=json_decode($$kyc_national,true);
             $campagin_json=json_decode($campagin_details,true);
-            $data=array_merge($kyc_json,$campagin_json);
+            $data=array_merge($kyc_json,$campagin_json,$kyc_json_national);
             return CustomTrait::SuccessJson($data);
         }
 

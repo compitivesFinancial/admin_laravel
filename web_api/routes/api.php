@@ -33,6 +33,8 @@ use App\Models\Kyc;
 //     return $request->user();
 // });
 
+Route::get('campaginWithKyc/{user_id}/{camp_id}',[CampaignController::class,'campaginWithKyc']);
+
     //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
     Route::get('/get_page_by_id_outside/{id}',[PageConttroller::class,'GetById']);
 
@@ -134,7 +136,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::get('/get_cms_list',[CampaignController::class,'cmsList']);
         Route::get('/cmsget_by_id/{id}',[CampaignController::class,'cmsGetById']);
         Route::get('/cmsget_by_type/{id}',[CampaignController::class,'cmsGetByType']);
-        Route::post('campaginWithKyc',[CampaignController::class,'campaginWithKyc']);
+
 
 
       });
