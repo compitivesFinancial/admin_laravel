@@ -839,9 +839,11 @@ class CampaignController extends Controller
         }
     }
 
-    public function campaginWithKyc(Request $req){
-        $kyc_id_details=$req->header('kyc_id');
-        $campagin_id=$req->header('campagin_id');
+    public function campaginWithKyc($user_id,$campaign_id){
+        // $kyc_id_details=$req->header('kyc_id');
+        // $campagin_id=$req->header('campagin_id');
+         $kyc_id_details=$user_id;
+        $campagin_id=$campaign_id;
         $kyc=UserKyc::where('user_id',$kyc_id_details)->where('kyc_detail_id',17)->first();
         $campagin_details=campaign::where('id',$campagin_id)->first();
         if($kyc == null || $campagin_details == null)

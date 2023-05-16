@@ -189,7 +189,7 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_campaign',[CampaignController::class,'deleteCampaign']);
     Route::post('/campaign_approvestatus',[CampaignController::class,'CampaignApproveStatus']);
     Route::post('/modify_evaluation_campaign',[CampaignController::class,'modifyEvaluationCampaign']);
-    Route::post('campaginWithKyc',[CampaignController::class,'campaginWithKyc']);
+    Route::post('campaginWithKycAdmin',[CampaignController::class,'campaginWithKyc']);
     Route::post('update_version_program/{id}',[CampaignController::class,'updateVersionProgram']);
 
 

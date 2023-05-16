@@ -134,7 +134,7 @@ Route::get('commercialregistration/{id}', [KycController::class,'commercialregis
         Route::get('/get_cms_list',[CampaignController::class,'cmsList']);
         Route::get('/cmsget_by_id/{id}',[CampaignController::class,'cmsGetById']);
         Route::get('/cmsget_by_type/{id}',[CampaignController::class,'cmsGetByType']);
-        Route::post('campaginWithKyc',[CampaignController::class,'campaginWithKyc']);
+        Route::get('campaginWithKyc/{user_id}/{campaign_id}',[CampaignController::class,'campaginWithKyc']);
 
 
       });
