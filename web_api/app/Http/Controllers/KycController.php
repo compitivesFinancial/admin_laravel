@@ -55,7 +55,17 @@ class KycController extends Controller
     }
 
 
-
+function getUserKycAddress(Request $request){
+    $user_id = $request->user()->id;
+    $kyc_detail_id = $request->kyc_detail_id;
+    $addressKyc = UserKyc::where('user_id', $user_id)->where('kyc_detail_id', '7')->first();
+    if ($addressKyc == null) {
+        $data = ['data' => 'No Data Found '];
+        return CustomTrait::ErrorJson($data);
+    } else {
+        return CustomTrait::SuccessJson($addressKyc);
+    }
+}
 
 
     function showAddUserKyc() {

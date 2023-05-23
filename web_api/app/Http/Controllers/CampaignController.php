@@ -567,11 +567,12 @@ class CampaignController extends Controller
 
         // $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $id])->first();
         // $investerCount = campaign_inverter::select('campaign_id')->where(['invester_id' => $id]);
-        $investerCount = campaign_inverter::where('invester_id', $id)->get()->toArray();
+        $investerCampaign = campaign_inverter::select('campaign_id')->where('invester_id', $id)->get()->toArray();
 
 // return $investerCount;
 // return CustomTrait::SuccessJson($investerCount);
-        $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->whereIn('id', $investerCount)->get()->toArray();
+        // $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->whereIn('id', $investerCount)->get()->toArray();
+        $data = campaign::whereIn('id', $investerCampaign)->get()->toArray();
         return CustomTrait::SuccessJson($data);
 
     }

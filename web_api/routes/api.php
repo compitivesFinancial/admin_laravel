@@ -84,6 +84,7 @@ Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
 Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
 // Qaysar API for campain attachement
 Route::get('get_campaign_attachements/{id}',[CampaignController::class,'campainAttachements']);
+Route::get('get_UserKyc_Address',[KycController::class,'getUserKycAddress']);
 //added By Qaysar For retrieve User Data
 Route::get('get_user_detail/{id}',[UserController::class,'getUserDetails']);
 
