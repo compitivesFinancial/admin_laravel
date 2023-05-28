@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
+        'name',
         'first_name',
         'last_name',
         'email',
@@ -45,10 +46,10 @@ class User extends Authenticatable
         'status',
         'updated_at',
         'created_at'
-     
+
     ];
 
-    
+
     /**
      * The attributes that should be cast.
      *
@@ -71,7 +72,7 @@ class User extends Authenticatable
 
     }
 
-   
+
 
 
 }

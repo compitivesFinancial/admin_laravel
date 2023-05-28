@@ -608,6 +608,13 @@ class CampaignController extends Controller
         $campaign->investment_planning = $req->investment_planning;
         $campaign->terms = $req->terms;
         $campaign->introduce_team = $req->introduce_team;
+//added by qaysar for ahmad add compaign page request change
+        $campaign->financing_type = $req->financing_type;
+        $campaign->fund_use = $req->fund_use;
+        $campaign->financing_period = $req->financing_period;
+        $campaign->obtain_finance_dt = $req->obtain_finance_dt;
+        $campaign->finance_repayment_dt = $req->finance_repayment_dt;
+
         $campaign->save();
         $camp_id = $campaign->id;
 

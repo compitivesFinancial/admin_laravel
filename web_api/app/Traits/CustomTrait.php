@@ -491,7 +491,7 @@ public static function sendMailHtml($id,$type)
 
 
 
-    public static function SuccessJson($data){
+static public function SuccessJson($data){
 
 
 

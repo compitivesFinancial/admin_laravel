@@ -1744,7 +1744,7 @@ class CampaignController extends Controller
 
                 $data = [];
 
-                $dataa['campaign'] = campaign::select("id", "product_id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "approved_status", "note")->where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
+                $dataa['campaign'] = campaign::where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
 
 
                 $user_id = $dataa['campaign']['user_id'];
@@ -1787,7 +1787,7 @@ class CampaignController extends Controller
                         if (in_array($rolevalue, array(1, 5))) {
 
 
-                                $data['campaign'] = campaign::select("id", "product_id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "approved_status", "note")->where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
+                                $data['campaign'] = campaign::where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
 
 
 
@@ -2118,7 +2118,7 @@ class CampaignController extends Controller
 
                 // if ($va['steps'] >= $oppostep['steps']) {
 
-                $data['campaign'] = OpportunitySetup::Leftjoin('campaigns', 'campaigns.id', '=', 'opportunity_setups.opportunity_id')->where(['opportunity_setups.opportunity_id' => $campaign_id, 'opportunity_setups.master_id' => 2])->first(["campaigns.id", "campaigns.product_id", "campaigns.user_id", "campaigns.tagline", "campaigns.share_price", "campaigns.total_valuation", "campaigns.min_investment", "campaigns.max_investment", "campaigns.fundriser_investment", "campaigns.company_bio", "campaigns.reason_to_invest", "campaigns.investment_planning", "campaigns.terms", "campaigns.introduce_team", "campaigns.status", "campaigns.approved_status", "campaigns.note", 'opportunity_setups.role as role_type', 'opportunity_setups.activity', 'opportunity_setups.master_id'])->toArray();
+                $data['campaign'] = OpportunitySetup::Leftjoin('campaigns', 'campaigns.id', '=', 'opportunity_setups.opportunity_id')->where(['opportunity_setups.opportunity_id' => $campaign_id, 'opportunity_setups.master_id' => 2])->first(["campaigns.id", "campaigns.product_id", "campaigns.user_id", "campaigns.tagline", "campaigns.share_price", "campaigns.total_valuation", "campaigns.min_investment", "campaigns.max_investment", "campaigns.fundriser_investment", "campaigns.company_bio", "campaigns.reason_to_invest", "campaigns.investment_planning", "campaigns.terms", "campaigns.introduce_team", "campaigns.status", "campaigns.approved_status", "campaigns.note","campaigns.program_number","campaigns.version_number","campaigns.open_date","campaigns.net_sales","campaigns.net_sales_years","campaigns.net_profit","campaigns.net_profit_years","campaigns.cash_flow","campaigns.return_on_assets","campaigns.debt_of_assets","campaigns.fin_statement_year","campaigns.due_date","campaigns.APR","campaigns.info_Statement_date_G","campaigns.info_Statement_date_h", 'opportunity_setups.role as role_type', 'opportunity_setups.activity', 'opportunity_setups.master_id'])->toArray();
 
 
 

@@ -9,7 +9,7 @@ class campaign extends Model
 {
     use HasFactory;
     public $timestamps=false;
-    protected $fillable=['tagline','share_price','valuation','min_investment','max_investment','expected_rise','duration_id','returns_type_id','short_bio',
-	'reasons_to_invest','fund_allocation','	terms','rewards','team',];
+    // protected $fillable=['tagline','share_price','valuation','min_investment','max_investment','expected_rise','duration_id','returns_type_id','short_bio',
+	// 'reasons_to_invest','fund_allocation','	terms','rewards','team',];
 
 }

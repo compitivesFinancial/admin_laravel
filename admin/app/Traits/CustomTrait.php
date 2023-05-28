@@ -14,7 +14,7 @@ use DB;
 trait CustomTrait
 {
 
-    public function createAccountNumber($id='',$type,$opportunity='')
+    static public function createAccountNumber($id='',$type,$opportunity='')
     {
 
 
@@ -76,7 +76,7 @@ trait CustomTrait
 
 
 
-    public function bcmod($x, $y)
+    static public function bcmod($x, $y)
     {
         $take = 5;
         $mod = '';
@@ -91,7 +91,7 @@ trait CustomTrait
     }
 
 
-    public function sendSMS($arr)
+    static public function sendSMS($arr)
 {
 
      $AppSid = config('constants.welcome.AppSid');
@@ -126,7 +126,7 @@ trait CustomTrait
 }
 
 
-public function sendOtpMail($otp,$email)
+static public function sendOtpMail($otp,$email)
 {
 
 

@@ -39,7 +39,7 @@ class InvesterController extends Controller
     function __construct(Request $request)
     {
 
-        App::setLocale( $request->header('Accept-Language'));
+        App::setLocale($request->header('Accept-Language'));
     }
 
 
@@ -85,7 +85,7 @@ class InvesterController extends Controller
             $data = [
                 'message' => "No Data Found."
             ];
-            return  CustomTrait::ErrorJson($data);
+            return CustomTrait::ErrorJson($data);
         }
 
 
@@ -97,7 +97,7 @@ class InvesterController extends Controller
         $dashData['data']['total_investment'] = $total_investment;
         $dashData['data']['total_profit'] = $total_profit;
 
-        return  CustomTrait::SuccessJson($dashData);
+        return CustomTrait::SuccessJson($dashData);
     }
 
 
@@ -122,7 +122,7 @@ class InvesterController extends Controller
 
 
 
-        return  CustomTrait::SuccessJson($investerCount);
+        return CustomTrait::SuccessJson($investerCount);
     }
 
 
@@ -135,11 +135,22 @@ class InvesterController extends Controller
 
         $dd = explode(' ', $data['name']);
 
-
-        // $data=$request->user();
-        $arr['id'] = $data['id'];
+        // $countDD = count($dd);
+        // // $data=$request->user();
+        // $arr['id'] = $data['id'];
+        // if ($countDD <= 1) {
+        //     $arr['first_name'] = $dd[0];
+        //     $arr['last_name'] = ' ';
+        // } else {
+        //     $arr['first_name'] = $dd[0];
+        //     $arr['last_name'] = $dd[1];
+        // }
+        $lastname = '';
+        if (isset($dd[1])) {
+            $lastname = $dd[1];
+        }
         $arr['first_name'] = $dd[0];
-        $arr['last_name'] = $dd[1];
+        $arr['last_name'] = $lastname;
         $arr['email'] = $data['email'];
         $arr['country_code'] = $data['country_code'];
         $arr['mobile_number'] = $data['mobile_number'];
@@ -148,7 +159,7 @@ class InvesterController extends Controller
         $arr['status'] = $data['status'];
 
 
-        return  CustomTrait::SuccessJson($arr);
+        return CustomTrait::SuccessJson($arr);
     }
 
 
@@ -336,7 +347,7 @@ class InvesterController extends Controller
         $investor_statement = investor_statement::where(['campaign_id' => $campaign_id])->get()->toArray();
 
         $data['investor_statement'] = $investor_statement;
-        return  CustomTrait::SuccessJson($data);
+        return CustomTrait::SuccessJson($data);
     }
 
 
@@ -351,7 +362,7 @@ class InvesterController extends Controller
 
         $id = auth('sanctum')->user()->id;
         $data = User::select('role_type', 'kyc_approved_status', 'kyc_note')->where('id', $id)->first();
-        $role_type =  $data['role_type'];
+        $role_type = $data['role_type'];
 
 
         $detail = UserKycRole::select('id', 'user_type_id', 'kyc_id')->where('id', $role_type)->get()->toArray();
@@ -402,11 +413,11 @@ class InvesterController extends Controller
         }
 
 
-        $dataa['kyc'] =  $detail;
-        $dataa['kyc_approved_status'] =  $data['kyc_approved_status'];
-        $dataa['kyc_note'] =  $data['kyc_note'];
+        $dataa['kyc'] = $detail;
+        $dataa['kyc_approved_status'] = $data['kyc_approved_status'];
+        $dataa['kyc_note'] = $data['kyc_note'];
 
 
-        return  CustomTrait::SuccessJson($dataa);
+        return CustomTrait::SuccessJson($dataa);
     }
 }

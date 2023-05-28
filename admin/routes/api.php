@@ -39,7 +39,7 @@ use App\Http\Controllers\CmsConttroller;
 
     Route::post('login', [AdminController::class, 'login']);
 
-    Route::group(['middleware' => ['auth:sanctum','cors']], function() {
+    Route::group(['middleware' => ['auth:sanctum']], function() {
           Route::get('logout', [AdminController::class, 'logout']);
           Route::get('user', [AdminController::class, 'user']);
           Route::get('/get_admin_byid/{id}',[AdminController::class,'getUserById']);
