@@ -569,7 +569,7 @@ class CampaignController extends Controller
         // $investerCount = campaign_inverter::select('campaign_id')->where(['invester_id' => $id]);
         $investerCampaign = campaign_inverter::select('campaign_id')->where('invester_id', $id)->get()->toArray();
 
-// return $investerCount;
+        // return $investerCount;
 // return CustomTrait::SuccessJson($investerCount);
         // $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->whereIn('id', $investerCount)->get()->toArray();
         $data = campaign::whereIn('id', $investerCampaign)->get()->toArray();
@@ -608,7 +608,7 @@ class CampaignController extends Controller
         $campaign->investment_planning = $req->investment_planning;
         $campaign->terms = $req->terms;
         $campaign->introduce_team = $req->introduce_team;
-//added by qaysar for ahmad add compaign page request change
+        //added by qaysar for ahmad add compaign page request change
         $campaign->financing_type = $req->financing_type;
         $campaign->fund_use = $req->fund_use;
         $campaign->financing_period = $req->financing_period;
@@ -847,23 +847,21 @@ class CampaignController extends Controller
         }
     }
 
-    public function campaginWithKyc(Request $req,$user_id,$camp_id)
+    public function campaginWithKyc(Request $req, $user_id, $camp_id)
     {
-         $kyc_id_details=$user_id;
-         $campagin_id=$camp_id;
-        $kyc=UserKyc::select('value AS company_name')->where('user_id',$kyc_id_details)->where('kyc_detail_id',112)->first();
-        $kyc_national=UserKyc::select('value AS national_id')->where('user_id',$kyc_id_details)->where('kyc_detail_id',135)->first();
-        $campagin_details=campaign::where('id',$campagin_id)->first();
-        if($kyc == null || $campagin_details == null || $kyc_national== null)
-        {
-            $data=['message'=>'no data to retrive'];
+        $kyc_id_details = $user_id;
+        $campagin_id = $camp_id;
+        $kyc = UserKyc::select('value AS company_name')->where('user_id', $kyc_id_details)->where('kyc_detail_id', 112)->first();
+        $kyc_national = UserKyc::select('value AS national_id')->where('user_id', $kyc_id_details)->where('kyc_detail_id', 135)->first();
+        $campagin_details = campaign::where('id', $campagin_id)->first();
+        if ($kyc == null || $campagin_details == null || $kyc_national == null) {
+            $data = ['message' => 'no data to retrive'];
             return CustomTrait::ErrorJson($data);
-        }else
-        {
-            $kyc_json=json_decode($kyc,true);
-            $kyc_json_national=json_decode($kyc_national,true);
-            $campagin_json=json_decode($campagin_details,true);
-            $data=array_merge($kyc_json,$campagin_json,$kyc_json_national);
+        } else {
+            $kyc_json = json_decode($kyc, true);
+            $kyc_json_national = json_decode($kyc_national, true);
+            $campagin_json = json_decode($campagin_details, true);
+            $data = array_merge($kyc_json, $campagin_json, $kyc_json_national);
             return CustomTrait::SuccessJson($data);
         }
 
@@ -871,20 +869,44 @@ class CampaignController extends Controller
 
 
     }
+    public function campaignInvestPerc($id)
+    {
+        $campagin = campaign::where('id', $id)->pluck('total_valuation');
+        $campingInvestment = campaign_inverter::where('campaign_id', $id)->pluck('amount');
+        if (Count($campagin) > 0 || Count($campingInvestment) > 0) {
+            $count = 0;
+            for ($i = 0; $i < Count($campingInvestment); $i++) {
+                $count += $campingInvestment[$i];
+            }
+            if ($campagin[0] != null && $campagin[0] != 0) {
+                $data = ($count / $campagin[0]) * 100;
+            }else{
+                $data = 0;
+            }
+            return CustomTrait::SuccessJson($data);
+
+        } else {
+            $data = [
+                'message' => "something went wronge"
+            ];
+
+            return CustomTrait::ErrorJson($data);
+        }
+    }
 
 
-//    function  Deletecampaign($id)
+    //    function  Deletecampaign($id)
 //    {
 
-//     $data=campaign::find($id);
+    //     $data=campaign::find($id);
 //     $data->status  = 3;
 
-//     // $data->delete();
+    //     // $data->delete();
 //     $data->save();
 //     $data=campaign::all();
 
-//     // $data = $data->where(status!=0);
+    //     // $data = $data->where(status!=0);
 //     return view('campaign.list_camp',compact('data'))->with('message', 'Successfully deleted!');
 
-// }
+    // }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\InvesterController;
 use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\KycController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\QualifiedInvestorAttachementController;
 
 
 use App\Http\Controllers\exampleController;
@@ -77,6 +78,12 @@ use App\Models\Kyc;
         Route::post('/borrower_wallet',[BorrowerController::class,'borrowerWallet']);
         Route::post('/borrowerdashboard',[BorrowerController::class,'borrowerdashboard']);
 // ali api
+Route::get('getQualifiedInvestorAttach/{id}',[QualifiedInvestorAttachementController::class,'getQualifiedInvestData']);
+Route::post('addQualifiedInvestorAttach',[QualifiedInvestorAttachementController::class,'saveQualifiedInvestData']);
+Route::post('editQualifiedInvestorAttach',[QualifiedInvestorAttachementController::class,'updateQualifiedInvestData']);
+
+
+Route::get('campaignInvestPerc/{id}',[CampaignController::class,'campaignInvestPerc']);
 Route::get('/account_number',[UserController::class,'userAccoutnumber']);
 Route::get('investor_statment',[InvesterController::class,'investorStatment']);
 Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
