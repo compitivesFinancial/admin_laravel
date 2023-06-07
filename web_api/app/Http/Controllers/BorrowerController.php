@@ -59,9 +59,9 @@ class BorrowerController extends Controller
 
     }
 
-    function borroweWallet(Request $request)
+    function borroweWallet($borrower_id)
     {
-        $borrower_id = $request->user()->id;
+        // $borrower_id = $request->user()->id;
         $wallet = Borrower_wallet::where('borrower_id', $borrower_id)->get();
         $count = Count($wallet);
         if ($count == 0) {

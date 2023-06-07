@@ -59,9 +59,9 @@ class InvesterController extends Controller
 
 
 
-    function investorWallet(Request $request)
+    function investorWallet($investor_id)
     {
-        $investor_id = $request->user()->id;
+        // $investor_id = $request->user()->id;
         $investor_wallet = Investor_wallet::where('investor_id', $investor_id)->get();
         $count = Count($investor_wallet);
         if ($count == 0) {
