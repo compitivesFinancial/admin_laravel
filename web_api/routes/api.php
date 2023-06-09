@@ -81,7 +81,13 @@ Route::get('/account_number',[UserController::class,'userAccoutnumber']);
 Route::get('investor_statment',[InvesterController::class,'investorStatment']);
 Route::get('wallet_investor',[InvesterController::class,'investorWallet']);
 Route::get('borrower_statment',[BorrowerController::class,'borrowerStatment']);
-Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);
+Route::get('wallet_borrower',[BorrowerController::class,'borroweWallet']);3
+
+
+Route::get('wallet_investor_sum',[InvesterController::class,'walletSumInvestor']);
+Route::get('wallet_borrower_sum',[BorrowerController::class,'walletSumBorrower']);
+
+
 // Qaysar API for campain attachement
 Route::get('get_campaign_attachements/{id}',[CampaignController::class,'campainAttachements']);
 Route::get('get_UserKyc_Address',[KycController::class,'getUserKycAddress']);
