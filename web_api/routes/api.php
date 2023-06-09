@@ -70,7 +70,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //userkyc show with value
     Route::get('/show_userkyc', [KycController::class, 'showAddUserKyc']);
     Route::post('/modify_userkyc', [KycController::class, 'ModifyUserKyc']);
-
+    // ali api
+    Route::get('getQualifiedInvestorAttach/{id}', [QualifiedInvestorAttachementController::class, 'getQualifiedInvestData']);
+    Route::post('addQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'saveQualifiedInvestData']);
+    Route::post('editQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'updateQualifiedInvestData']);
+    Route::get('check_investor_role', [CampaignController::class, 'checkInvestorRole']);
+    Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
     //borowwer
     Route::get('/opportunity_detail/{id}', [BorrowerController::class, 'opportunityDetail']);
     Route::get('/userkycdetail', [BorrowerController::class, 'KycDetail']);
@@ -78,10 +83,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/borrower_wallet', [BorrowerController::class, 'borrowerWallet']);
     Route::post('/borrowerdashboard', [BorrowerController::class, 'borrowerdashboard']);
     // ali api
-    Route::get('getQualifiedInvestorAttach/{id}', [QualifiedInvestorAttachementController::class, 'getQualifiedInvestData']);
-    Route::post('addQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'saveQualifiedInvestData']);
-    Route::post('editQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'updateQualifiedInvestData']);
-    Route::get('check_investor_role', [CampaignController::class, 'checkInvestorRole']);
+    Route::get('wallet_investor_sum', [InvesterController::class, 'walletSumInvestor']);
+    Route::get('wallet_borrower_sum', [BorrowerController::class, 'walletSumBorrower']);
 
 
     Route::get('campaignInvestPerc/{id}', [CampaignController::class, 'campaignInvestPerc']);
