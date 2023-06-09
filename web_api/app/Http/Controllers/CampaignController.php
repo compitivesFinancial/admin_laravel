@@ -11,6 +11,7 @@ use App\Models\campaign;
 use App\Models\UserKyc;
 use App\Traits\CustomTrait;
 use App\Models\Campaign_log;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
@@ -489,8 +490,7 @@ class CampaignController extends Controller
         $sumamount = campaign_inverter::where(['campaign_id' => $campaign])->get()->sum('amount');
 
 
-
-
+       return $this->checkInvestorRole($req);
 
         if ($investerCount > 0) {
 
@@ -894,6 +894,29 @@ class CampaignController extends Controller
         }
     }
 
+    function checkInvestorRole(Request $req)
+    {
+
+        $session_user_id = auth('sanctum')->user()->id;
+        $newDate = Carbon::now()->subYear();
+        // $newDate = $newDate->toDateString();
+        $total_invest = campaign_inverter::where('invester_id',$session_user_id)->where('created_at', '>=', $newDate->toDateString())->sum('amount');
+        $newDate = Carbon::now()->subYear();
+        $campaignCount = campaign_inverter::where('invester_id',$session_user_id)->where('created_at', '>=', $newDate->toDateString())->count('campaign_id');
+        // $campaign = campaign::where('status', 1)->count('id');
+      if($total_invest != null  && $campaignCount != null){
+        $data=[
+            "total_invest"=>$total_invest,
+            "campaignCount"=>$campaignCount
+        ];
+        return CustomTrait::SuccessJson($data);
+      }
+        $data=[
+            "total_invest"=>0,
+            "campaignCount"=>0
+        ];
+        return CustomTrait::ErrorJson($data);
+    }
 
     //    function  Deletecampaign($id)
 //    {

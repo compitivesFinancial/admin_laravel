@@ -207,6 +207,7 @@ $otp = 1234;
         $arr['token']=$token;
         $arr['kyc_approved_status']=$data['kyc_approved_status'];
         $arr['cr_number_response']=$data['cr_number_response'];
+        $arr['isQualified']=$data['is_qualified'];
 
 
         return  CustomTrait::SuccessJson($arr);
@@ -381,6 +382,7 @@ public function register(Request $req){
     $arr['status']=$data['status'];
     $arr['token']=$token;
     $arr['cr_number_response']=$data['cr_number_response'];
+    $arr['isQualified']=$data['is_qualified'];
 
 
     return  CustomTrait::SuccessJson($arr);

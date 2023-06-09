@@ -29,7 +29,8 @@ class User extends Authenticatable
         'role_type',
         'country_code',
         'mobile_number',
-        'status'
+        'status',
+        'is_qualified'
     ];
 
     /**
