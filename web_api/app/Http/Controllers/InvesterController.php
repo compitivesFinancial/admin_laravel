@@ -57,26 +57,26 @@ class InvesterController extends Controller
         }
     }
 
-    function walletSumInvestor(Request $request,$id)
+    function walletSumInvestor(Request $request)
     {
 
-        $investor_id =$id;
-        // $request->user()->id;
+        // $investor_id =$id;
+        $investor_id = $request->user()->id;
         $investor_wallet_debit = Investor_wallet::where('investor_id',$investor_id)->sum('debit_amount');
         $investor_wallet_credit = Investor_wallet::where('investor_id',$investor_id)->sum('credit_amount');
 
-        if ($investor_wallet_debit ==null && $investor_wallet_credit== null) {
-            $data = [
-                'data' => 'there is no anything in your wallet',
-            ];
-            return CustomTrait::ErrorJson($data);
-        } else {
-            $investor_wallet=[
-                'debit'=>$investor_wallet_debit,
-                'credit'=>$investor_wallet_credit
-            ];
-            return CustomTrait::SuccessJson($investor_wallet);
+        if ($investor_wallet_debit ==null) {
+            $investor_wallet_debit = 0;
         }
+        if($investor_wallet_credit== null){
+            $investor_wallet_credit = 0;
+        }
+        $investor_wallet=[
+            'debit'=>$investor_wallet_debit,
+            'credit'=>$investor_wallet_credit,
+            'walletBalance'=>$investor_wallet_credit - $investor_wallet_debit
+        ];
+        return CustomTrait::SuccessJson($investor_wallet);
     }
 
     function investorWallet($investor_id)

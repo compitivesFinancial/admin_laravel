@@ -39,23 +39,20 @@ class BorrowerController extends Controller
     {
 
         $borrower_id = $request->user()->id;
-        $borrower_wallet_debit = Borrower_wallet::where('borrower_id',$borrower_id)->sum('debit_amount');
-        $borrower_wallet_credit = Borrower_wallet::where('borrower_id',$borrower_id)->sum('credit_amount');
-        $borrower_wallet_debit;
-        $borrower_wallet_credit;
-        if ($borrower_wallet_debit == null  || $borrower_wallet_credit == null) {
-            $data = [
-                'data' => 'there is no anything in your wallet',
-            ];
-            return CustomTrait::ErrorJson($data);
-        } else {
-
-            $borrower_wallet=[
-                'debit'=>$borrower_wallet_debit,
-                'credit'=>$borrower_wallet_credit
-            ];
-            return CustomTrait::SuccessJson($borrower_wallet);
+        $borrower_wallet_debit = Borrower_wallet::where('borrower_id', $borrower_id)->sum('debit_amount');
+        $borrower_wallet_credit = Borrower_wallet::where('borrower_id', $borrower_id)->sum('credit_amount');
+        if ($borrower_wallet_debit == null) {
+            $borrower_wallet_debit = 0;
         }
+        if ($borrower_wallet_credit == null) {
+            $borrower_wallet_credit = 0;
+        }
+        $borrower_wallet = [
+            'debit' => $borrower_wallet_debit,
+            'credit' => $borrower_wallet_credit,
+            'walletBalance' => $borrower_wallet_credit - $borrower_wallet_debit
+        ];
+        return CustomTrait::SuccessJson($borrower_wallet);
     }
     public function borrowerStatment(Request $request)
     {
