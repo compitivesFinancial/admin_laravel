@@ -2,34 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\CustomTrait;
-use Illuminate\Http\Request;
-use App\Models\campaign;
-use App\Models\Product;
-use App\Models\campaign_inverter;
-use App\Models\campaign_team;
-use App\Models\campaign_image;
-use App\Models\Campaign_log;
-use App\Models\borrower_statement;
-use App\Models\investor_statement;
-
-use App\Models\repayment_scheduling;
+use App\Models\Kyc;
 use App\Models\loan;
 use App\Models\User;
-use App\Models\UserKycRole;
-use App\Models\Kyc;
-use App\Models\KycDetail;
+use App\Models\Product;
 use App\Models\UserKyc;
-
-
-use App\Models\Evaluation_log;
+use App\Models\campaign;
+use App\Models\KycDetail;
 use App\Models\Evaluation;
-use App\Models\EvaluationDetail;
-use App\Models\Evaluation_category;
-use App\Models\Campaign_evaluation;
+use App\Models\UserKycRole;
+use App\Traits\CustomTrait;
+
+use Illuminate\Support\Arr;
+use App\Models\Campaign_log;
+use Illuminate\Http\Request;
+use App\Models\campaign_team;
+use App\Models\campaign_image;
+use App\Models\Evaluation_log;
 use App\Models\Investor_wallet;
+
+
+use App\Models\EvaluationDetail;
+use App\Models\campaign_inverter;
+use App\Models\borrower_statement;
+use App\Models\investor_statement;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
+use App\Models\Campaign_evaluation;
+use App\Models\Evaluation_category;
 use Illuminate\Support\Facades\App;
+use App\Models\repayment_scheduling;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Constraint\Count;
 
 class InvesterController extends Controller
@@ -46,14 +50,18 @@ class InvesterController extends Controller
     function investorStatment(Request $request)
     {
         $investor_id = $request->user()->id;
-        $investor_statment = investor_statement::where('invester_id', $investor_id)->get();
-        $count = Count($investor_statment);
+        $data = DB::table('l_investor_statement')->where('invester_id', $investor_id)
+            ->join('campaigns', 'campaigns.id', '=', 'l_investor_statement.campaign_id')
+            ->select('l_investor_statement.*', 'campaigns.tagline', 'campaigns.version_number', 'campaigns.program_number')
+            ->get();
 
+        $count = Count($data);
         if ($count == 0) {
             $data = ["message" => "no details for this user"];
             return CustomTrait::ErrorJson($data);
         } else {
-            return CustomTrait::SuccessJson($investor_statment);
+
+            return CustomTrait::SuccessJson($data);
         }
     }
 
@@ -62,19 +70,19 @@ class InvesterController extends Controller
 
         // $investor_id =$id;
         $investor_id = $request->user()->id;
-        $investor_wallet_debit = Investor_wallet::where('investor_id',$investor_id)->sum('debit_amount');
-        $investor_wallet_credit = Investor_wallet::where('investor_id',$investor_id)->sum('credit_amount');
+        $investor_wallet_debit = Investor_wallet::where('investor_id', $investor_id)->sum('debit_amount');
+        $investor_wallet_credit = Investor_wallet::where('investor_id', $investor_id)->sum('credit_amount');
 
-        if ($investor_wallet_debit ==null) {
+        if ($investor_wallet_debit == null) {
             $investor_wallet_debit = 0;
         }
-        if($investor_wallet_credit== null){
+        if ($investor_wallet_credit == null) {
             $investor_wallet_credit = 0;
         }
-        $investor_wallet=[
-            'debit'=>$investor_wallet_debit,
-            'credit'=>$investor_wallet_credit,
-            'walletBalance'=>$investor_wallet_credit - $investor_wallet_debit
+        $investor_wallet = [
+            'debit' => $investor_wallet_debit,
+            'credit' => $investor_wallet_credit,
+            'walletBalance' => $investor_wallet_credit - $investor_wallet_debit
         ];
         return CustomTrait::SuccessJson($investor_wallet);
     }
@@ -88,7 +96,12 @@ class InvesterController extends Controller
             $data = ['data' => 'there is no anything in your wallet'];
             return CustomTrait::ErrorJson($data);
         } else {
-            return CustomTrait::SuccessJson($investor_wallet);
+            if ($investor_wallet[0]->opportunity_id == 0) {
+                $investor_wallet[0]->opportunity_id = "ايداع شيكات";
+                return CustomTrait::SuccessJson($investor_wallet);
+            } else {
+                return CustomTrait::SuccessJson($investor_wallet);
+            }
         }
     }
 

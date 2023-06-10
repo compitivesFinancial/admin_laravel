@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kyc;
+use App\Models\User;
+use App\Models\UserKyc;
+use App\Models\campaign;
+use App\Models\KycDetail;
+use App\Models\Evaluation;
+use App\Models\UserKycRole;
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
-use App\Models\campaign;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
-use App\Models\borrower_statement;
 use App\Models\Borrower_wallet;
-use App\Models\investor_statement;
-use App\Models\User;
-use App\Models\UserKycRole;
-use App\Models\Kyc;
-use App\Models\KycDetail;
-use App\Models\UserKyc;
-use App\Models\Evaluation;
 use App\Models\EvaluationDetail;
-use App\Models\Evaluation_category;
+use App\Models\borrower_statement;
+use App\Models\investor_statement;
+use Illuminate\Support\Facades\DB;
 use App\Models\Campaign_evaluation;
 
 
+use App\Models\Evaluation_category;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Constraint\Count;
 
@@ -54,6 +55,7 @@ class BorrowerController extends Controller
         ];
         return CustomTrait::SuccessJson($borrower_wallet);
     }
+
     public function borrowerStatment(Request $request)
     {
         $borrower_id = $request->user()->id;
@@ -62,13 +64,10 @@ class BorrowerController extends Controller
         if ($campaign_count == 0) {
             $data = ['message' => 'there is no campagin for this user'];
         } else {
-            $campaign_id = [];
-            for ($i = 0; $i < $campaign_count; $i++) {
-                $campaign = campaign::where('user_id', $borrower_id)->get();
-                $campaign_id[] = $campaign[$i]['id'];
-                $borrow_statment = borrower_statement::whereIn('campaign_id', $campaign_id)->get();
-
-            }
+            $borrow_statment= DB::table('campaigns')->where('user_id', $borrower_id)
+            ->join('l_borrower_statement', 'l_borrower_statement.campaign_id', '=', 'campaigns.id')
+            ->select('l_borrower_statement.*', 'campaigns.tagline','campaigns.version_number','campaigns.program_number')
+            ->get();
 
             return CustomTrait::SuccessJson($borrow_statment);
 
@@ -79,14 +78,22 @@ class BorrowerController extends Controller
 
     function borroweWallet($borrower_id)
     {
-        // $borrower_id = $request->user()->id;
+
         $wallet = Borrower_wallet::where('borrower_id', $borrower_id)->get();
         $count = Count($wallet);
         if ($count == 0) {
             $data = ['data' => 'there is no wallet '];
             return CustomTrait::ErrorJson($data);
         } else {
-            return CustomTrait::SuccessJson($wallet);
+            if($wallet[0]->opportunity_id==0)
+            {
+                $wallet[0]->opportunity_id="ايداع شيكات";
+                return CustomTrait::SuccessJson($wallet);
+            }
+            else{
+                return CustomTrait::SuccessJson($wallet);
+            }
+
         }
     }
 
