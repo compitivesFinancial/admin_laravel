@@ -94,6 +94,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('wallet_investor/{id}', [InvesterController::class, 'investorWallet']);
     Route::get('borrower_statment', [BorrowerController::class, 'borrowerStatment']);
     Route::get('wallet_borrower/{id}', [BorrowerController::class, 'borroweWallet']);
+    Route::get('investor_campaign_statment/{campaign_id}', [InvesterController::class, 'investorCampaignStatment']);
+
     // Qaysar API for campain attachement
     Route::get('get_campaign_attachements/{id}', [CampaignController::class, 'campainAttachements']);
     Route::get('get_UserKyc_Address', [KycController::class, 'getUserKycAddress']);

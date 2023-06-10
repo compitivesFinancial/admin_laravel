@@ -56,7 +56,19 @@ class InvesterController extends Controller
             return CustomTrait::SuccessJson($investor_statment);
         }
     }
+    function investorCampaignStatment(Request $request,$campaign_id)
+    {
+        $investor_id = $request->user()->id;
+        $investor_statment = investor_statement::where(['campaign_id' => $campaign_id, 'invester_id' => $investor_id])->get();
+        $count = Count($investor_statment);
 
+        if ($count == 0) {
+            $data = ["message" => "no details for this user"];
+            return CustomTrait::ErrorJson($data);
+        } else {
+            return CustomTrait::SuccessJson($investor_statment);
+        }
+    }
     function walletSumInvestor(Request $request)
     {
 
