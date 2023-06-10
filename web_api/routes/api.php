@@ -89,6 +89,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('campaignInvestPerc/{id}', [CampaignController::class, 'campaignInvestPerc']);
     Route::get('/account_number', [UserController::class, 'userAccoutnumber']);
+
     // here we need to retrieve opportunity name commented by qaysar
     Route::get('investor_statment', [InvesterController::class, 'investorStatment']);
     Route::get('wallet_investor/{id}', [InvesterController::class, 'investorWallet']);
