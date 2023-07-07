@@ -15,17 +15,6 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\PageConttroller;
 use App\Http\Controllers\CmsConttroller;
 
-
-
-
-
-
-
-
-
-
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,9 +25,8 @@ use App\Http\Controllers\CmsConttroller;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::group(['middleware'=>['MakeSecureHttps']],function(){
     Route::post('login', [AdminController::class, 'login']);
-
     Route::group(['middleware' => ['auth:sanctum']], function() {
           Route::get('logout', [AdminController::class, 'logout']);
           Route::get('user', [AdminController::class, 'user']);
@@ -50,10 +38,6 @@ use App\Http\Controllers\CmsConttroller;
           Route::get('/admin_ip_list',[AdminController::class,'listAdminIp']);
           Route::post('/add_admin_ip',[AdminController::class,'addAdminIp']);
           Route::get('/list_adminiplogs',[AdminController::class,'adminLogs']);
-
-
-
-
 //email
 Route::get('/list_template',[EmailController::class,'listTemplate']);
 Route::post('/insert_template',[EmailController::class,'insertTemplate']);
@@ -63,7 +47,6 @@ Route::post('/sendmailer',[EmailController::class,'myDemoMail']);
 Route::get('/get_template_type',[EmailController::class,'getTemplateType']);
 Route::post('/setvalues',[EmailController::class,'setValues']);
 Route::post('/sendmail',[EmailController::class,'sendMail']);
-
 
     //product attribute
     Route::get('/list_product_attribute',[ProductAttributeConttroller::class,'list']);
@@ -82,11 +65,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_evaluation',[EvaluationConttroller::class,'delete']);
     Route::post('/delete_evaluation_detail',[EvaluationConttroller::class,'deleteEvoDetail']);
 
-
-
-
-
-
     //product
     Route::get('/product_list',[ProductConttroller::class,'list']);
     Route::post('/add_product',[ProductConttroller::class,'insert']);
@@ -95,9 +73,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/delete_product',[ProductConttroller::class,'delete']);
     Route::post('/delete_product_detail',[ProductConttroller::class,'deleteProductDetail']);
     Route::get('/product_attribute_list',[ProductConttroller::class,'productAttributelist']);
-
-
-
 
     //kyc
     Route::post('/add_kyc',[KycController::class,'insert']);
@@ -113,36 +88,27 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
     Route::post('/update_infotype',[KycController::class,'updateInfotype']);
     Route::get('/get_infotype_id/{id}',[KycController::class,'GetInfotypeById']);
 
-
         //user type
         Route::get('/show_user_type',[KycController::class,'showUserType']);
         Route::post('/update_user_type',[KycController::class,'updateUserType']);
 
         /////////////loan/////////////////////////////
-
-
         Route::get('/loantype_list',[LoanManagementController::class,'loanTypeList']);
         Route::get('/accruedinterest_list',[LoanManagementController::class,'accruedInterestList']);
-
         Route::get('/intrest_list',[LoanManagementController::class,'intrestList']);
         Route::get('/intrest_calculation_list',[LoanManagementController::class,'intrestCalculationList']);
         Route::get('/intrest_rate_charged_list',[LoanManagementController::class,'intrestRateChargedList']);
 
-
-
         //loan
-
         Route::get('/loan_list',[LoanManagementController::class,'loanList']);
         Route::post('/loan_insert',[LoanManagementController::class,'loanInsert']);
         Route::post('/loan_update',[LoanManagementController::class,'loanUpdate']);
         Route::get('/loanget_by_id/{id}',[LoanManagementController::class,'GetById']);
         Route::post('/get_opportunities_by_product',[LoanManagementController::class,'GetOpportunityByProduct']);
 
-
         // Route::post('/loanintrestrate_insert',[LoanManagementController::class,'loanIntrestRateInsert']);
         Route::get('/loan_intrest_rate_list',[LoanManagementController::class,'loanIntrestRateList']);
         Route::get('/loan_list',[LoanManagementController::class,'loanList']);
-
 
     //repayment
     Route::get('/graceperiod_list',[LoanManagementController::class,'gracePeriodList']);
@@ -211,3 +177,6 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
 
 
 });
+
+});
+
