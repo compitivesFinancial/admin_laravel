@@ -25,7 +25,7 @@ use App\Http\Controllers\CmsConttroller;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware'=>['MakeSecureHttps']],function(){
+// Route::group(['middleware'=>['MakeSecureHttps']],function(){
     Route::post('login', [AdminController::class, 'login']);
     Route::group(['middleware' => ['auth:sanctum']], function() {
           Route::get('logout', [AdminController::class, 'logout']);
@@ -178,5 +178,5 @@ Route::post('/sendmail',[EmailController::class,'sendMail']);
 
 });
 
-});
+// });
 

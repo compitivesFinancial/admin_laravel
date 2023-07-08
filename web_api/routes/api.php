@@ -5,6 +5,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\InvesterController;
 use App\Http\Controllers\BorrowerController;
@@ -38,6 +39,7 @@ use App\Models\Kyc;
 //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
 Route::get('/get_page_by_id_outside/{id}', [PageConttroller::class, 'GetById']);
 
+
 Route::get('/get_campagin_outside', [CampaignController::class, 'campaginOutSide']);
 Route::post('login', [AdminController::class, 'login']);
 Route::post('/check_mobile', [UserController::class, 'checkMobile']);
@@ -52,6 +54,11 @@ Route::get('yaqenIqama', [YaqeenController::class, 'yaqenIqamaSaudi']);
 Route::get('yaqeensaudi', [YaqeenController::class, 'yaqeensaudi']);
 //product
 Route::get('/list_product', [ProductConttroller::class, 'list']);
+
+// bankl api
+
+Route::get('/bankAuth',[BankController::class,'accessToken']);
+Route::post('/payment',[BankController::class,'payment']);
 
 
 
