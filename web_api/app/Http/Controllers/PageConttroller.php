@@ -15,7 +15,7 @@ class PageConttroller extends Controller
 
 function __construct(Request $request){
 
-        $this->lang = $request->header('Accept-Language');
+    App::setLocale($request->header('Accept-Language'));
 
 }
 
@@ -62,7 +62,7 @@ function __construct(Request $request){
 
     public function GetById(Request $req,$id)
     {
-       
+
       $user_id = $req->user_id;
         $sql_title = $this->lang == 'en' ? 'title' : 'ar_title as title';
          $sql_description = $this->lang == 'en' ? 'description' : 'ar_description as description';
@@ -74,24 +74,24 @@ function __construct(Request $request){
        // $product['description'] = strip_tags($product['description']);
        foreach($allpagesparams as $parms){
         $product['description'] = str_replace("{%".$parms->keyword."%}",$parms->replace_with,$product['description']);
-       } 
+       }
       if(isset($req->user_id)){
        $arr = explode(' ',$product['description']);
-       
+
         $message ="";
         foreach($arr as $key=>$val){
            // echo "-------<pre>------";
             //print_r($val);
             //echo "----------<pre>------";
       if(substr(trim($val), 0, 2)=='{%'){
-      
+
        $result = substr(substr(trim($val), 0, -2), 2);
        $arrr = explode('.',$result);
-    
+
         if(isset($arrr[1])){
           $table = $arrr[0];
           $coloum = $arrr[1];
-           if($table=="users"){ 
+           if($table=="users"){
           $sql = "select $coloum from $table where id = $user_id";
            }else {
             $sql = "select $coloum from $table where user_id =  $user_id";
@@ -110,8 +110,8 @@ function __construct(Request $request){
       }
 
     }
-     
-       $product['description'] =$message; 
+
+       $product['description'] =$message;
 }
 
 

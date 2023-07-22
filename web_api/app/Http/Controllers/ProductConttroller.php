@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
+use Exception;
+use App\Models\Product;
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
-use App\Models\ProductAttribute;
-use App\Models\ProductAttributeDetail;
-use App\Models\Product;
 use App\Models\ProductDetail;
-use DB;
-use Exception;
+use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Models\ProductAttributeDetail;
 
 class ProductConttroller extends Controller
 {
@@ -18,7 +20,8 @@ class ProductConttroller extends Controller
 
     public function list()
     {
-      $sql_title = $this->lang == 'en' ? 'title' : 'ar_title as title';
+    //   $sql_title = $this->lang == 'en' ? 'title' : 'ar_title as title';
+    $sql_title=App::isLocale('en')?'title':'ar_title as title';
 
            $product=Product::select('id',$sql_title)->where('status', 1)->orderBy('position', 'ASC')->get()->toArray();
 

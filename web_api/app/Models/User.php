@@ -47,7 +47,6 @@ class User extends Authenticatable
         'status',
         'updated_at',
         'created_at'
-
     ];
 
 

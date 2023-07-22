@@ -2,23 +2,25 @@
 
 
 
+use App\Models\Kyc;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KycController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PageConttroller;
+
+
+use App\Http\Controllers\YaqeenController;
+use App\Http\Controllers\exampleController;
+use App\Http\Controllers\BorrowerController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\InvesterController;
-use App\Http\Controllers\BorrowerController;
-use App\Http\Controllers\KycController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductConttroller;
 use App\Http\Controllers\QualifiedInvestorAttachementController;
-
-
-use App\Http\Controllers\exampleController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PageConttroller;
-use App\Http\Controllers\YaqeenController;
-use App\Models\Kyc;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +41,6 @@ use App\Models\Kyc;
 //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
 Route::get('/get_page_by_id_outside/{id}', [PageConttroller::class, 'GetById']);
 
-
 Route::get('/get_campagin_outside', [CampaignController::class, 'campaginOutSide']);
 Route::post('login', [AdminController::class, 'login']);
 Route::post('/check_mobile', [UserController::class, 'checkMobile']);
@@ -48,27 +49,21 @@ Route::post('/verify_otp', [UserController::class, 'verifyOtp']);
 Route::post('/login_verify_otp', [UserController::class, 'loginVerifyOtp']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
-
 Route::get('yaqeenlogin', [YaqeenController::class, 'YageenAuth']);
 Route::get('yaqenIqama', [YaqeenController::class, 'yaqenIqamaSaudi']);
 Route::get('yaqeensaudi', [YaqeenController::class, 'yaqeensaudi']);
 //product
 Route::get('/list_product', [ProductConttroller::class, 'list']);
-
 // bankl api
-
 Route::get('/bankAuth',[BankController::class,'accessToken']);
 Route::post('/payment',[BankController::class,'payment']);
 
 
-
+Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::group(['middleware' => ['isauth']], function () {
 
     Route::get('/examplefunc', [exampleController::class, 'examplefunc']);
-
-
-
     Route::get('logout', [AdminController::class, 'logout']);
     Route::get('user', [AdminController::class, 'user']);
 
@@ -82,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('addQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'saveQualifiedInvestData']);
     Route::post('editQualifiedInvestorAttach', [QualifiedInvestorAttachementController::class, 'updateQualifiedInvestData']);
     Route::get('check_investor_role', [CampaignController::class, 'checkInvestorRole']);
-    Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
+
     //borowwer
     Route::get('/opportunity_detail/{id}', [BorrowerController::class, 'opportunityDetail']);
     Route::get('/userkycdetail', [BorrowerController::class, 'KycDetail']);
