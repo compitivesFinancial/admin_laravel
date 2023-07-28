@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Page;
 use Exception;
 use Illuminate\Support\Facades\DB ;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class PageConttroller extends Controller

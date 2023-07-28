@@ -52,27 +52,21 @@ class UserController extends Controller
         }
     }
 
-
-
-
-
     function sendOtp(Request $req)
     {
 
      loginRandom::where(['email'=>$req->email])->delete();
         // $otp = random_int(1000, 9999);
-        // $email = "qadomya14@gmail.com";
-        // CustomTrait::sendOtpMail($otp,$email);
+        $email = "qadomya14@gmail.com";
+    //    CustomTrait::sendOtpMail($otp,$req->email);
 
-        // CustomTrait::sendOtpMail($otp,$req->email);
+    //     // CustomTrait::sendOtpMail($otp,$req->email);
         $otp = 1234;
         $kyc = new User_otp;
         $kyc->email = $req->email;
         $kyc->otp = $otp;
         $kyc->status = 0;
-
         $kyc->save();
-
         $data = [
             'status' => true,
             'message' => "OTP Sent Successfully"
@@ -137,14 +131,9 @@ class UserController extends Controller
             $kyc->status = 1;
             $kyc->save();
 
-
-            // $user = $req->user();
             $user = User::select('id', 'role_type', 'name', 'mobile_number', 'email', 'password', 'admin_role_id')->where('email', $req->email)->first();
-
-
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->plainTextToken;
-
             $data = User::find($user['id']);
             $arr['id'] = $data['id'];
             $arr['name'] = $data['name'];
@@ -162,11 +151,11 @@ class UserController extends Controller
             return  CustomTrait::SuccessJson($arr);
         }
        else {
-        $row = User_otp::select('id')->where(['email' => $req->email, 'otp' => $req->otp])->orderBy('id', 'DESC')->limit(1)->first();
-        $idd = $row['id'];
-        $kyc = User_otp::find($idd);
-        $kyc->status = 1;
-        $kyc->save();
+        // $row = User_otp::select('id')->where(['email' => $req->email, 'otp' => $req->otp])->orderBy('id', 'DESC')->limit(1)->first();
+        // $idd = $row['id'];
+        // $kyc = User_otp::find($idd);
+        // $kyc->status = 1;
+        // $kyc->save();
         loginRandom::create([
             'email'=>$req->email,
             'count'=>$req->otp

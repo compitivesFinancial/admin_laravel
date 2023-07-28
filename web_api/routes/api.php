@@ -41,6 +41,11 @@ use App\Http\Controllers\QualifiedInvestorAttachementController;
 //added By Qaysar For retrieve the conditions and terms from registration page in public mode without login
 Route::get('/get_page_by_id_outside/{id}', [PageConttroller::class, 'GetById']);
 
+
+
+Route::get('/testPass', [UserController::class, 'testPass']);
+
+
 Route::get('/get_campagin_outside', [CampaignController::class, 'campaginOutSide']);
 Route::post('login', [AdminController::class, 'login']);
 Route::post('/check_mobile', [UserController::class, 'checkMobile']);

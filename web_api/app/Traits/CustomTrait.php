@@ -241,9 +241,6 @@ static public function sendOtpMail($otp,$email)
 
     return $dataout;
 
-
-
-
 }
 
 
