@@ -152,7 +152,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //page
     // Route::get('/get_page_list',[PageConttroller::class,'list']);
     Route::get('/get_page_by_id/{id}', [PageConttroller::class, 'GetById']);
-    Route::post('/get_page_by_id/{id}', [PageConttroller::class, 'GetById']);
+    // Route::post('/get_page_by_id/{id}', [PageConttroller::class, 'GetById']);
+
+
 
     //home
     Route::get('/total_raised', [CampaignController::class, 'totalRaised']);

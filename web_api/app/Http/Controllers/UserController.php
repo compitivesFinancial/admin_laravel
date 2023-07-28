@@ -54,12 +54,10 @@ class UserController extends Controller
 
     function sendOtp(Request $req)
     {
-
      loginRandom::where(['email'=>$req->email])->delete();
         // $otp = random_int(1000, 9999);
-        $email = "qadomya14@gmail.com";
+        //  $email = "qadomya14@gmail.com";
     //    CustomTrait::sendOtpMail($otp,$req->email);
-
     //     // CustomTrait::sendOtpMail($otp,$req->email);
         $otp = 1234;
         $kyc = new User_otp;
@@ -162,11 +160,9 @@ class UserController extends Controller
         ]);
         $lastOtp=loginRandom::where(['email'=>$req->email])->get();
         if(Count($lastOtp)>2){
-
             $data = [
                 'status' => false,
                 'message' => "you must generate new otp"
-
             ];
             return CustomTrait::ErrorJson($data);
         }
