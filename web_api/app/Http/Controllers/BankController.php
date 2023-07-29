@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use App\Models\anb_accounts;
+use Illuminate\Support\Facades\Auth;
 
 class BankController extends Controller
 {
@@ -86,10 +89,13 @@ class BankController extends Controller
 
     public function bankBlance(Request $req)
     {
+
+        $userid=Auth::user()->id;
+        $accountNumber=anb_accounts::where('user_id',$userid)->first();
         $this->accessToken();
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://sandbox.anb.com.sa/v1/report/account/balance?accountNumber=' . $req->accountNumber . '',
+            CURLOPT_URL => 'https://sandbox.anb.com.sa/v1/report/account/balance?accountNumber=' . $accountNumber->account_number. '',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

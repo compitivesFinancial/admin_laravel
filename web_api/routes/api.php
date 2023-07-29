@@ -44,8 +44,6 @@ Route::get('/get_page_by_id_outside/{id}', [PageConttroller::class, 'GetById']);
 
 
 Route::get('/testPass', [UserController::class, 'testPass']);
-
-
 Route::get('/get_campagin_outside', [CampaignController::class, 'campaginOutSide']);
 Route::post('login', [AdminController::class, 'login']);
 Route::post('/check_mobile', [UserController::class, 'checkMobile']);
@@ -59,10 +57,7 @@ Route::get('yaqenIqama', [YaqeenController::class, 'yaqenIqamaSaudi']);
 Route::get('yaqeensaudi', [YaqeenController::class, 'yaqeensaudi']);
 //product
 Route::get('/list_product', [ProductConttroller::class, 'list']);
-// bankl api
-Route::get('/bankAuth',[BankController::class,'accessToken']);
-Route::post('/payment',[BankController::class,'payment']);
-Route::get('/balance',[BankController::class,'bankBlance']);
+
 
 
 
@@ -71,6 +66,17 @@ Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
 
 Route::group(['middleware' => ['auth:sanctum']],
 function () {
+
+
+
+    // bankl api
+Route::get('/bankAuth',[BankController::class,'accessToken']);
+Route::post('/payment',[BankController::class,'payment']);
+Route::get('/balance',[BankController::class,'bankBlance']);
+
+
+
+
     // Route::group(['middleware' => ['isauth']], function () {
 
     Route::get('/examplefunc', [exampleController::class, 'examplefunc']);
