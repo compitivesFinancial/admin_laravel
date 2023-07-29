@@ -62,10 +62,15 @@ Route::get('/list_product', [ProductConttroller::class, 'list']);
 // bankl api
 Route::get('/bankAuth',[BankController::class,'accessToken']);
 Route::post('/payment',[BankController::class,'payment']);
+Route::get('/balance',[BankController::class,'bankBlance']);
+
+
 
 
 Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
-Route::group(['middleware' => ['auth:sanctum']], function () {
+
+Route::group(['middleware' => ['auth:sanctum']],
+function () {
     // Route::group(['middleware' => ['isauth']], function () {
 
     Route::get('/examplefunc', [exampleController::class, 'examplefunc']);
