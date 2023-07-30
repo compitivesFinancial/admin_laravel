@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Page;
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
-use App\Models\Page;
-use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB ;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class PageConttroller extends Controller
 {
+
     private $lang;
 function __construct(Request $request){
 

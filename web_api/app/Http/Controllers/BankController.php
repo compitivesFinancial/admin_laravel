@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use App\Models\anb_accounts;
+use Illuminate\Support\Facades\Auth;
 
 class BankController extends Controller
 {
@@ -12,9 +15,7 @@ class BankController extends Controller
     public $token;
     public function accessToken()
     {
-
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://sandbox.anb.com.sa/v1/b2b-auth/oauth/accesstoken',
             CURLOPT_RETURNTRANSFER => true,
@@ -53,6 +54,7 @@ class BankController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
+<<<<<<< HEAD
             "sequenceNumber": "138",
             "valueDate": "210414",
             "currency": "SAR",
@@ -73,8 +75,9 @@ class BankController extends Controller
             "transactionComment": "ANB to ANB works",
             "purposeOfTransfer": "38"
             }',
+
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer '.$this->token.'',
+                'Authorization: Bearer ' . $this->token . '',
                 'Content-Type: text/plain'
             ),
         ));
@@ -82,7 +85,35 @@ class BankController extends Controller
         $response = curl_exec($curl);
 
         curl_close($curl);
-        $res=json_decode($response);
+        $res = json_decode($response);
         return CustomTrait::SuccessJson($res);
+    }
+
+
+    public function bankBlance(Request $req)
+    {
+
+        $userid=Auth::user()->id;
+        $accountNumber=anb_accounts::where('user_id',$userid)->first();
+        $this->accessToken();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://sandbox.anb.com.sa/v1/report/account/balance?accountNumber=' . $accountNumber->account_number. '',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $this->token . ''
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
     }
 }
