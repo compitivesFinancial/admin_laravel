@@ -6,18 +6,18 @@ use App\Traits\CustomTrait;
 use Illuminate\Http\Request;
 use App\Models\Page;
 use Exception;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB ;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class PageConttroller extends Controller
 {
-
-
+    private $lang;
 function __construct(Request $request){
 
-    App::setLocale($request->header('Accept-Language'));
-
+    // App::setLocale($request->header('Accept-Language'));
+    $this->lang = $request->header('Accept-Language');
 }
 
 
@@ -177,7 +177,6 @@ function __construct(Request $request){
         //     ];
         //     return  CustomTrait::ErrorJson($data);
         // }
-
 
         $data = [
             'message' => "Page Updated"

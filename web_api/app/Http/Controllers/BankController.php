@@ -36,6 +36,7 @@ class BankController extends Controller
         curl_close($curl);
         $res = json_decode($response);
         $this->token = $res->access_token;
+        return $this->token;
     }
 
     public function payment(Request $req)
@@ -52,26 +53,26 @@ class BankController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-  "sequenceNumber": "138",
-  "valueDate": "210414",
-  "currency": "SAR",
-  "amount": "'.$req->amount.'",
-  "orderingParty": "SWAGGER",
-  "feeIncluded": false,
-  "orderingPartyAddress1": "An Nafel",
-  "orderingPartyAddress2": "Riyadh",
-  "orderingPartyAddress3": "Saudi Arabia",
-  "debitAccount": "0108057386290014",
-  "destinationBankBIC": "ARNBSARI",
-  "channel": "ANB",
-  "creditAccount": "0108061198800019",
-  "beneficiaryName": "Saud",
-  "beneficiaryAddress1": "KSA",
-  "beneficiaryAddress2": "Riyadh",
-  "narrative": "ANB To ANB Transfer",
-  "transactionComment": "ANB to ANB works",
-  "purposeOfTransfer": "38"
-}',
+            "sequenceNumber": "138",
+            "valueDate": "210414",
+            "currency": "SAR",
+            "amount": "'.$req->amount.'",
+            "orderingParty": "SWAGGER",
+            "feeIncluded": false,
+            "orderingPartyAddress1": "An Nafel",
+            "orderingPartyAddress2": "Riyadh",
+            "orderingPartyAddress3": "Saudi Arabia",
+            "debitAccount": "0108057386290014",
+            "destinationBankBIC": "ARNBSARI",
+            "channel": "ANB",
+            "creditAccount": "0108061198800019",
+            "beneficiaryName": "Saud",
+            "beneficiaryAddress1": "KSA",
+            "beneficiaryAddress2": "Riyadh",
+            "narrative": "ANB To ANB Transfer",
+            "transactionComment": "ANB to ANB works",
+            "purposeOfTransfer": "38"
+            }',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer '.$this->token.'',
                 'Content-Type: text/plain'
