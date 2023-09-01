@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Constraint\Count;
 use App\Exceptions\MyValidationException;
+use App\Models\user_otp_regestration;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Validator;
 
@@ -54,9 +55,7 @@ class UserController extends Controller
 
     function sendOtp(Request $req)
     {
-
         loginRandom::where(['email' => $req->email])->delete();
-
         $otp = random_int(1000, 9999);
         CustomTrait::sendOtpMail($otp, $req->email);
         $kyc = new User_otp;
@@ -67,11 +66,36 @@ class UserController extends Controller
         $data = [
             'status' => true,
             'message' => "OTP Sent Successfully"
-
         ];
         return  CustomTrait::SuccessJson($data);
     }
+    function sendOtpRegestration(Request $req)
+    {
 
+
+        $emailExists=User::where('email',$req->email)->count();
+        if($emailExists >=1)
+        {
+            $data = [
+                'status' => true,
+                'message' => "email already exists"
+            ];
+            return  CustomTrait::ErrorJson($data);
+        }
+        loginRandom::where(['email' => $req->email])->delete();
+        $otp = random_int(1000, 9999);
+        CustomTrait::sendOtpMail($otp, $req->email);
+        $kyc = new user_otp_regestration();
+        $kyc->email = $req->email;
+        $kyc->otp = $otp;
+        $kyc->status = 0;
+        $kyc->save();
+        $data = [
+            'status' => true,
+            'message' => "OTP Sent Successfully"
+        ];
+        return  CustomTrait::SuccessJson($data);
+    }
 
 
 
@@ -79,9 +103,6 @@ class UserController extends Controller
     {
         $row = User_otp::select('id')->where(['email' => $req->email, 'otp' => $req->otp, 'status' => 0])->orderBy('id', 'DESC')->limit(1)->first();
         $row1 = User_otp::select('id')->where(['email' => $req->email, 'otp' => $req->otp, 'status' => 1])->orderBy('id', 'DESC')->limit(1)->first();
-        // echo '<pre>';
-        // print_r($row1);
-        // die;
 
         if (!empty($row)) {
 
@@ -155,7 +176,7 @@ class UserController extends Controller
             if (Count($lastOtp) > 2) {
                 $data = [
                     'status' => false,
-                    'message' => "you must generate new otp"
+                    'message' => "you try 3 times must generate new otp"
                 ];
                 $row = User_otp::select('id')->where(['email' => $req->email])->orderBy('id', 'DESC')->limit(1)->first();
                 $idd = $row['id'];
@@ -199,8 +220,6 @@ class UserController extends Controller
         // die;
 
         $data = User::select('id')->where('mobile_number', $req->mobile_number)->first();
-
-
         if ($data) {
             $data = [
                 'status' => false,
@@ -219,8 +238,12 @@ class UserController extends Controller
             ];
             return CustomTrait::ErrorJson($data);
         }
-
-
+        $row = user_otp_regestration::select('id')->where(['email' => $req->email, 'otp' => $req->otp, 'status' => 0])->orderBy('id', 'DESC')->limit(1)->first();
+        if (!empty($row)) {
+            $idd = $row['id'];
+            $kyc = user_otp_regestration::find($idd);
+            $kyc->status = 1;
+            $kyc->save();
         $reg = new User;
         $reg->name = $req->name;
         $reg->username = $req->username;
@@ -231,7 +254,6 @@ class UserController extends Controller
         $reg->password = Hash::make($req->password);
         $reg->role_type = $req->role_type;
         $reg->admin_role_id = 0;
-
         $reg->status = 1;
         $reg->save();
 
@@ -263,6 +285,32 @@ class UserController extends Controller
 
 
         return  CustomTrait::SuccessJson($arr);
+        }
+        else{
+            loginRandom::create([
+                'email' => $req->email,
+                'count' => $req->otp
+            ]);
+            $lastOtp = loginRandom::where(['email' => $req->email])->get();
+            if (Count($lastOtp) > 2) {
+                $data = [
+                    'status' => false,
+                    'message' => "try register 3 times you must generate new otp"
+                ];
+                $row = user_otp_regestration::select('id')->where(['email' => $req->email])->orderBy('id', 'DESC')->limit(1)->first();
+                $idd = $row['id'];
+                $kyc = user_otp_regestration::find($idd);
+                $kyc->status = 1;
+                $kyc->save();
+                return CustomTrait::ErrorJson($data);
+            }
+            $data = [
+                'status' => false,
+                'message' => "Invalid OTP"
+
+            ];
+            return CustomTrait::ErrorJson($data);
+        }
     }
 
 
@@ -318,17 +366,11 @@ class UserController extends Controller
             ];
             return  CustomTrait::ErrorJson($data);
         }
-
         $loginAttemp = loginRandom::where('email', $request->email)->delete();
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->plainTextToken;
-
         $data = User::find($user['id']);
-
-        // echo '<pre>';
-        // print_r($data);
-        // die;
         $arr['name'] = $data['name'];
         $arr['username'] = $data['username'];
         $arr['id'] = $data['id'];

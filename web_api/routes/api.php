@@ -48,6 +48,7 @@ Route::get('/get_campagin_outside', [CampaignController::class, 'campaginOutSide
 Route::post('login', [AdminController::class, 'login']);
 Route::post('/check_mobile', [UserController::class, 'checkMobile']);
 Route::post('/send_otp', [UserController::class, 'sendOtp']);
+Route::post('/send_otp_regestration', [UserController::class, 'sendOtpRegestration']);
 Route::post('/verify_otp', [UserController::class, 'verifyOtp']);
 Route::post('/login_verify_otp', [UserController::class, 'loginVerifyOtp']);
 Route::post('/login', [UserController::class, 'login']);
