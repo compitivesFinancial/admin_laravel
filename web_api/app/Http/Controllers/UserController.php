@@ -229,8 +229,6 @@ class UserController extends Controller
         }
 
         $dataem = User::select('id')->where('email', $req->email)->first();
-
-
         if ($dataem) {
             $data = [
                 'status' => false,
@@ -295,7 +293,7 @@ class UserController extends Controller
             if (Count($lastOtp) > 2) {
                 $data = [
                     'status' => false,
-                    'message' => "try register 3 times you must generate new otp"
+                    'message' => "you try to register 3 times you must generate new otp"
                 ];
                 $row = user_otp_regestration::select('id')->where(['email' => $req->email])->orderBy('id', 'DESC')->limit(1)->first();
                 $idd = $row['id'];
