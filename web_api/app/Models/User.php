@@ -17,7 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-
+    protected $maxAttempts = 3;
+    protected $decayMinutes = 10;
     protected $fillable = [
         'name',
         'first_name',

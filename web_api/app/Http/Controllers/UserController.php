@@ -54,12 +54,11 @@ class UserController extends Controller
 
     function sendOtp(Request $req)
     {
-     loginRandom::where(['email'=>$req->email])->delete();
-        // $otp = random_int(1000, 9999);
-        //  $email = "qadomya14@gmail.com";
-    //    CustomTrait::sendOtpMail($otp,$req->email);
-    //     // CustomTrait::sendOtpMail($otp,$req->email);
-        $otp = 1234;
+
+        loginRandom::where(['email' => $req->email])->delete();
+
+        $otp = random_int(1000, 9999);
+        CustomTrait::sendOtpMail($otp, $req->email);
         $kyc = new User_otp;
         $kyc->email = $req->email;
         $kyc->otp = $otp;
@@ -147,25 +146,24 @@ class UserController extends Controller
             $arr['cr_number_response'] = $data['cr_number_response'];
             $arr['isQualified'] = $data['is_qualified'];
             return  CustomTrait::SuccessJson($arr);
-        }
-       else {
-        // $row = User_otp::select('id')->where(['email' => $req->email, 'otp' => $req->otp])->orderBy('id', 'DESC')->limit(1)->first();
-        // $idd = $row['id'];
-        // $kyc = User_otp::find($idd);
-        // $kyc->status = 1;
-        // $kyc->save();
-        loginRandom::create([
-            'email'=>$req->email,
-            'count'=>$req->otp
-        ]);
-        $lastOtp=loginRandom::where(['email'=>$req->email])->get();
-        if(Count($lastOtp)>2){
-            $data = [
-                'status' => false,
-                'message' => "you must generate new otp"
-            ];
-            return CustomTrait::ErrorJson($data);
-        }
+        } else {
+            loginRandom::create([
+                'email' => $req->email,
+                'count' => $req->otp
+            ]);
+            $lastOtp = loginRandom::where(['email' => $req->email])->get();
+            if (Count($lastOtp) > 2) {
+                $data = [
+                    'status' => false,
+                    'message' => "you must generate new otp"
+                ];
+                $row = User_otp::select('id')->where(['email' => $req->email])->orderBy('id', 'DESC')->limit(1)->first();
+                $idd = $row['id'];
+                $kyc = User_otp::find($idd);
+                $kyc->status = 1;
+                $kyc->save();
+                return CustomTrait::ErrorJson($data);
+            }
             $data = [
                 'status' => false,
                 'message' => "Invalid OTP"
@@ -298,23 +296,17 @@ class UserController extends Controller
             $createdAt2 = Carbon::parse($loginLast->created_at);
             $timeNow = $mytime->diff($createdAt2);
 
-            if($timeBetweenFirstAndLast->i > 15 )
-            {
-                loginRandom::where('email',$request->email)->first()->delete();
-
-            }else if($timeNow->i <= 15 && $count > 2){
+            if ($timeBetweenFirstAndLast->i > 15) {
+                loginRandom::where('email', $request->email)->first()->delete();
+            } else if ($timeNow->i <= 15 && $count > 2) {
                 $data = [
                     'message' => "you are blocked for 15 mins"
                 ];
                 return  CustomTrait::ErrorJson($data);
-            }
-            else if($timeNow->i > 15 && $count > 2)
-            {
-                loginRandom::where('email',$request->email)->delete();
+            } else if ($timeNow->i > 15 && $count > 2) {
+                loginRandom::where('email', $request->email)->delete();
             }
         }
-
-
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             $user = loginRandom::Create([
