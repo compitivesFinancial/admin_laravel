@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Hash;
 class PageConttroller extends Controller
 {
 
-private $lang;
+    private $lang;
 function __construct(Request $request){
 
+    // App::setLocale($request->header('Accept-Language'));
     $this->lang = $request->header('Accept-Language');
-
 }
 
 
@@ -178,7 +178,6 @@ function __construct(Request $request){
         //     ];
         //     return  CustomTrait::ErrorJson($data);
         // }
-
 
         $data = [
             'message' => "Page Updated"

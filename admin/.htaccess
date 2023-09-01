@@ -1,11 +1,21 @@
+Header set Access-Control-Allow-Origin "https://www.cfc.sa"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "city_id, content-type, crossdomain"
+Header set Access-Control-Allow-Credentials "true"
+
+
+
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTPS:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -16,42 +26,11 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-
+    
 </IfModule>
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin http://localhost:8888
-    Header set Access-Control-Allow-Credentials true
+ 	Access-Control-Allow-Origin: https://www.cfc.sa
+	Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+	Access-Control-Allow-Headers: *
+	Access-Control-Allow-Credentials: true
 </IfModule>
-
-# RewriteEngine On
-# RewriteCond %{HTTP_HOST} !^www\. [NC]
-# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/web_admin/$1 [R=301,L]
-
-
-
-
-# # <IfModule mod_headers.c>
-# #     Header set Access-Control-Allow-Origin http://www.cfc.sa
-# #     Header set Access-Control-Allow-Credentials true
-
-
-# # </IfModule>
-
-
-
-# <IfModule mod_rewrite.c>
-#     RewriteEngine on
-
-#     # Don't rewrite files or directories
-#     RewriteCond %{REQUEST_FILENAME} -f [OR]
-#     RewriteCond %{REQUEST_FILENAME} -d
-#     RewriteRule ^ - [L]
-
-#     # Rewrite everything else to index.html
-#     # to allow html5 state links
-#     RewriteRule ^ index.html [L]
-
-# </IfModule>
-
-
-
