@@ -27,6 +27,7 @@ use Illuminate\Foundation\Auth\User;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Constraint\Count;
 
 class CampaignController extends Controller
 {
@@ -34,7 +35,6 @@ class CampaignController extends Controller
     {
         $this->lang = $request->header('Accept-Language');
         App::setlocale($request->header('Accept-Language'));
-
     }
 
 
@@ -114,7 +114,6 @@ class CampaignController extends Controller
 
             $info = DB::select(DB::raw($sql));
             $product[$key]['product_attribute_detail'] = json_decode(json_encode($info), true);
-
         }
 
 
@@ -175,8 +174,6 @@ class CampaignController extends Controller
 
 
         return CustomTrait::SuccessJson($data);
-
-
     }
 
 
@@ -186,34 +183,50 @@ class CampaignController extends Controller
     public function contactUs(Request $req)
     {
 
-        // try {
 
+        $contact = Contact_us::where('email', $req->email)->latest()->first();
+
+        if ( $contact != null) {
+            $currenTime = Carbon::now();
+            $time = $contact['created_at'];
+            $timeDeffernces = $currenTime->diffInHours($time);
+            if($timeDeffernces <23)
+            {
+                $data = [
+                    'message' => "you can send after 24 hours"
+                ];
+
+                return CustomTrait::ErrorJson($data);
+            }else{
+                $page = new Contact_us();
+                $page->first_name = $req->first_name;
+                $page->last_name = $req->last_name;
+                $page->email = $req->email;
+                $page->mobile = $req->mobile;
+                $page->message = $req->message;
+                $page->created_at=now();
+                $page->save();
+                $data = [
+                    'message' => "Added successfully."
+                ];
+
+                return CustomTrait::SuccessJson($data);
+            }
+
+        }
         $page = new Contact_us();
         $page->first_name = $req->first_name;
         $page->last_name = $req->last_name;
         $page->email = $req->email;
         $page->mobile = $req->mobile;
         $page->message = $req->message;
-
+        $page->created_at=now();
         $page->save();
-
-        // } catch (Exception $e) {
-
-        //     Log::channel('product')->info($e->getMessage());
-
-        // $data = [
-        //     'message' => "something went wronge"
-        // ];
-
-        // return  CustomTrait::ErrorJson($data);
-        // }
-
         $data = [
             'message' => "Added successfully."
         ];
 
         return CustomTrait::SuccessJson($data);
-
     }
 
 
@@ -234,7 +247,6 @@ class CampaignController extends Controller
 
 
         return CustomTrait::SuccessJson($data);
-
     }
 
 
@@ -259,10 +271,8 @@ class CampaignController extends Controller
                 'message' => "No Data Found."
             ];
             return CustomTrait::ErrorJson($data);
-
         }
         return CustomTrait::SuccessJson($investor_statement);
-
     }
 
 
@@ -278,8 +288,6 @@ class CampaignController extends Controller
                 'message' => "No Data Found"
             ];
             return CustomTrait::ErrorJson($data);
-
-
         }
 
         $campaign_id = $campaign['id'];
@@ -299,8 +307,6 @@ class CampaignController extends Controller
                 'message' => "No Data Found"
             ];
             return CustomTrait::ErrorJson($data);
-
-
         }
 
 
@@ -322,8 +328,6 @@ class CampaignController extends Controller
                 'message' => "No Data Found"
             ];
             return CustomTrait::ErrorJson($data);
-
-
         }
 
 
@@ -390,7 +394,7 @@ class CampaignController extends Controller
         // $borrower->save();
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -404,7 +408,6 @@ class CampaignController extends Controller
             ];
 
             return CustomTrait::ErrorJson($data);
-
         }
 
 
@@ -423,8 +426,6 @@ class CampaignController extends Controller
             $borrower->paid_date = $paymeny_date;
             $borrower->status = 1;
             $borrower->save();
-
-
         } catch (Exception $e) {
 
             Log::channel('campaign')->info($e->getMessage());
@@ -441,8 +442,6 @@ class CampaignController extends Controller
             'message' => "Payment done."
         ];
         return CustomTrait::SuccessJson($data);
-
-
     }
 
 
@@ -481,7 +480,6 @@ class CampaignController extends Controller
                 'message' => "Please insert Amount between " . $data['min_investment'] . " to " . $data['max_investment']
             ];
             return CustomTrait::ErrorJson($data);
-
         }
 
 
@@ -490,7 +488,7 @@ class CampaignController extends Controller
         $sumamount = campaign_inverter::where(['campaign_id' => $campaign])->get()->sum('amount');
 
 
-       return $this->checkInvestorRole($req);
+        return $this->checkInvestorRole($req);
 
         if ($investerCount > 0) {
 
@@ -498,7 +496,6 @@ class CampaignController extends Controller
                 'message' => "You have already done your investment"
             ];
             return CustomTrait::ErrorJson($data);
-
         }
 
 
@@ -514,7 +511,6 @@ class CampaignController extends Controller
                 'message' => "PLease enter amount below limit"
             ];
             return CustomTrait::ErrorJson($data);
-
         }
 
 
@@ -525,8 +521,6 @@ class CampaignController extends Controller
             $campaignObj->invester_id = $session_user_id;
             $campaignObj->amount = $amount;
             $campaignObj->save();
-
-
         } catch (Exception $e) {
 
             Log::channel('campaign')->info($e->getMessage());
@@ -551,10 +545,6 @@ class CampaignController extends Controller
             'message' => "Investment Successfull."
         ];
         return CustomTrait::SuccessJson($data);
-
-
-
-
     }
 
 
@@ -570,11 +560,10 @@ class CampaignController extends Controller
         $investerCampaign = campaign_inverter::select('campaign_id')->where('invester_id', $id)->get()->toArray();
 
         // return $investerCount;
-// return CustomTrait::SuccessJson($investerCount);
+        // return CustomTrait::SuccessJson($investerCount);
         // $data = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status")->whereIn('id', $investerCount)->get()->toArray();
         $data = campaign::whereIn('id', $investerCampaign)->get()->toArray();
         return CustomTrait::SuccessJson($data);
-
     }
 
     function userCampaignborrower($id)
@@ -583,8 +572,6 @@ class CampaignController extends Controller
 
         $data = campaign::where('user_id', $id)->get()->toArray();
         return CustomTrait::SuccessJson($data);
-
-
     }
 
 
@@ -626,8 +613,6 @@ class CampaignController extends Controller
             $img->image = $val['image'];
             $img->campaign_id = $camp_id;
             $img->save();
-
-
         }
 
 
@@ -642,7 +627,6 @@ class CampaignController extends Controller
                 $team->designation = $val['designation'];
                 $team->image = $val['image'];
                 $team->save();
-
             } catch (Exception $e) {
 
                 Log::channel('campaign')->info($e->getMessage());
@@ -652,8 +636,6 @@ class CampaignController extends Controller
                 ];
                 return CustomTrait::ErrorJson($data);
             }
-
-
         }
 
 
@@ -676,9 +658,6 @@ class CampaignController extends Controller
             'message' => "Added Successfully."
         ];
         return CustomTrait::SuccessJson($data);
-
-
-
     }
 
 
@@ -718,7 +697,6 @@ class CampaignController extends Controller
             $data['team'] = campaign_team::where(['campaign_id' => $id])->get();
 
             return CustomTrait::SuccessJson($data);
-
         } else {
 
 
@@ -727,12 +705,7 @@ class CampaignController extends Controller
             ];
 
             return CustomTrait::ErrorJson($data);
-
-
         }
-
-
-
     }
 
 
@@ -769,15 +742,12 @@ class CampaignController extends Controller
                 $img->image = $val['image'];
                 $img->campaign_id = $camp_id;
                 $img->save();
-
             } else {
 
                 $img = campaign_image::find($val['id']);
                 $img->image = $val['image'];
                 $img->campaign_id = $camp_id;
                 $img->save();
-
-
             }
         }
 
@@ -793,8 +763,6 @@ class CampaignController extends Controller
                 $team->designation = $val['designation'];
                 $team->image = $val['image'];
                 $team->save();
-
-
             } else {
 
 
@@ -804,12 +772,7 @@ class CampaignController extends Controller
                 $team->designation = $val['designation'];
                 $team->image = $val['image'];
                 $team->save();
-
-
-
             }
-
-
         }
 
 
@@ -880,11 +843,10 @@ class CampaignController extends Controller
             }
             if ($campagin[0] != null && $campagin[0] != 0) {
                 $data = ($count / $campagin[0]) * 100;
-            }else{
+            } else {
                 $data = 0;
             }
             return CustomTrait::SuccessJson($data);
-
         } else {
             $data = [
                 'message' => "something went wronge"
@@ -900,36 +862,36 @@ class CampaignController extends Controller
         $session_user_id = auth('sanctum')->user()->id;
         $newDate = Carbon::now()->subYear();
         // $newDate = $newDate->toDateString();
-        $total_invest = campaign_inverter::where('invester_id',$session_user_id)->where('created_at', '>=', $newDate->toDateString())->sum('amount');
+        $total_invest = campaign_inverter::where('invester_id', $session_user_id)->where('created_at', '>=', $newDate->toDateString())->sum('amount');
         $newDate = Carbon::now()->subYear();
-        $campaignCount = campaign_inverter::where('invester_id',$session_user_id)->where('created_at', '>=', $newDate->toDateString())->count('campaign_id');
+        $campaignCount = campaign_inverter::where('invester_id', $session_user_id)->where('created_at', '>=', $newDate->toDateString())->count('campaign_id');
         // $campaign = campaign::where('status', 1)->count('id');
-      if($total_invest != null  && $campaignCount != null){
-        $data=[
-            "total_invest"=>$total_invest,
-            "campaignCount"=>$campaignCount
-        ];
-        return CustomTrait::SuccessJson($data);
-      }
-        $data=[
-            "total_invest"=>0,
-            "campaignCount"=>0
+        if ($total_invest != null  && $campaignCount != null) {
+            $data = [
+                "total_invest" => $total_invest,
+                "campaignCount" => $campaignCount
+            ];
+            return CustomTrait::SuccessJson($data);
+        }
+        $data = [
+            "total_invest" => 0,
+            "campaignCount" => 0
         ];
         return CustomTrait::ErrorJson($data);
     }
 
     //    function  Deletecampaign($id)
-//    {
+    //    {
 
     //     $data=campaign::find($id);
-//     $data->status  = 3;
+    //     $data->status  = 3;
 
     //     // $data->delete();
-//     $data->save();
-//     $data=campaign::all();
+    //     $data->save();
+    //     $data=campaign::all();
 
     //     // $data = $data->where(status!=0);
-//     return view('campaign.list_camp',compact('data'))->with('message', 'Successfully deleted!');
+    //     return view('campaign.list_camp',compact('data'))->with('message', 'Successfully deleted!');
 
     // }
 }
