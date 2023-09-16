@@ -2,33 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\CustomTrait;
-use Illuminate\Http\Request;
-use App\Models\campaign;
-use App\Models\Product;
-use App\Models\campaign_inverter;
-use App\Models\campaign_team;
-use App\Models\campaign_image ;
-use App\Models\Campaign_log;
-use App\Models\borrower_statement;
-use App\Models\investor_statement;
-use App\Models\repayment_scheduling;
-use App\Models\loan;
 use DB;
-
+use Mail;
+use App\Models\loan;
 use App\Models\User;
-
-
-
+use App\Http\Requests;
+use App\Models\Product;
+use App\Mail\MyDemoMail;
+use App\Models\campaign;
+use App\Traits\CustomTrait;
+use App\Models\Campaign_log;
+use Illuminate\Http\Request;
+use App\Models\campaign_team;
 use App\Models\email_template;
 
+use App\Models\campaign_image ;
 
+
+
+use App\Models\campaign_inverter;
+
+
+use App\Models\borrower_statement;
+
+
+use App\Models\investor_statement;
+use App\Models\repayment_scheduling;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
-
-use App\Http\Requests;
-use Mail;
-use App\Mail\MyDemoMail;
 
 class TestController extends Controller
 {
@@ -36,8 +38,8 @@ class TestController extends Controller
 
   public function myDemoSms()
     {
-      
- 
+
+
 
     $six_digit_random_number = 123456;
 
@@ -60,7 +62,7 @@ class TestController extends Controller
 
 
     public function myDemoMail()
-    {  
+    {
 
     $to_name = 'John Doe';
     $to_email = 'imrahulghatwal@gmail.com';
@@ -118,7 +120,7 @@ class TestController extends Controller
 
       $id = 1;
 
-      
+
     $data=email_template::select("id","message")->first()->toArray();
 
     // echo '<pre>';
@@ -142,7 +144,7 @@ class TestController extends Controller
 
 
       if(substr(trim($val), 0, 2)=='{%'){
-  
+
 
        $result = substr(substr(trim($val), 0, -2), 2);
 
@@ -158,7 +160,7 @@ class TestController extends Controller
           $coloum = $arrr[1];
 
           $sql = "select $coloum from $table where id = $id";
-         
+
           $data = DB::select(DB::raw($sql));
           $product = json_decode(json_encode($data), true);
 
@@ -175,7 +177,7 @@ class TestController extends Controller
 
 
 
- 
+
 
 
     }
