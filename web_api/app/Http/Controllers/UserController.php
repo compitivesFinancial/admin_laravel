@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\user_otp_regestration;
-use Illuminate\Support\Facades\Crypt;
+//use Illuminate\Support\Facades\Crypt;
 use PHPUnit\Framework\Constraint\Count;
 use App\Exceptions\MyValidationException;
 use Illuminate\Support\Facades\Validator;
