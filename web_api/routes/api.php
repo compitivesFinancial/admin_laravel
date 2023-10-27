@@ -58,7 +58,7 @@ Route::get('yaqenIqama', [YaqeenController::class, 'yaqenIqamaSaudi']);
 Route::get('yaqeensaudi', [YaqeenController::class, 'yaqeensaudi']);
 //product
 Route::get('/list_product', [ProductConttroller::class, 'list']);
-
+Route::get('/sendOtpAbsher', [UserController::class, 'sendOtpAbsher']);
 
 
 
