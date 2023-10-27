@@ -14,7 +14,8 @@ use Illuminate\Support\Str;
 use App\Models\anb_accounts;
 use Illuminate\Http\Request;
 use GuzzleHttp\Promise\Create;
-use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Crypt;
+//use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -203,7 +204,9 @@ class UserController extends Controller
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->plainTextToken;
             $data = User::find($user['id']);
+            //$arr['id'] = Crypt::encrypt($data['id']);
             $arr['id'] = Crypt::encryptString($data['id']);
+
             $arr['name'] = $data['name'];
             $arr['username'] = $data['username'];
             $arr['role_type'] = $data['role_type'];
@@ -420,7 +423,8 @@ class UserController extends Controller
         $data = User::find($user['id']);
         $arr['name'] = $data['name'];
         $arr['username'] = $data['username'];
-        $arr['id'] = encrypt($data['id']);
+        $arr['id'] = Crypt::encrypt($data['id']);
+        //$arr['id'] = encrypt($data['id']);
         $arr['kyc_approved_status'] = $data['kyc_approved_status'];
         $arr['role_type'] = $data['role_type'];
         $arr['email'] = $data['email'];
