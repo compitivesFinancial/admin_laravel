@@ -17,9 +17,10 @@ class Contact_us extends Model
         'last_name',
         'email',
         'mobile',
-        'message'
+        'message',
+        'ip'
     ];
 
-    
+
 
 }

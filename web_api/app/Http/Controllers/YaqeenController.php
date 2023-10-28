@@ -20,9 +20,9 @@ class YaqeenController extends Controller
 
         //ALTANAFUSIAH_FINANCE_CO_TRIAL_YAK
         //kXEB975WKfzsD6eyJYoM
-        $curl = curl_init("https://yakeencore.api.elm.sa/api/v1/yakeen/login?Username=ALTANAFUSIAH_FINANCE_CO_TRIAL_YAK&Password=kXEB975WKfzsD6eyJYoM");
+        $curl = curl_init("https://yakeencore.api.elm.sa/api/v1/yakeen/login?Username=ALTANAFUSIAH_FINANCE_CO_YAK&Password=46KIG7PZ6hGhO7FWc6TQ");
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://yakeencore.api.elm.sa/api/v1/yakeen/login?Username=ALTANAFUSIAH_FINANCE_CO_TRIAL_YAK&Password=kXEB975WKfzsD6eyJYoM",
+            CURLOPT_URL => "https://yakeencore.api.elm.sa/api/v1/yakeen/login?Username=ALTANAFUSIAH_FINANCE_CO_YAK&Password=46KIG7PZ6hGhO7FWc6TQ",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_CUSTOMREQUEST => 'GET',
@@ -66,7 +66,7 @@ class YaqeenController extends Controller
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => 'GET',
                 CURLOPT_HTTPHEADER => array(
-                    'usage-code: USC90006',
+                    'usage-code: USC90010',
                     'operator-Id: 2130635150',
                     'app-id: 6a8020cb',
                     'app-key: 4a5cf5aa0d113fbbe560ec714a043e67',
@@ -147,8 +147,6 @@ class YaqeenController extends Controller
 
     public function yaqeensaudi(Request $req)
     {
-
-
         $yaqenToken = Yaqeen::get()->last();
         $currentDate = Carbon::now();
         $time = $yaqenToken['created_at'];

@@ -3,30 +3,32 @@
 namespace App\Http\Controllers;
 
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\Cms;
 use App\Models\loan;
 use App\Models\Page;
 use App\Models\Product;
-use App\Models\campaign;
 use App\Models\UserKyc;
+use App\Models\campaign;
+use App\Models\Contact_us;
 use App\Traits\CustomTrait;
 use App\Models\Campaign_log;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\campaign_team;
 use App\Models\campaign_image;
+
 use App\Models\campaign_inverter;
-use App\Models\campaign_attachment;
-
 use App\Models\borrower_statement;
-use App\Models\Contact_us;
 use App\Models\investor_statement;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Auth\User;
-
-use Exception;
 use Illuminate\Support\Facades\DB;
+use App\Models\campaign_attachment;
+use Illuminate\Support\Facades\App;
+
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Crypt;
 use PHPUnit\Framework\Constraint\Count;
 
 class CampaignController extends Controller
@@ -37,12 +39,6 @@ class CampaignController extends Controller
         App::setlocale($request->header('Accept-Language'));
     }
 
-
-
-
-
-
-
     public function campaginOutSide()
     {
         $outside = campaign::get();
@@ -52,10 +48,6 @@ class CampaignController extends Controller
     public function homePageApi()
     {
 
-
-        // $sql_var = App::isLocal() == 'en' ? 'title' : 'ar_title as title';
-        // $sql_descp = App::isLocal() == 'en' ? 'description' : 'ar_description as description';
-        // $sql_image = App::isLocal() == 'en' ? 'image' : 'ar_image as image';
 
         $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
         $sql_descp = $this->lang == 'en' ? 'description' : 'ar_description as description';
@@ -123,8 +115,6 @@ class CampaignController extends Controller
 
 
         $section9 = Cms::select('id', $sql_var, $sql_descp, 'status', 'type', $sql_image, 'flag')->where(['type' => 9, 'status' => 1])->orderBy('id', 'ASC')->get()->toArray();
-
-
         $data['section0'] = $section0;
         $data['section1'] = $section1;
         $data['section2'] = $section2;
@@ -133,23 +123,11 @@ class CampaignController extends Controller
         $data['section5'] = $section5;
         $data['section6'] = $section6;
         $data['section7'] = $section7;
-
         $data['section10'] = $product;
-
-
-
         $data['section8'] = $section8;
         $data['section9'] = $section9;
-
-
-
         //$data['section10'] = $section10;
         $data['section11'] = $section11;
-
-
-
-
-
         return CustomTrait::SuccessJson($data);
     }
 
@@ -183,6 +161,19 @@ class CampaignController extends Controller
     public function contactUs(Request $req)
     {
 
+        $ipAddr=(string)$_SERVER['REMOTE_ADDR'];
+        return gettype($ipAddr);
+        $contactIp = Contact_us::where('ip',$ipAddr)->get();
+        $count =Count($contactIp);
+
+        if($count > 6)
+        {
+            $data = [
+            'message' => "too many request"
+        ];
+        return CustomTrait::ErrorJson($data);
+        }
+
 
         $contact = Contact_us::where('email', $req->email)->latest()->first();
 
@@ -199,12 +190,14 @@ class CampaignController extends Controller
                 return CustomTrait::ErrorJson($data);
             }else{
                 $page = new Contact_us();
+                $page->ip=$ipAddr;
                 $page->first_name = $req->first_name;
                 $page->last_name = $req->last_name;
                 $page->email = $req->email;
                 $page->mobile = $req->mobile;
                 $page->message = $req->message;
                 $page->created_at=now();
+
                 $page->save();
                 $data = [
                     'message' => "Added successfully."
@@ -215,6 +208,7 @@ class CampaignController extends Controller
 
         }
         $page = new Contact_us();
+        $page->ip=$ipAddr;
         $page->first_name = $req->first_name;
         $page->last_name = $req->last_name;
         $page->email = $req->email;
@@ -279,8 +273,9 @@ class CampaignController extends Controller
 
     function borrowerStatement(Request $req)
     {
+        $id=$req->user_id;
 
-        $campaign = campaign::where('user_id', $req->user_id)->first()->toArray();
+        $campaign = campaign::where('user_id', $id)->first()->toArray();
 
         if (!$campaign) {
 
@@ -292,14 +287,7 @@ class CampaignController extends Controller
 
         $campaign_id = $campaign['id'];
 
-
-
-
-
         $data = borrower_statement::select("id", "campaign_id", "due_date", "principle_expected", "interest_expected", "fees_expected", "total_expected", "principle_paid", "interest_paid", "fees_paid", "total_paid", "paid_date", "principle_due", "interest_due", "fees_due", "total_due", "status")->where('campaign_id', $campaign_id)->get()->toArray();
-
-
-
 
         if (empty($data)) {
 
@@ -308,7 +296,6 @@ class CampaignController extends Controller
             ];
             return CustomTrait::ErrorJson($data);
         }
-
 
 
         return CustomTrait::SuccessJson($data);
@@ -333,69 +320,6 @@ class CampaignController extends Controller
 
 
         $date = date('Y-m-d');
-
-
-        // $campaign_id = $campaign['id'];
-        // $product_id = $campaign['product_id'];
-
-
-        // $loandata=loan::select("id","loan_type_id")->where('product_id',$product_id)->first()->toArray();
-
-
-        // $databorrow = borrower_statement::select("id","campaign_id","due_date","principle_expected","interest_expected","fees_expected","total_expected","principle_paid","interest_paid","fees_paid","total_paid","paid_date","principle_due","interest_due","fees_due","total_due","status")->where('campaign_id',$campaign_id)->get()->toArray();
-
-
-        // if(!$databorrow){
-        //   $data = [
-        //     'message' => "Not applied for loan"
-        //   ];
-        //   return  CustomTrait::ErrorJson($data);
-        // }
-
-
-
-
-
-        // $getDate = borrower_statement::select("due_date")->where('due_date', '>=', $date)->where('campaign_id',$campaign_id)->orderBy('due_date', 'ASC')->first()->toArray();
-
-
-
-
-        // $repayment_scheduling=repayment_scheduling::where('loan_id',$loandata['id'])->first()->toArray();
-        // $duedateOffset = $repayment_scheduling['first_due_date_default'];
-
-        // $due_date = $getDate['due_date'];
-        // $due_date_start = date('Y-m-d', strtotime($due_date . " -1 month"));
-
-        // $checkpay = borrower_statement::select("id","campaign_id","due_date","principle_expected","interest_expected","fees_expected","total_expected","principle_paid","interest_paid","fees_paid","total_paid","paid_date","principle_due","interest_due","fees_due","total_due","status")->where(['campaign_id'=>$campaign_id])->whereNotNull('total_paid')->where('due_date', '>', $due_date_start)->where('due_date', '<=', $due_date)->orderBy('due_date', 'DESC')->first();
-
-        // if($checkpay){
-
-        //         $data = [
-        //                 'message' => "Payment alredy done."
-        //         ];
-
-        //         return  CustomTrait::ErrorJson($data);
-
-        // }
-
-
-        // $dataCount = borrower_statement::select("id","campaign_id","due_date","principle_expected","interest_expected","fees_expected","total_expected","principle_paid","interest_paid","fees_paid","total_paid","paid_date","principle_due","interest_due","fees_due","total_due","status")->where(['campaign_id'=>$campaign_id])->where('due_date', '>=', $due_date_start)->where('due_date', '<=', $due_date)->orderBy('due_date', 'DESC')->first()->toArray();
-
-
-
-        // $paymeny_date = date('Y-m-d');
-        // $borrower = borrower_statement::find($dataCount['id']);
-        // $borrower->principle_paid =  $dataCount['principle_expected'];
-        // $borrower->interest_paid = $dataCount['interest_expected'];
-        // $borrower->total_paid =  $dataCount['total_expected'];
-        // $borrower->paid_date = $paymeny_date;
-        // $borrower->status = 1;
-        // $borrower->save();
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -579,7 +503,7 @@ class CampaignController extends Controller
     function insert(Request $req)
     {
 
-        $session_user_id = auth('sanctum')->user()->id;
+        $session_user_id = auth('sanctum')->user()->id;;
 
         $campaign = new campaign;
 
@@ -688,6 +612,7 @@ class CampaignController extends Controller
         // echo 'gdggddg';
         // die;
 
+
         $data = campaign::where(['id' => $id, 'status' => 1])->first();
 
         if ($data) {
@@ -715,7 +640,7 @@ class CampaignController extends Controller
     function update(Request $req)
     {
 
-        $session_user_id = auth('sanctum')->user()->id;
+        $session_user_id=auth('sanctum')->user()->id;
 
         $campaign = campaign::find($req->id);
         $campaign->user_id = $session_user_id;
@@ -834,6 +759,7 @@ class CampaignController extends Controller
     }
     public function campaignInvestPerc($id)
     {
+
         $campagin = campaign::where('id', $id)->pluck('total_valuation');
         $campingInvestment = campaign_inverter::where('campaign_id', $id)->pluck('amount');
         if (Count($campagin) > 0 || Count($campingInvestment) > 0) {
@@ -859,7 +785,9 @@ class CampaignController extends Controller
     function checkInvestorRole(Request $req)
     {
 
-        $session_user_id = auth('sanctum')->user()->id;
+
+
+        $session_user_id =auth('sanctum')->user()->id;
         $newDate = Carbon::now()->subYear();
         // $newDate = $newDate->toDateString();
         $total_invest = campaign_inverter::where('invester_id', $session_user_id)->where('created_at', '>=', $newDate->toDateString())->sum('amount');
@@ -880,18 +808,5 @@ class CampaignController extends Controller
         return CustomTrait::ErrorJson($data);
     }
 
-    //    function  Deletecampaign($id)
-    //    {
 
-    //     $data=campaign::find($id);
-    //     $data->status  = 3;
-
-    //     // $data->delete();
-    //     $data->save();
-    //     $data=campaign::all();
-
-    //     // $data = $data->where(status!=0);
-    //     return view('campaign.list_camp',compact('data'))->with('message', 'Successfully deleted!');
-
-    // }
 }

@@ -1,107 +1,118 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use SimpleXMLElement;
 use Carbon\Carbon;
 use App\Models\User;
+use GuzzleHttp\Client;
+use Nette\Utils\Random;
 use App\Models\User_otp;
-
 use App\Models\user_type;
 use App\Models\loginRandom;
 use App\Traits\CustomTrait;
-
 use Illuminate\Support\Str;
 use App\Models\anb_accounts;
 use Illuminate\Http\Request;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use App\Models\user_otp_regestration;
 use Illuminate\Support\Facades\Crypt;
 use PHPUnit\Framework\Constraint\Count;
 use App\Exceptions\MyValidationException;
 use Illuminate\Support\Facades\Validator;
+use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
 
 
 class UserController extends Controller
 {
-    function sendOtpAbsher(Request $req)
+    protected $client;
+
+    public function __construct()
     {
-        $xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-        xmlns:abs="http://www.moi.gov.sa/absher/otp/AbsherOTP/">
-        <soapenv:Header/>
-        <soapenv:Body>
-        <abs:sendOTPWithDynamicTemplate>
+        // Create a new Guzzle client
+        $this->client = new Client();
+    }
+
+    public function sendSoapRequest()
+    {
+        $otp = random_int(1000, 9999);
+
+        $certFilePath = '/etc/ssl/certs/competitiveness_financial_company.crt'; // Replace with the actual path to your certificate file
+        $keyFilePath = '/etc/ssl/certs/private-key.pem';   // Replace with the actual path to your private key file
+        // Define the SOAP request XML
+        $soapRequest = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:abs="http://www.moi.gov.sa/absher/otp/AbsherOTP/">
+<soapenv:Header/>
+<soapenv:Body>
+    <abs:sendOTPWithDynamicTemplate>
         <clientId>7030209154-0001</clientId>
         <clientAuthorization>FQUFaSiEc6WPaUxjaL6wfwXiFLXHWeHlVommcVgvnRg=</clientAuthorization>
-        <operatorId>2145174898</operatorId>
-        <customerId>2145174898</customerId>
+        <operatorId>2520748605</operatorId>
+        <customerId>2520748605</customerId>
         <language>ar</language>
         <reason>To confirm payment</reason>
         <otpType>PROVIDED_4TO6_DIGITS</otpType>
-        <otpCode>1234</otpCode>
+        <otpCode>"'. $otp.'"</otpCode>
         <otpTemplate>
-        <otpTemplateId>Competitiveness-OTP-01</otpTemplateId>
-        <!--Optional:-->
-        <otpParams>
-        <!--1 to 13 repetitions:-->
-        <Param>
-        <!--You may enter the following 2 items in any order-->
-        <Name>Param1</Name>
-        <Value>1234</Value>
-        </Param>
-        <Param>
-        <!--You may enter the following 2 items in any order-->
-        <Name>Param2</Name>
-        <Value>0796570014</Value>
-        </Param>
-        </otpParams>
+            <otpTemplateId>Competitiveness-OTP-01</otpTemplateId>
+            <!--Optional:-->
+            <otpParams>
+                <!--1 to 13 repetitions:-->
+                <Param>
+                    <!--You may enter the following 2 items in any order-->
+                    <Name>Param1</Name>
+                    <Value>ahmed alkhateeb</Value>
+                </Param>
+                <Param>
+                    <!--You may enter the following 2 items in any order-->
+                    <Name>Param2</Name>
+                    <Value>0796570014</Value>
+                </Param>
+            </otpParams>
         </otpTemplate>
-        </abs:sendOTPWithDynamicTemplate>
-        </soapenv:Body>
-        </soapenv:Envelope>';
+    </abs:sendOTPWithDynamicTemplate>
+</soapenv:Body>
+</soapenv:Envelope>';
 
+        // Set the cURL options
+        $ch = curl_init('https://otp.absher.sa/AbsherOTPService');
 
-        $headers = array("content-type:text/xml", "Accept:text/xml", "Cache-Control:no-cache", "Pragma:no-cache", "content-length:'" . Str::length($xml) . "'");
-        $ch = Curl_init();
-        $url = "http://www.moi.gov.sa/absher/otp/AbsherOTP/";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: text/xml',
+            'SOAPAction: http://www.moi.gov.sa/absher/otp/AbsherOTP/sendOTPWithDynamicTemplate',
+        ]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $soapRequest);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $respone = curl_exec($ch);
-        curl_close($ch);
-        return $respone;
-    }
-
-
-
-    function checkMobile(Request $req)
-    {
-        $data = User::select('id')->where('email', $req->email)->first();
-        if ($data) {
-            $data = [
-                'status' => false,
-                'message' => "Email Id Already Exist Please Login",
-                'extra' => '2'
-
-            ];
-
-            return  CustomTrait::ErrorJson($data);
-        } else {
-
-            $data = [
-                'status' => true,
-                'message' => "Email Id does not exists",
-                'extra' => '1'
-
-            ];
-
-            return  CustomTrait::SuccessJson($data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_SSLCERT,$certFilePath); //Line-#1
+        curl_setopt($ch, CURLOPT_SSLKEY,$keyFilePath);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        // Execute the cURL request
+        $response = curl_exec($ch);
+        return $response;
+        // Check for cURL errors
+        if (curl_errno($ch)) {
+            return 'cURL error: ' . curl_error($ch) . ' (Code: ' . curl_errno($ch) . ')';
         }
+
+        // Close the cURL session
+        $response = curl_close($ch);
+        $xmlResponse = new SimpleXMLElement($response);
+
+// Convert SimpleXMLElement to XML string
+$xmlString = $xmlResponse->asXML();
+
+// Return the XML string
+return $xmlString;
+
     }
 
     function sendOtp(Request $req)
@@ -113,6 +124,7 @@ class UserController extends Controller
         $kyc->email = $req->email;
         $kyc->otp = $otp;
         $kyc->status = 0;
+
         $kyc->save();
         $data = [
             'status' => true,
@@ -122,8 +134,6 @@ class UserController extends Controller
     }
     function sendOtpRegestration(Request $req)
     {
-
-
         $emailExists = User::where('email', $req->email)->count();
         if ($emailExists >= 1) {
             $data = [
@@ -203,7 +213,7 @@ class UserController extends Controller
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->plainTextToken;
             $data = User::find($user['id']);
-            $arr['id'] = Crypt::encryptString($data['id']);
+            $arr['id'] = Crypt::encrypt($data['id']);
             $arr['name'] = $data['name'];
             $arr['username'] = $data['username'];
             $arr['role_type'] = $data['role_type'];
@@ -447,14 +457,23 @@ class UserController extends Controller
 
     public function userAccoutnumber(Request $request)
     {
+
         $user_id = $request->user()->id;
         $user_account_number = anb_accounts::where('user_id', $request->user()->id)->first();
-
+        $arr = [];
         if ($user_account_number == null || $user_account_number == '') {
             $data = ["message" => "no details for this user"];
             return CustomTrait::ErrorJson($data);
         } else {
-            return CustomTrait::SuccessJson($user_account_number);
+            $arr['id'] = $user_account_number['id'];
+            $arr['user_id'] = Crypt::encrypt($user_account_number['user_id']);
+            $arr['opportunity_id'] = $user_account_number['opportunity_id'];
+            $arr['type'] = $user_account_number['type'];
+            $arr['account_number'] = $user_account_number['account_number'];
+            $arr['created_at'] = $user_account_number['created_at'];
+            $arr['created_by'] = $user_account_number['created_by'];
+
+            return CustomTrait::SuccessJson($arr);
         }
     }
 

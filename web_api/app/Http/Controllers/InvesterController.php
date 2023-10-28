@@ -28,12 +28,13 @@ use App\Models\borrower_statement;
 use App\Models\investor_statement;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use App\Models\Campaign_evaluation;
 use App\Models\Evaluation_category;
 use Illuminate\Support\Facades\App;
 use App\Models\repayment_scheduling;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 use PHPUnit\Framework\Constraint\Count;
 
 class InvesterController extends Controller
@@ -49,7 +50,7 @@ class InvesterController extends Controller
 
     function investorStatment(Request $request)
     {
-        $investor_id = $request->user()->id;
+        $investor_id =Crypt::decrypt($request->user()->id);
         $data = DB::table('l_investor_statement')->where('invester_id', $investor_id)
             ->join('campaigns', 'campaigns.id', '=', 'l_investor_statement.campaign_id')
             ->select('l_investor_statement.*', 'campaigns.tagline', 'campaigns.version_number', 'campaigns.program_number')
@@ -66,7 +67,7 @@ class InvesterController extends Controller
     }
     function investorCampaignStatment(Request $request,$campaign_id)
     {
-        $investor_id = $request->user()->id;
+        $investor_id =Crypt::decrypt($request->user()->id);
         $investor_statment = investor_statement::where(['campaign_id' => $campaign_id, 'invester_id' => $investor_id])->get();
         $count = Count($investor_statment);
 
@@ -81,10 +82,9 @@ class InvesterController extends Controller
     {
 
         // $investor_id =$id;
-        $investor_id = $request->user()->id;
+        $investor_id =$request->user()->id;
         $investor_wallet_debit = Investor_wallet::where('investor_id', $investor_id)->sum('debit_amount');
         $investor_wallet_credit = Investor_wallet::where('investor_id', $investor_id)->sum('credit_amount');
-
         if ($investor_wallet_debit == null) {
             $investor_wallet_debit = 0;
         }
@@ -102,7 +102,11 @@ class InvesterController extends Controller
     function investorWallet($investor_id)
     {
         // $investor_id = $request->user()->id;
-        $investor_wallet = Investor_wallet::where('investor_id', $investor_id)->get();
+
+        $id_enc= $investor_id;
+        $id=Crypt::decrypt($id_enc);
+
+        $investor_wallet = Investor_wallet::where('investor_id', $id)->get();
         $count = Count($investor_wallet);
         if ($count == 0) {
             $data = ['data' => 'there is no anything in your wallet'];
@@ -122,6 +126,7 @@ class InvesterController extends Controller
 
     function investordashboard(Request $req)
     {
+        $id=Crypt::decrypt($req->user_id);
         $investor_statement = investor_statement::where('invester_id', $req->user_id)->get()->toArray();
         $count = count($investor_statement);
 
@@ -134,10 +139,10 @@ class InvesterController extends Controller
         }
 
 
-        $total_investment = investor_statement::where('invester_id', $req->user_id)->first()->sum('principle');
-        $total_profit = investor_statement::where('invester_id', $req->user_id)->first()->sum('profit');
+        $total_investment = investor_statement::where('invester_id', $id)->first()->sum('principle');
+        $total_profit = investor_statement::where('invester_id', $id)->first()->sum('profit');
 
-        $dashData['data']['investor_id'] = $req->user_id;
+        $dashData['data']['investor_id'] = Crypt::encrypt($id);
         $dashData['data']['number_of_investment'] = $count;
         $dashData['data']['total_investment'] = $total_investment;
         $dashData['data']['total_profit'] = $total_profit;
@@ -149,8 +154,8 @@ class InvesterController extends Controller
     public function investerWallet(Request $request)
     {
 
-
-        $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $request->user_id])->get()->toArray();
+       $user_id=Crypt::decrypt($request->user_id);
+        $investerCount = campaign_inverter::select('id', 'campaign_id', 'invester_id', 'amount as invested_amount', 'created_at as invested_date')->where(['invester_id' => $user_id])->get()->toArray();
 
 
         foreach ($investerCount as $key => $val) {
@@ -159,7 +164,7 @@ class InvesterController extends Controller
 
             $campaigndata = campaign::select("id", "tagline")->where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
 
-            $investor_statement = investor_statement::where(['campaign_id' => $campaign_id, 'invester_id' => $request->user_id])->get()->toArray();
+            $investor_statement = investor_statement::where(['campaign_id' => $campaign_id, 'invester_id' =>  $user_id])->get()->toArray();
 
             $investerCount[$key]['campaign_name'] = $campaigndata['tagline'];
             $investerCount[$key]['investor_statement'] = $investor_statement;
@@ -174,22 +179,11 @@ class InvesterController extends Controller
     public function userdetail(Request $request)
     {
 
-
+        $id=Crypt::decrypt($request->id);
         $data = User::find($request->id);
-
 
         $dd = explode(' ', $data['name']);
 
-        // $countDD = count($dd);
-        // // $data=$request->user();
-        // $arr['id'] = $data['id'];
-        // if ($countDD <= 1) {
-        //     $arr['first_name'] = $dd[0];
-        //     $arr['last_name'] = ' ';
-        // } else {
-        //     $arr['first_name'] = $dd[0];
-        //     $arr['last_name'] = $dd[1];
-        // }
         $lastname = '';
         if (isset($dd[1])) {
             $lastname = $dd[1];
@@ -214,7 +208,7 @@ class InvesterController extends Controller
 
         $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
 
-
+        $id=Crypt::decrypt($campaign_id);
 
         $data['campaign'] = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "approved_status", "note")->where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
 
@@ -223,7 +217,7 @@ class InvesterController extends Controller
         if ($data) {
 
 
-            $data['campaign']['campaign_images'] = campaign_image::select("id", "image")->where(['campaign_id' => $campaign_id])->get();
+            $data['campaign']['campaign_images'] = campaign_image::select("id", "image")->where(['campaign_id' => $id])->get();
             $data['campaign']['team'] = campaign_team::select("id", "name", "designation", "image")->where(['campaign_id' => $campaign_id])->get();
         }
 
@@ -289,17 +283,6 @@ class InvesterController extends Controller
         }
 
 
-
-        // $data['kyc_kyc_approved_status'] = $user['kyc_approved_status'];
-        // $data['kyc_kyc_note'] = $user['kyc_note'];
-        // $data['kyc'] = $detail;
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        // $camp_evaluation = evaluations::select('id','evaluation_id','evaluation_detail_id','campaign_id','value')->where(['campaign_id' => $campaign_id])->groupBy('evaluation_id')->get()->toArray();
 
         $evaluationData = Evaluation::select('id', $sql_var, 'position', 'role_id', 'rank_type', 'status')->where(['status' => 1])->orderBy('position', 'ASC')->get()->toArray();
 
@@ -403,9 +386,7 @@ class InvesterController extends Controller
 
 
         $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
-
-
-        $id = auth('sanctum')->user()->id;
+        $id = Crypt::decrypt(auth('sanctum')->user()->id);
         $data = User::select('role_type', 'kyc_approved_status', 'kyc_note')->where('id', $id)->first();
         $role_type = $data['role_type'];
 

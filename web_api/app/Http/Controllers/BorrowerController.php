@@ -19,10 +19,10 @@ use App\Models\borrower_statement;
 use App\Models\investor_statement;
 use Illuminate\Support\Facades\DB;
 use App\Models\Campaign_evaluation;
-
-
 use App\Models\Evaluation_category;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use PHPUnit\Framework\Constraint\Count;
 
 class BorrowerController extends Controller
@@ -39,7 +39,8 @@ class BorrowerController extends Controller
     function walletSumBorrower(Request $request)
     {
 
-        $borrower_id = $request->user()->id;
+
+        $borrower_id= $request->user()->id;
         $borrower_wallet_debit = Borrower_wallet::where('borrower_id', $borrower_id)->sum('debit_amount');
         $borrower_wallet_credit = Borrower_wallet::where('borrower_id', $borrower_id)->sum('credit_amount');
         if ($borrower_wallet_debit == null) {
@@ -58,7 +59,8 @@ class BorrowerController extends Controller
 
     public function borrowerStatment(Request $request)
     {
-        $borrower_id = $request->user()->id;
+
+        $borrower_id= $request->user()->id;;
         $campaign = campaign::where('user_id', $borrower_id)->get();
         $campaign_count = Count($campaign);
         if ($campaign_count == 0) {
@@ -79,7 +81,9 @@ class BorrowerController extends Controller
     function borroweWallet($borrower_id)
     {
 
-        $wallet = Borrower_wallet::where('borrower_id', $borrower_id)->get();
+        $borrower_id_enc=Crypt::decrypt($borrower_id);
+        $id=$borrower_id_enc;
+        $wallet = Borrower_wallet::where('borrower_id', $id)->get();
         $count = Count($wallet);
         if ($count == 0) {
             $data = ['data' => 'there is no wallet '];
@@ -101,9 +105,9 @@ class BorrowerController extends Controller
     function borrowerdashboard(Request $req)
     {
 
-        $id = $req->user_id;
-
-
+      //  $id_enc = $req->user_id;
+       // $id=Crypt::decrypt($id_enc);
+        $id= $req->user_id;
         $campaign = campaign::select("id")->where(['user_id' => $id, 'status' => 1])->get()->toArray();
         $opportunity_count = count($campaign);
 
@@ -119,7 +123,7 @@ class BorrowerController extends Controller
         }
 
 
-        $dashData['data']['borrower_id'] = $req->user_id;
+        $dashData['data']['borrower_id'] = $id;
         $dashData['data']['no_of_opportunity'] = $opportunity_count;
         $dashData['data']['active_opportunity'] = $active_opportunity_count;
         $dashData['data']['rejected_opportunity'] = 0;
@@ -135,8 +139,8 @@ class BorrowerController extends Controller
     {
 
 
-        $id = auth('sanctum')->user()->id;
-
+        $id_enc = auth('sanctum')->user()->id;
+        $id=Crypt::decrypt($id_enc);
 
 
         $borrower = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "approved_status", "note")->where(['user_id' => $id, 'status' => 1])->get()->toArray();
@@ -159,8 +163,10 @@ class BorrowerController extends Controller
 
     public function userdetail(Request $request)
     {
+        // $id=Crypt::decrypt($request->id);
 
-        $data = User::find($request->id);
+        // $data = User::find( $id);
+$data = User::find($request->id);
 
         $dd = explode(' ', $data['name']);
 
@@ -171,7 +177,7 @@ class BorrowerController extends Controller
             $lastname = $dd[1];
         }
 
-        $arr['id'] = $data['id'];
+        $arr['id'] = Crypt::encrypt($id);
         $arr['first_name'] = $dd[0];
         $arr['last_name'] = $lastname;
         $arr['email'] = $data['email'];
@@ -189,8 +195,6 @@ class BorrowerController extends Controller
 
     function opportunityDetail($campaign_id)
     {
-
-
         $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
 
         $data['campaign'] = campaign::select("id", "user_id", "tagline", "share_price", "total_valuation", "min_investment", "max_investment", "fundriser_investment", "company_bio", "reason_to_invest", "investment_planning", "terms", "introduce_team", "status", "approved_status", "note")->where(['id' => $campaign_id, 'status' => 1])->first()->toArray();
@@ -207,15 +211,6 @@ class BorrowerController extends Controller
 
 
         $user_id = $data['campaign']['user_id'];
-        //  die;
-
-
-
-        //////////////////////////////////////////////////////////////////////
-
-        //  $kyc=Kyc::select('id')->where('user_id',$user_id)->first()->toArray();
-
-
         $user = User::select('role_type', 'kyc_approved_status', 'kyc_note')->where('id', $user_id)->first();
         $id = $user['role_type'];
 
@@ -267,42 +262,13 @@ class BorrowerController extends Controller
             }
         }
 
-
-
-        // $data['kyc_kyc_approved_status'] = $user['kyc_approved_status'];
-        // $data['kyc_kyc_note'] = $user['kyc_note'];
-        // $data['kyc'] = $detail;
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-        // $camp_evaluation = evaluations::select('id','evaluation_id','evaluation_detail_id','campaign_id','value')->where(['campaign_id' => $campaign_id])->groupBy('evaluation_id')->get()->toArray();
-
         $evaluationData = Evaluation::select('id', $sql_var, 'position', 'role_id', 'rank_type', 'status')->where(['status' => 1])->orderBy('position', 'ASC')->get()->toArray();
-
-
-
-
         foreach ($evaluationData as $key => $val) {
 
             $evaluation = Evaluation::select('id', $sql_var, 'position', 'role_id', 'rank_type', 'status')->where(['id' => $val['id'], 'status' => 1])->orderBy('position', 'ASC')->first()->toArray();
 
 
             $evo_category = Evaluation_category::select('id', $sql_var, 'minrange', 'maxrange', 'position', 'status')->where(['evp_id' => $val['id']])->orderBy('position', 'ASC')->get()->toArray();
-
-
-
-
-
-            // echo '<pre>';
-            // print_r($camp_evo_safe);
-            // die;
-
-
-
-
 
             foreach ($evo_category as $key1 => $val1) {
 
@@ -313,11 +279,6 @@ class BorrowerController extends Controller
 
 
                 $evo_detail = EvaluationDetail::select('id', 'evp_id', 'evo_cat_id', $sql_var, 'minrange', 'maxrange', 'position', 'status')->where(['evo_cat_id' => $val1['id']])->orderBy('position', 'ASC')->get()->toArray();
-
-
-                // echo '<pre>';
-                // print_r($evo_detail);
-                // die;
 
                 foreach ($evo_detail as $key2 => $val2) {
 
@@ -383,7 +344,9 @@ class BorrowerController extends Controller
 
         $sql_var = $this->lang == 'en' ? 'title' : 'ar_title as title';
 
-        $id = auth('sanctum')->user()->id;
+        $id_enc = auth('sanctum')->user()->id;
+        $id=Crypt::decrypt($id_enc);
+
         $data = User::select('role_type', 'kyc_approved_status', 'kyc_note')->where('id', $id)->first();
         $role_type = $data['role_type'];
 
@@ -393,26 +356,13 @@ class BorrowerController extends Controller
 
 
         foreach ($detail as $key1 => $val1) {
-
-
-
             $arrKyc_id = explode(',', $val1['kyc_id']);
             foreach ($arrKyc_id as $key => $val) {
-
                 $detail[$key] = Kyc::select('id', $sql_var, 'status', 'position')->where(['id' => $val])->first()->toArray();
-
-
                 $temp2 = KycDetail::Leftjoin('kyc_info_types', 'kyc_info_types.id', '=', 'kyc_details.info_type')->where(['kyc_details.kyc_id' => $val])->groupBy('kyc_details.info_type')->orderBy('kyc_details.info_type', 'ASC')->orderBy('kyc_details.position', 'ASC')->get(['kyc_details.info_type', "kyc_info_types.$sql_var"])->toArray();
-
-
                 $detail[$key]['info_type'] = $temp2;
                 foreach ($detail[$key]['info_type'] as $key2 => $val2) {
-
-
                     $kycdetail = KycDetail::select('id', 'kyc_id', 'type', 'info_type', $sql_var, 'status', 'position')->where(['kyc_id' => $val, 'info_type' => $val2['info_type'], 'status' => 1])->orderBy('info_type', 'ASC')->orderBy('position', 'ASC')->get()->toArray();
-
-
-
                     foreach ($kycdetail as $key3 => $val3) {
 
                         $kyc_detail_id = $val3['id'];

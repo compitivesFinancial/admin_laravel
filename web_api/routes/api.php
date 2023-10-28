@@ -1,19 +1,11 @@
 <?php
 
-
-
-use App\Models\Kyc;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KycController;
 use App\Http\Controllers\BankController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageConttroller;
-
-
 use App\Http\Controllers\YaqeenController;
 use App\Http\Controllers\exampleController;
 use App\Http\Controllers\BorrowerController;
@@ -58,15 +50,15 @@ Route::get('yaqenIqama', [YaqeenController::class, 'yaqenIqamaSaudi']);
 Route::get('yaqeensaudi', [YaqeenController::class, 'yaqeensaudi']);
 //product
 Route::get('/list_product', [ProductConttroller::class, 'list']);
-Route::get('/sendOtpAbsher', [UserController::class, 'sendOtpAbsher']);
+Route::get('/sendOtpAbsher', [UserController::class, 'sendSoapRequest']);
 
 
 
 
 Route::get('wallet_borrower', [BorrowerController::class, 'borroweWallet']);
 
-Route::group(['middleware' => ['auth:sanctum']],
-function () {
+// Route::group(['middleware' => ['auth:sanctum']],
+// function () {
 
 
 
@@ -78,7 +70,7 @@ Route::get('/balance',[BankController::class,'bankBlance']);
 
 
 
-    // Route::group(['middleware' => ['isauth']], function () {
+    //  Route::group(['middleware' => ['isauth']], function () {
 
     Route::get('/examplefunc', [exampleController::class, 'examplefunc']);
     Route::get('logout', [AdminController::class, 'logout']);
@@ -135,13 +127,7 @@ Route::get('/balance',[BankController::class,'bankBlance']);
     Route::get('/invester_kycdetail', [InvesterController::class, 'KycDetail']);
     Route::post('/invester_profile', [InvesterController::class, 'userdetail']);
     Route::post('/invester_wallet', [InvesterController::class, 'investerWallet']);
-
-
-
     Route::post('/investordashboard', [InvesterController::class, 'investordashboard']);
-
-
-
     Route::post('/add_campaign', [CampaignController::class, 'insert']);
     Route::post('/update_campaign', [CampaignController::class, 'update']);
     Route::get('/list_campaign', [CampaignController::class, 'list']);
@@ -175,9 +161,9 @@ Route::get('/balance',[BankController::class,'bankBlance']);
     Route::get('/cmsget_by_type/{id}', [CampaignController::class, 'cmsGetByType']);
 
 
-});
+// });
 
-//});
+// });
 
 Route::post('/contact_us', [CampaignController::class, 'contactUs']);
 Route::get('/home_page_api', [CampaignController::class, 'homePageApi']);
